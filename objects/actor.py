@@ -1,7 +1,12 @@
-import pygame, rect, collisions, constants
+import pygame
+from objects.rect import Rect
+import constants
+from logic import collisions
+
+
 pygame.init()
 
-class Actor(rect.Rect):
+class Actor(Rect):
     def __init__(self,x,y,w,h,color,img,maxHP,spd=[0,0],name="actor"):
         super().__init__(x,y,w,h,color,spd,name)
         self.img = img

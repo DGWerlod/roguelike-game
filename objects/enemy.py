@@ -1,7 +1,8 @@
-import pygame, actor
+import pygame
+from objects.actor import Actor
 pygame.init()
 
-class Enemy(actor.Actor):
+class Enemy(Actor):
     def __init__(self,x,y,w,h,color,img,spd=[0,0],maxHP,name="enemy"):
         super().__init__(x,y,w,h,color,img,spd,maxHP,name)
 

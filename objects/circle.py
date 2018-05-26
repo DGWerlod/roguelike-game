@@ -1,7 +1,8 @@
-import pygame, entity
+import pygame
+from objects.entity import Entity
 pygame.init()
 
-class Circle(entity.Entity):
+class Circle(Entity):
     def __init__(self,x,y,r,color,spd,name="circle"):
         super().__init__(x,y,color,spd,name)
         self.r = r
