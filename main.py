@@ -6,7 +6,7 @@ ctx = pygame.display.set_mode((constants.gameW,constants.gameH))
 pygame.display.set_caption("CircleGame")
 clock = pygame.time.Clock()
 
-playerImg = pygame.image.load("img/simpleplayer.png")
+playerImg = pygame.image.load("img/chrissyc.png")
 player = Player(0,0,30,60,(0,0,0),playerImg,[5,5],50)
 
 def close():
