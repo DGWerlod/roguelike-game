@@ -6,5 +6,5 @@ class Rect(entity.Entity):
         super().__init__(x,y,color,spd,name)
         self.w = w
         self.h = h
-    def draw(self):
+    def draw(self, ctx):
         pygame.draw.rect(ctx,color,(x,y,w,h))

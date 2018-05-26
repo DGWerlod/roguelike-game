@@ -8,8 +8,8 @@ class Entity(object):
         self.color = color
         self.spd = spd
         self.name = name
-    def pos(): pass
-    def draw(): pass
-    def go():
+    def pos(self): pass
+    def draw(self, ctx): pass
+    def go(self, ctx):
         self.pos()
-        self.draw()
+        self.draw(ctx)
