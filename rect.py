@@ -2,7 +2,7 @@ import pygame, entity
 pygame.init()
 
 class Rect(entity.Entity):
-    def __init__(self,x,y,w,h,color,spd,name="none"):
+    def __init__(self,x,y,w,h,color,spd,name="rect"):
         super().__init__(x,y,color,spd,name)
         self.w = w
         self.h = h
