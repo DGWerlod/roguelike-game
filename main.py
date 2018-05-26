@@ -8,15 +8,17 @@ pygame.display.set_caption("CircleGame")
 clock = pygame.time.Clock()
 
 def close():
-	pygame.quit()
-	quit()
+    pygame.quit()
+    quit()
 
 def main():
-	global curroom
-	curroom = nextRoom(curroom)
+    while True:
 
-	while True:
-		pygame.display.update()
-		clock.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                close()
+
+        pygame.display.update()
+        clock.tick(60)
 
 main()
