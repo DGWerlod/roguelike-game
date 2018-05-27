@@ -83,16 +83,6 @@ shop = [
 "enemies": [],
 "items":
 [
-    Item(0,(constants.gameW-20)/2,(constants.gameH-20)/2,20,20)
-],
-"doors": []
-},
-{
-"type": "shop",
-"obstructions": stdObstructions,
-"enemies": [],
-"items":
-[
     Item(3,(constants.gameW-20)/2,(constants.gameH-20)/2,20,20)
 ],
 "doors": []
