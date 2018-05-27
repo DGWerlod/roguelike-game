@@ -10,6 +10,7 @@ class Player(Actor):
     def __init__(self,x,y,w,h,color,img,maxHP,spd,atkSpd,name="player"):
         super().__init__(x,y,w,h,color,img,maxHP,spd,name)
         self.dmg = 1
+        self.stamps = 0
         self.items = []
         self.phase = 0
         self.atkSpd = atkSpd

@@ -90,6 +90,14 @@ def main(curFloor, curRoom, curPos):
         if player.hp%2 == 1:
             ctx.blit(images.halfPeach,(location,15))
 
+        location = 85
+        ctx.blit(images.foodStamp,(location,35))
+        muli = pygame.font.Font("fonts/muli.ttf",15)
+        stamps = muli.render(str(player.stamps),True,constants.black)
+        stampsRECT = stamps.get_rect()
+        stampsRECT.right = location + 20
+        stampsRECT.top = 35
+        ctx.blit(stamps,stampsRECT)
 
         if enemiesCleared:
             for c in curRoom["doors"]:

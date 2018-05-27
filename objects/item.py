@@ -15,8 +15,8 @@ class Item(Rect):
                 target.hp = target.maxHP
             else:
                 target.hp += 2
-        elif self.id == 1: # knife
-            target.dmg += 1
+        elif self.id == 1: # foodstamp
+            target.stamps += 1
         elif self.id == 2: # basil
             pass
         elif self.id == 3: # paprika
@@ -32,8 +32,8 @@ class Item(Rect):
             pass
         elif self.id == 7: # giant-peach
             target.maxHP += 2
-        elif self.id == 8: #
-            pass
+        elif self.id == 8: # knife
+            target.dmg += 1
         elif self.id == 9: #
             pass
         self.consumedFlag = True

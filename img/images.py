@@ -3,6 +3,7 @@ pygame.init()
 
 peach = pygame.image.load("img/peach.png")
 halfPeach = pygame.image.load("img/halfpeach.png")
+foodStamp = pygame.image.load("img/foodstamp.png")
 player1 = pygame.transform.scale(pygame.image.load("img/chefspud_default.png"),(60,120))
 player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(60,120))
 
@@ -137,14 +138,14 @@ elif id == 6: # tumeric
 
 items = [
     pygame.transform.scale(pygame.image.load("img/peach.png"),(30,30)),
-    pygame.image.load("img/knife.png"),
+    pygame.transform.scale(pygame.image.load("img/foodstamp.png"),(30,30)),
     pygame.image.load("img/spices/basil.png"),
     pygame.image.load("img/spices/paprika.png"),
     pygame.image.load("img/spices/pepper.png"),
     pygame.image.load("img/spices/salt.png"),
     pygame.image.load("img/spices/turmeric.png"),
     pygame.transform.scale(pygame.image.load("img/peach.png"),(60,60)),
-    pygame.transform.scale(pygame.image.load("img/foodstamp.png"),(30,30))
+    pygame.transform.scale(pygame.image.load("img/knife.png"),(30,30))
 ]
 
 def getImage(name):

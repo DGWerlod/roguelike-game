@@ -91,7 +91,23 @@ rooms = [
 ],
 "items":
 [
-    # Item(0,300,300,20,20)
+
+],
+"doors": []
+},
+
+{
+"type": "standard",
+"obstructions": stdObstructions,
+"enemies":
+[
+    Enemy("cherry"),
+    Enemy("cherry"),
+    Enemy("cherry")
+],
+"items":
+[
+
 ],
 "doors": []
 }
