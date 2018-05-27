@@ -1,21 +1,16 @@
-Basic Loop
-Class Structure
-  Entity (x, y, width, height)
-    Rect
-      Obstruction
-      Item
-        PowerUp
-        ...
-      Actor
-        Enemy
-        Character
-        Player
-    Circle
+Room
+Random Generation of Levels
+Enemies
 
-Collision Detection
+
 GUI
   BG - Stage
   HUD (Heads Up Display)
-Main
 
-mouse = {'pos':pygame.mouse.get_pos(),'click':0,'held':0}
+
+Setting: Office
+Player: Potato
+Boss: Evil Marshmallow Peeps
+Special Items: Geckos (also Dixie Ultra)
+Other Items: Food
+Enemies: Food

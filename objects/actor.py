@@ -3,7 +3,6 @@ from objects.rect import Rect
 import constants
 from logic import collisions
 
-
 pygame.init()
 
 class Actor(Rect):
@@ -15,19 +14,20 @@ class Actor(Rect):
 
     def act(self): pass
 
-    def canMove(self):
-        """
-        for o in obstructions:
-            if collision.rectangles(self,o):
+    def canMove(self, room):
+        for o in room["obstructions"]:
+            if collisions.rectangles(self,o):
                 return False
-        """
         return True
 
-
-    def pos(self):
-        if self.canMove():
+    def pos(self, room):
+        if self.canMove(room):
             self.x += self.spd[0]
             self.y += self.spd[1]
 
     def draw(self, ctx):
         ctx.blit(self.img, (self.x,self.y))
+
+    def go(self, ctx, room):
+        self.pos(room)
+        self.draw(ctx)
