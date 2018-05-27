@@ -1,11 +1,10 @@
-import pygame, math, random, constants
+import pygame, math, random, constants, generator
 from controls import keyboard, mouse
 from objects.rect import Rect
 from objects.player import Player
 from img import images
 from rooms import rooms
-from logic import matrices
-from copy import deepcopy
+from logic import collisions
 pygame.init()
 
 ctx = pygame.display.set_mode((constants.gameW,constants.gameH))
@@ -14,6 +13,7 @@ clock = pygame.time.Clock()
 
 curFloor = []
 curRoom = {}
+curPos = []
 
 player = Player(170,240,constants.playerW,constants.playerH,
                     constants.black,[images.player1,images.player2],50,[4,4])
@@ -30,180 +30,66 @@ def listen():
                 keyboard.listen(event)
                 mouse.listen()
 
-# -------------------------------------
-# ----------- FLOOR SETUP -------------
-# -------------------------------------
+def enemyCheck(room):
+    allEnemiesDead = 1
+    for e in room["enemies"]:
+        if e.hp > 0:
+            allEnemiesDead = 0
+            break
+    return allEnemiesDead
 
-def validatePos(nextFloor,yPos,xPos):
-    validPos = False
-    if not yPos == 0:
-        if not nextFloor[yPos-1][xPos] == None:
-            validPos = True
-    if not xPos == 0:
-        if not nextFloor[yPos][xPos-1] == None:
-            validPos = True
-    if not yPos == constants.gridLength-1:
-        if not nextFloor[yPos+1][xPos] == None:
-            validPos = True
-    if not xPos == constants.gridLength-1:
-        if not nextFloor[yPos][xPos+1] == None:
-            validPos = True
-    return validPos
-
-def startFloor():
-    nextRooms = []
-    nextFloor = [[None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None]]
-    numRooms = 8 + random.randint(0,4)
-    for i in range(numRooms):
-        nextRooms.append(deepcopy(rooms[random.randint(0,0)])) # first n rooms are normal
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # shop
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # dishwasher
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # risk
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # boss
-
-    for i in range(len(nextRooms)):
-        while True:
-            pos = math.floor(random.randint(0,(constants.gridLength**2)-1))
-            if nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] == None:
-                nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] = nextRooms[i]
-                break
-
-    for y in range(5):
-        out = ""
-        for x in range(5):
-            if not nextFloor[y][x] == None:
-                out = out + "y "
-            else:
-                out = out + "n "
-        print(out)
-
-    for i in range(constants.gridLength**2):
-        yPos = math.floor(i/constants.gridLength)
-        xPos = i%constants.gridLength
-        if not nextFloor[yPos][xPos] == None: # Only do if there is a room here
-                while True:
-                    print("LOOP VALIDATE")
-                    if not validatePos(nextFloor,yPos,xPos):
-                     # Move the room so it will have an adjacent room
-                        temp = nextFloor[yPos][xPos]
-                        nextFloor[yPos][xPos] = None
-                        nextPos = yPos*constants.gridLength + xPos + 1
-                        while True:
-                            print("LOOP REASSIGN")
-                            nextPos = nextPos % (constants.gridLength**2)
-                            yPos, xPos = math.floor(nextPos/constants.gridLength), nextPos%constants.gridLength
-                            if nextFloor[yPos][xPos] == None:
-                                nextFloor[yPos][xPos] = temp
-                                break
-                            else:
-                                nextPos += 1
-                                print("NextPos: ", nextPos)
-                    else: # Pos is valid finally
-                        break
-
-    testFloor = [[None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None]]
-    validX, validY = 0, 0
-    for y in range(constants.gridLength):
-        out = ""
-        for x in range(constants.gridLength):
-            if not nextFloor[y][x] == None:
-                testFloor[y][x] = 'y'
-                validX, validY = x, y
-                out = out + "y "
-            else:
-                testFloor[y][x] = 'n'
-                out = out + "n "
-        print(out)
-
-    matrices.bucketFill(testFloor,validX,validY) #bucketFill is x,y
-    for y in range(constants.gridLength):
-        for x in range(constants.gridLength):
-            if testFloor[y][x] == 'y':
-                return startFloor()
-
-    return nextFloor
-
-# Resets all data specific to this instance of these rooms
-def prepareFloor(nextFloor):
-    for i in nextFloor:
-        for j in i:
-            if not j == None:
-                j["doors"] = []
-                for key in j:
-                    for k in j[key]:
-                        if key == "enemies":
-                            k.x = k.firstX
-                            k.y = k.firstY
-                            k.hp = k.maxHP
-                        elif key == "items":
-                            k.consumedFlag = False
-
-# links adjacent rooms with doors
-def linkFloor(nextFloor):
-    for i in range(len(nextFloor)):
-        for j in range(len(nextFloor[i])):
-            if not nextFloor[i][j] == None:
-                if j > 0 and not nextFloor[i][j-1] == None:
-                    nextFloor[i][j]["doors"].append(Rect(0,(constants.gameH-constants.doorWide)/2,constants.doorSlim,constants.doorWide,constants.grey,images.doorLeft[1]))
-                if j < constants.gridLength-1 and not nextFloor[i][j+1] == None:
-                    nextFloor[i][j]["doors"].append(Rect(constants.gameW-constants.doorSlim,(constants.gameH-constants.doorWide)/2,constants.doorSlim,constants.doorWide,constants.grey,images.doorRight[1]))
-                if i > 0 and not nextFloor[i-1][j] == None:
-                    nextFloor[i][j]["doors"].append(Rect((constants.gameW-constants.doorWide)/2,0,constants.doorWide,constants.doorSlim,constants.grey,images.doorTop[1]))
-                if i < constants.gridLength-1 and not nextFloor[i-1][j] == None:
-                    nextFloor[i][j]["doors"].append(Rect((constants.gameW-constants.doorWide)/2,constants.gameH-constants.doorSlim,constants.doorWide,constants.doorSlim,constants.grey,images.doorBottom[1]))
-
-# Literally does everything
-def newFloor():
-    floor = startFloor()
-    prepareFloor(floor)
-    linkFloor(floor)
-    return floor
-
-# -------------------------------------
-# ----------- /FLOOR SETUP ------------
-# -------------------------------------
-
-def main():
+def main(curFloor, curRoom, curPos):
+    delayTimer = 0
+    enemiesCleared = 0
     while True:
+        if delayTimer > 0:
+            delayTimer -= 1
+        if delayTimer == 0:
+            enemiesCleared = 1
         listen()
 
         # Reset BG
-        ctx.blit(images.bg,(0,0))
+        ctx.blit(images.backgrounds[curRoom["type"]],(0,0))    
 
         # Update All Entities
         for d in curRoom["doors"]:
-            d.go(ctx)
+            d.go(ctx, enemiesCleared)
         for i in curRoom["items"]:
             i.go(ctx)
         for e in curRoom["enemies"]:
             e.go(ctx, curRoom)
         player.go(ctx, curRoom)
 
+        if enemiesCleared:
+            for c in curRoom["doors"]:
+                key = c.name
+                if collisions.rectangles(player,constants.clearZones[key]):
+                    if key == "w":
+                        curPos[0] -= 1
+                        player.y = constants.gameH - 110 - constants.playerH - 20
+                    elif key == "a":
+                        curPos[1] -= 1
+                        player.x = constants.gameW - 110 - constants.playerW - 20
+                    elif key == "s":
+                        curPos[0] += 1
+                        player.y = 10 + 20
+                    elif key == "d":
+                        curPos[1] += 1
+                        player.x = 110 + 20
+                    curRoom = curFloor[curPos[0]][curPos[1]]
+                    delayTimer = 600
+                    enemiesCleared = 0
+        else:pass
+            # enemiesCleared = enemyCheck(curRoom)
+
         # Update Window
         pygame.display.update()
         clock.tick(60)
 
-# testArray = startFloor()
-# for y in range(5):
-#     out = ""
-#     for x in range(5):
-#         if not testArray[y][x] == None:
-#             out = out + "y "
-#         else:
-#             out = out + "n "
-#     print(out)
-
-curFloor = newFloor()
+curFloor = generator.newFloor()
 for y in range(constants.gridLength):
     for x in range(constants.gridLength):
         if not curFloor[y][x] == None:
             curRoom = curFloor[y][x]
-main()
+            curPos = [y,x]
+main(curFloor, curRoom, curPos)
