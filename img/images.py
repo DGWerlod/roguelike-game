@@ -15,6 +15,7 @@ saltBottom = [pygame.image.load("img/doors/salt_pepper/salt_S_closed.png"), pyga
 player1 = pygame.transform.scale(pygame.image.load("img/chefspud_default.png"),(60,120))
 player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(60,120))
 enemy = pygame.transform.scale(pygame.image.load("img/badappple.png"),(60,60))
+peep = pygame.image.load("img/peepboss.png")
 chrissyC = pygame.image.load("img/chrissyc.png")
 simplePlayer = pygame.image.load("img/simplePlayer.png")
 
