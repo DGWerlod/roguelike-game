@@ -1,7 +1,8 @@
-import pygame
+import pygame, math
+from img import images
 from objects.rect import Rect
+from objects.bullet import Bullet
 import constants
-from logic import collisions
 
 pygame.init()
 
@@ -11,13 +12,13 @@ class Actor(Rect):
         self.maxHP = maxHP
         self.hp = maxHP
 
-    def act(self): pass
-
-    def canMove(self, room):
-        for o in room["obstructions"]:
-            if collisions.rectangles(self,o):
-                return False
-        return True
+    def attack(self, target):
+        selfCenterX = self.x + self.w/2
+        selfCenterY = self.y + self.h/2
+        rise = (target.y + target.h/2 - selfCenterY)
+        run = (target.x + target.w/2 - selfCenterX)
+        theta = math.atan2(rise,run)
+        return Bullet(selfCenterX-5,selfCenterY-5,10,10,images.marshmallow,theta,self.dmg,"bad")
 
     def pos(self, room):
         if self.canMove(room):

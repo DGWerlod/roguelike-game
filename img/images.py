@@ -8,8 +8,10 @@ player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(
 apple = pygame.transform.scale(pygame.image.load("img/badappple.png"),(60,60))
 peep = pygame.image.load("img/peepboss.png")
 bunny = pygame.image.load("img/evilbunny.png")
-chrissyC = pygame.image.load("img/chrissyc.png")
-simplePlayer = pygame.image.load("img/simplePlayer.png")
+marshmallow = pygame.image.load("img/marshmallow.png")
+frenchFry = pygame.image.load("img/frenchfry.png")
+# chrissyC = pygame.image.load("img/chrissyc.png")
+# simplePlayer = pygame.image.load("img/simplePlayer.png")
 
 lemon = pygame.image.load("img/lemonafraid.png")
 

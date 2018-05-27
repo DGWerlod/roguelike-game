@@ -30,7 +30,7 @@ rooms = [
 
 # Room 2
 {
-"type": "standard",
+"type": "boss",
 "obstructions":
 [
     Obstruction(0,0,110,constants.gameH,constants.grey),

@@ -16,7 +16,7 @@ curRoom = {}
 curPos = []
 
 player = Player(170,240,constants.playerW,constants.playerH,
-                    constants.black,[images.player1,images.player2],50,[4,4])
+                    constants.black,[images.player1,images.player2],50,[5,5],60)
 
 def close():
     pygame.quit()
@@ -38,27 +38,36 @@ def enemyCheck(room):
             break
     return allEnemiesDead
 
+def getProjectile(projectile,bullets):
+    if projectile != None:
+        bullets.append(projectile)
+    return None
+
 def main(curFloor, curRoom, curPos):
-    delayTimer = 0
+
     enemiesCleared = 0
+    bullets = []
+
     while True:
-        if delayTimer > 0:
-            delayTimer -= 1
-        if delayTimer == 0:
-            enemiesCleared = 1
         listen()
 
         # Reset BG
-        ctx.blit(images.backgrounds[curRoom["type"]],(0,0))    
+        ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
 
         # Update All Entities
+        projectile = None
+
         for d in curRoom["doors"]:
             d.go(ctx, enemiesCleared)
         for i in curRoom["items"]:
             i.go(ctx)
+        for b in bullets:
+            b.go(ctx, curRoom)
         for e in curRoom["enemies"]:
-            e.go(ctx, curRoom)
-        player.go(ctx, curRoom)
+            projectile = e.go(ctx, curRoom, player)
+            projectile = getProjectile(projectile, bullets)
+        projectile = player.go(ctx, curRoom)
+        projectile = getProjectile(projectile, bullets)
 
         if enemiesCleared:
             for c in curRoom["doors"]:
@@ -77,10 +86,10 @@ def main(curFloor, curRoom, curPos):
                         curPos[1] += 1
                         player.x = 110 + 20
                     curRoom = curFloor[curPos[0]][curPos[1]]
-                    delayTimer = 600
+                    bullets = []
                     enemiesCleared = 0
-        else:pass
-            # enemiesCleared = enemyCheck(curRoom)
+        else:
+            enemiesCleared = enemyCheck(curRoom)
 
         # Update Window
         pygame.display.update()

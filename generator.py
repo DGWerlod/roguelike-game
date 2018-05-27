@@ -115,10 +115,7 @@ def prepareFloor(nextFloor):
                 j["doors"] = []
                 for key in j:
                     for k in j[key]:
-                        if key == "enemies":
-                            k.x = k.firstX
-                            k.y = k.firstY
-                            k.hp = k.maxHP
+                        if key == "enemies": pass
                         elif key == "items":
                             k.consumedFlag = False
 
