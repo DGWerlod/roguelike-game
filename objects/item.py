@@ -23,9 +23,11 @@ class Item(Rect):
             if target.atkSpd > 5:
                 target.atkSpd -= 2
             else:
-                target.spd += 1
+                target.spd[0] += 1
+                target.spd[1] += 1
         elif self.id == 4: # pepper
-            target.spd += 1
+            target.spd[0] += 1
+            target.spd[1] += 1
         elif self.id == 5: # salt
             pass
         elif self.id == 6: # tumeric
