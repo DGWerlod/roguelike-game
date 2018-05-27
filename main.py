@@ -11,7 +11,7 @@ clock = pygame.time.Clock()
 
 curRoom = rooms[0]
 
-player = Player(0,0,constants.playerW,constants.playerH,
+player = Player(170,240,constants.playerW,constants.playerH,
                     constants.black,[images.player1,images.player2],50,[4,4])
 
 def close():
@@ -34,8 +34,6 @@ def main():
         ctx.blit(images.bg,(0,0))
 
         # Update All Entities
-        for o in curRoom["obstructions"]:
-            o.go(ctx)
         for i in curRoom["items"]:
             i.go(ctx)
         for e in curRoom["enemies"]:

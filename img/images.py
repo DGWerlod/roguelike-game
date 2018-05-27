@@ -8,3 +8,5 @@ player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(
 enemy = pygame.transform.scale(pygame.image.load("img/badappple.png"),(60,60))
 chrissyC = pygame.image.load("img/chrissyc.png")
 simplePlayer = pygame.image.load("img/simplePlayer.png")
+
+lemon = pygame.image.load("img/lemonafraid.png")

@@ -10,11 +10,14 @@ rooms = [
 {
 "obstructions":
 [
-    Obstruction(800,500,100,100,constants.grey)
+    Obstruction(0,0,110,constants.gameH,constants.grey),
+    Obstruction(790,0,110,constants.gameH,constants.grey),
+    Obstruction(0,0,constants.gameW,10,constants.grey),
+    Obstruction(0,490,constants.gameW,110,constants.grey)
 ],
 "enemies":
 [
-    Enemy(700,0,60,60,constants.black,images.enemy,20)
+    Enemy(650,270,60,60,constants.black,images.enemy,20)
 ],
 "items":
 [
