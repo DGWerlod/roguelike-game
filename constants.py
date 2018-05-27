@@ -22,3 +22,11 @@ clearZones = {
     "s": Rect(gameW/2 - doorWide/2,485,doorWide,5,grey),
     "d": Rect(785,gameH/2 - doorWide/2,5,doorWide,grey)
 }
+
+# ENEMY DATA   HP,FIRE RATE IN TICKS (1/60),DMG
+enemyData = {
+    "apple": [60,60,3,60,1],
+    "cherry": [60,60,1,20,1],
+    "peep": [120,120,15,60,2],
+    "bunny": [60,60,1,60,1]
+}

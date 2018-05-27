@@ -1,6 +1,7 @@
 import math, random, constants
 from img import images
 from copy import deepcopy
+from objects.enemy import Enemy
 from objects.door import Door
 from logic import matrices
 from rooms import rooms
@@ -21,6 +22,14 @@ def validatePos(nextFloor,yPos,xPos):
             validPos = True
     return validPos
 
+def randomizeSpawn(room):
+    for e in room["enemies"]:
+        e.x, e.y = (constants.gameW-e.w)/2, (constants.gameH-e.h)/2
+        if not e.name == "peep":
+            e.x += random.randint(0,300)-150
+            e.y += random.randint(0,300)-150
+    return room
+
 def startFloor():
     nextRooms = []
     nextFloor = [[None,None,None,None,None],
@@ -30,11 +39,11 @@ def startFloor():
                 [None,None,None,None,None]]
     numRooms = 8 + random.randint(0,4)
     for i in range(numRooms):
-        nextRooms.append(deepcopy(rooms[random.randint(0,3)])) # first n rooms are normal
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # shop
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # dishwasher
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # risk
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # boss
+        nextRooms.append(randomizeSpawn(deepcopy(rooms[random.randint(0,4)]))) # first n rooms are normal
+    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # shop
+    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # dishwasher
+    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # risk
+    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # boss
 
     for i in range(len(nextRooms)):
         while True:

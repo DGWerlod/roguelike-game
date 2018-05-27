@@ -1,15 +1,16 @@
-import pygame
+import pygame, constants
 from objects.actor import Actor
 from objects.bullet import Bullet
 from img import images
 pygame.init()
 
 class Enemy(Actor):
-    def __init__(self,x,y,w,h,color,maxHP,atkSpd,dmg,name="enemy",spd=[0,0]):
-        super().__init__(x,y,w,h,color,None,maxHP,spd,name)
-        self.atkSpd = atkSpd
-        self.attackCD = atkSpd
-        self.dmg = dmg
+    def __init__(self,name="enemy",spd=[0,0]):
+        data = constants.enemyData
+        super().__init__(0,0,data[name][0],data[name][1],None,None,data[name][2],spd,name)
+        self.atkSpd = data[name][3]
+        self.attackCD = data[name][3]
+        self.dmg = data[name][4]
 
     def draw(self, ctx):
         ctx.blit(images.getImage(self.name),(self.x,self.y))

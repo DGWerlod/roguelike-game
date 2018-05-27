@@ -1,6 +1,7 @@
 import pygame, math, random, constants, generator
 from controls import keyboard, mouse
 from objects.rect import Rect
+from objects.enemy import Enemy
 from objects.player import Player
 from img import images
 from rooms import rooms
@@ -43,6 +44,15 @@ def getProjectile(projectile,bullets):
         bullets.append(projectile)
     return None
 
+def trySpawn(enemy, room):
+    if enemy.hp > 0 and enemy.name == "peep":
+        if random.randint(0,500) == 0:
+            bunnySpawn = Enemy("bunny")
+            bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
+            bunnySpawn.x += random.randint(0,300)-150
+            bunnySpawn.y += random.randint(0,300)-150
+            room["enemies"].append(bunnySpawn)
+
 def main(curFloor, curRoom, curPos):
 
     enemiesCleared = 0
@@ -60,7 +70,7 @@ def main(curFloor, curRoom, curPos):
         for d in curRoom["doors"]:
             d.go(ctx, enemiesCleared)
         for i in curRoom["items"]:
-            i.go(ctx)
+            i.go(ctx, player)
         for b in bullets:
             b.go(ctx, curRoom, player)
             if b.removeFlag:
@@ -68,6 +78,8 @@ def main(curFloor, curRoom, curPos):
         for e in curRoom["enemies"]:
             projectile = e.go(ctx, curRoom, player)
             projectile = getProjectile(projectile, bullets)
+            trySpawn(e,curRoom)
+
         projectile = player.go(ctx, curRoom)
         projectile = getProjectile(projectile, bullets)
 

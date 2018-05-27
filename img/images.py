@@ -7,6 +7,7 @@ player1 = pygame.transform.scale(pygame.image.load("img/chefspud_default.png"),(
 player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(60,120))
 
 apple = pygame.transform.scale(pygame.image.load("img/badappple.png"),(60,60))
+cherry = pygame.transform.scale(pygame.image.load("img/cherryvil.png"),(60,60))
 peep = pygame.transform.scale(pygame.image.load("img/peepboss.png"),(120,120))
 bunny = pygame.transform.scale(pygame.image.load("img/evilbunny.png"),(60,60))
 
@@ -72,24 +73,24 @@ doors = {
         pygame.image.load("img/doors/knife/knife_D_closed.png"),
         pygame.image.load("img/doors/knife/knife_D_open.png")
     ]
-# },
-# "dish": {
-#     "w": [
-#         pygame.image.load("img/doors/dish/dish_W_closed.png"),
-#         pygame.image.load("img/doors/dish/dish_W_open.png")
-#     ],
-#     "a": [
-#         pygame.image.load("img/doors/dish/dish_A_closed.png"),
-#         pygame.image.load("img/doors/dish/dish_A_open.png")
-#     ],
-#     "s": [
-#         pygame.image.load("img/doors/dish/dish_S_closed.png"),
-#         pygame.image.load("img/doors/dish/dish_S_open.png")
-#     ],
-#     "d": [
-#         pygame.image.load("img/doors/dish/dish_D_closed.png"),
-#         pygame.image.load("img/doors/dish/dish_D_open.png")
-#     ]
+},
+"dish": {
+    "w": [
+        pygame.image.load("img/doors/dish/dish_W_closed.png"),
+        pygame.image.load("img/doors/dish/dish_W_open.png")
+    ],
+    "a": [
+        pygame.image.load("img/doors/dish/dish_A_closed.png"),
+        pygame.image.load("img/doors/dish/dish_A_open.png")
+    ],
+    "s": [
+        pygame.image.load("img/doors/dish/dish_S_closed.png"),
+        pygame.image.load("img/doors/dish/dish_S_open.png")
+    ],
+    "d": [
+        pygame.image.load("img/doors/dish/dish_D_closed.png"),
+        pygame.image.load("img/doors/dish/dish_D_open.png")
+    ]
 # },
 # "shop": {
 #     "w": [
@@ -112,12 +113,39 @@ doors = {
 }
 
 backgrounds = {
-"standard": pygame.image.load("img/background.png"),
-"risk": pygame.image.load("img/salt_background.png"),
-"boss": pygame.image.load("img/cuttingboard_background.png"),
-# "dish": pygame.image.load(""),
-"shop": pygame.image.load("img/cookbook_background.png")
+    "standard": pygame.image.load("img/background.png"),
+    "risk": pygame.image.load("img/salt_background.png"),
+    "boss": pygame.image.load("img/cuttingboard_background.png"),
+    "dish": pygame.image.load("img/dish_background.png"),
+    "shop": pygame.image.load("img/cookbook_background.png")
 }
+
+if id == 0: # peach
+    target.maxHP += 2
+elif id == 1: # knife
+    target.dmg += 1
+elif id == 2: # basil
+    pass
+elif id == 3: # paprika
+    target.atkSpd -= 2
+elif id == 4: # pepper
+    target.spd += 1
+elif id == 5: # salt
+    pass
+elif id == 6: # tumeric
+    pass
+
+items = [
+    pygame.transform.scale(pygame.image.load("img/peach.png"),(30,30)),
+    pygame.image.load("img/knife.png"),
+    pygame.image.load("img/spices/basil.png"),
+    pygame.image.load("img/spices/paprika.png"),
+    pygame.image.load("img/spices/pepper.png"),
+    pygame.image.load("img/spices/salt.png"),
+    pygame.image.load("img/spices/turmeric.png"),
+    pygame.transform.scale(pygame.image.load("img/peach.png"),(60,60)),
+    pygame.transform.scale(pygame.image.load("img/foodstamp.png"),(30,30))
+]
 
 def getImage(name):
     if name == "apple":
