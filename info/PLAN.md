@@ -12,7 +12,7 @@ GUI
 Setting: Office
 Player: Potato
 Boss: Evil Marshmallow Peeps
-Special Items: Geckos (also Dixie Ultra)
+Special Items: Spices (also Dixie Ultra)
 Other Items: Food
 Enemies: Food
 
@@ -29,3 +29,7 @@ Risk rooms (Salt + Pepper; 1st always good)
 Shop rooms (Cookbooks)
 Dishwasher?
 Boss rooms (Cutting Boards)
+
+Min number of 8 normal rooms/floor
+Max number of 12 normal rooms/floor
+1 of each special room per floor

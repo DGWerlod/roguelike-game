@@ -3,10 +3,14 @@ pygame.init()
 
 bg = pygame.image.load("img/background.png")
 
-doorTop = [pygame.image.load("img/doors/door_W_closed.png"), pygame.image.load("img/doors/door_W_open.png")]
-doorLeft = [pygame.image.load("img/doors/door_A_closed.png"), pygame.image.load("img/doors/door_A_open.png")]
-doorRight = [pygame.image.load("img/doors/door_D_closed.png"), pygame.image.load("img/doors/door_D_open.png")]
-doorBottom = [pygame.image.load("img/doors/door_S_closed.png"), pygame.image.load("img/doors/door_S_open.png")]
+doorTop = [pygame.image.load("img/doors/standard/door_W_closed.png"), pygame.image.load("img/doors/standard/door_W_open.png")]
+doorLeft = [pygame.image.load("img/doors/standard/door_A_closed.png"), pygame.image.load("img/doors/standard/door_A_open.png")]
+doorRight = [pygame.image.load("img/doors/standard/door_D_closed.png"), pygame.image.load("img/doors/standard/door_D_open.png")]
+doorBottom = [pygame.image.load("img/doors/standard/door_S_closed.png"), pygame.image.load("img/doors/standard/door_S_open.png")]
+saltTop = [pygame.image.load("img/doors/salt_pepper/salt_W_closed.png"), pygame.image.load("img/doors/salt_pepper/salt_W_open.png")]
+saltLeft = [pygame.image.load("img/doors/salt_pepper/salt_A_closed.png"), pygame.image.load("img/doors/salt_pepper/salt_A_open.png")]
+saltRight = [pygame.image.load("img/doors/salt_pepper/salt_D_closed.png"), pygame.image.load("img/doors/salt_pepper/salt_D_open.png")]
+saltBottom = [pygame.image.load("img/doors/salt_pepper/salt_S_closed.png"), pygame.image.load("img/doors/salt_pepper/salt_S_open.png")]
 
 player1 = pygame.transform.scale(pygame.image.load("img/chefspud_default.png"),(60,120))
 player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(60,120))

@@ -9,6 +9,7 @@ ctx = pygame.display.set_mode((constants.gameW,constants.gameH))
 pygame.display.set_caption("CircleGame")
 clock = pygame.time.Clock()
 
+curFloor = []
 curRoom = rooms[0]
 
 player = Player(170,240,constants.playerW,constants.playerH,
@@ -25,6 +26,12 @@ def listen():
             else:
                 keyboard.listen(event)
                 mouse.listen()
+
+def startFloor():
+    nextFloor = []
+    numRooms = 4 + 8 + math.floor(math.random()*4)
+    for i in range(numRooms):
+        nextFloor.append(rooms[math.floor(math.random())])
 
 def main():
     while True:

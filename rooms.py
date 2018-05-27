@@ -26,7 +26,7 @@ rooms = [
 ],
 "doors":
 [
-    Rect((constants.gameW-150)/2,0,150,100,constants.grey,images.doorTop[1])
+    Rect((constants.gameW-150)/2,0,150,100,constants.grey,images.saltTop[1])
 ]
 },
 
