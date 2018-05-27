@@ -11,7 +11,8 @@ clock = pygame.time.Clock()
 
 curRoom = rooms[0]
 
-player = Player(0,0,constants.playerW,constants.playerH,constants.black,images.player,50,[5,5])
+player = Player(0,0,constants.playerW,constants.playerH,
+                    constants.black,[images.player1,images.player2],50,[3,3])
 
 def close():
     pygame.quit()
