@@ -7,8 +7,7 @@ pygame.init()
 
 class Actor(Rect):
     def __init__(self,x,y,w,h,color,img,maxHP,spd=[0,0],name="actor"):
-        super().__init__(x,y,w,h,color,spd,name)
-        self.img = img
+        super().__init__(x,y,w,h,color,img,spd,name)
         self.maxHP = maxHP
         self.hp = maxHP
 

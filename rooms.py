@@ -1,5 +1,6 @@
 import constants
 from img import images
+from objects.rect import Rect
 from objects.item import Item
 from objects.obstruction import Obstruction
 from objects.character import Character
@@ -22,6 +23,10 @@ rooms = [
 "items":
 [
     Item(0,300,300,20,20,constants.black)
+],
+"doors":
+[
+    Rect((constants.gameW-150)/2,0,150,100,constants.grey,images.doorTop[1])
 ]
 },
 

@@ -34,6 +34,8 @@ def main():
         ctx.blit(images.bg,(0,0))
 
         # Update All Entities
+        for d in curRoom["doors"]:
+            d.go(ctx)
         for i in curRoom["items"]:
             i.go(ctx)
         for e in curRoom["enemies"]:
