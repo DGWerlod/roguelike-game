@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 curRoom = rooms[0]
 
 player = Player(0,0,constants.playerW,constants.playerH,
-                    constants.black,[images.player1,images.player2],50,[3,3])
+                    constants.black,[images.player1,images.player2],50,[4,4])
 
 def close():
     pygame.quit()
@@ -31,7 +31,7 @@ def main():
         listen()
 
         # Reset BG
-        ctx.fill(constants.black)
+        ctx.blit(images.bg,(0,0))
 
         # Update All Entities
         for o in curRoom["obstructions"]:
