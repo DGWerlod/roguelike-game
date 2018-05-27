@@ -18,7 +18,7 @@ rooms = [
 ],
 "enemies":
 [
-    Enemy(650,270,60,60,constants.black,images.enemy,20)
+    Enemy(650,270,60,60,constants.black,20,"apple")
 ],
 "items":
 [
@@ -26,7 +26,7 @@ rooms = [
 ],
 "doors":
 [
-    Rect((constants.gameW-150)/2,0,150,100,constants.grey,images.saltTop[1])
+    #Rect((constants.gameW-150)/2,0,150,100,constants.grey,images.saltTop[1])
 ]
 },
 

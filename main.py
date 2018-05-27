@@ -1,9 +1,11 @@
 import pygame, math, random, constants
 from controls import keyboard, mouse
+from objects.rect import Rect
 from objects.player import Player
 from img import images
 from rooms import rooms
 from logic import matrices
+from copy import deepcopy
 pygame.init()
 
 ctx = pygame.display.set_mode((constants.gameW,constants.gameH))
@@ -11,7 +13,7 @@ pygame.display.set_caption("Roguelike")
 clock = pygame.time.Clock()
 
 curFloor = []
-curRoom = rooms[0]
+curRoom = {}
 
 player = Player(170,240,constants.playerW,constants.playerH,
                     constants.black,[images.player1,images.player2],50,[4,4])
@@ -27,6 +29,10 @@ def listen():
             else:
                 keyboard.listen(event)
                 mouse.listen()
+
+# -------------------------------------
+# ----------- FLOOR SETUP -------------
+# -------------------------------------
 
 def validatePos(nextFloor,yPos,xPos):
     validPos = False
@@ -53,11 +59,11 @@ def startFloor():
                 [None,None,None,None,None]]
     numRooms = 8 + random.randint(0,4)
     for i in range(numRooms):
-        nextRooms.append(rooms[random.randint(0,0)]) # first n rooms are normal
-    nextRooms.append(rooms[0 + random.randint(0,0)]) # shop
-    nextRooms.append(rooms[0 + random.randint(0,0)]) # dishwasher
-    nextRooms.append(rooms[0 + random.randint(0,0)]) # risk
-    nextRooms.append(rooms[0 + random.randint(0,0)]) # boss
+        nextRooms.append(deepcopy(rooms[random.randint(0,0)])) # first n rooms are normal
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # shop
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # dishwasher
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # risk
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # boss
 
     for i in range(len(nextRooms)):
         while True:
@@ -99,8 +105,6 @@ def startFloor():
                     else: # Pos is valid finally
                         break
 
-
-
     testFloor = [[None,None,None,None,None],
                 [None,None,None,None,None],
                 [None,None,None,None,None],
@@ -127,6 +131,46 @@ def startFloor():
 
     return nextFloor
 
+# Resets all data specific to this instance of these rooms
+def prepareFloor(nextFloor):
+    for i in nextFloor:
+        for j in i:
+            if not j == None:
+                j["doors"] = []
+                for key in j:
+                    for k in j[key]:
+                        if key == "enemies":
+                            k.x = k.firstX
+                            k.y = k.firstY
+                            k.hp = k.maxHP
+                        elif key == "items":
+                            k.consumedFlag = False
+
+# links adjacent rooms with doors
+def linkFloor(nextFloor):
+    for i in range(len(nextFloor)):
+        for j in range(len(nextFloor[i])):
+            if not nextFloor[i][j] == None:
+                if j > 0 and not nextFloor[i][j-1] == None:
+                    nextFloor[i][j]["doors"].append(Rect(0,(constants.gameH-constants.doorWide)/2,constants.doorSlim,constants.doorWide,constants.grey,images.doorLeft[1]))
+                if j < constants.gridLength-1 and not nextFloor[i][j+1] == None:
+                    nextFloor[i][j]["doors"].append(Rect(constants.gameW-constants.doorSlim,(constants.gameH-constants.doorWide)/2,constants.doorSlim,constants.doorWide,constants.grey,images.doorRight[1]))
+                if i > 0 and not nextFloor[i-1][j] == None:
+                    nextFloor[i][j]["doors"].append(Rect((constants.gameW-constants.doorWide)/2,0,constants.doorWide,constants.doorSlim,constants.grey,images.doorTop[1]))
+                if i < constants.gridLength-1 and not nextFloor[i-1][j] == None:
+                    nextFloor[i][j]["doors"].append(Rect((constants.gameW-constants.doorWide)/2,constants.gameH-constants.doorSlim,constants.doorWide,constants.doorSlim,constants.grey,images.doorBottom[1]))
+
+# Literally does everything
+def newFloor():
+    floor = startFloor()
+    prepareFloor(floor)
+    linkFloor(floor)
+    return floor
+
+# -------------------------------------
+# ----------- /FLOOR SETUP ------------
+# -------------------------------------
+
 def main():
     while True:
         listen()
@@ -147,20 +191,19 @@ def main():
         pygame.display.update()
         clock.tick(60)
 
-testArray = startFloor()
-for y in range(5):
-    out = ""
-    for x in range(5):
-        if not testArray[y][x] == None:
-            out = out + "y "
-        else:
-            out = out + "n "
-    print(out)
-
+# testArray = startFloor()
 # for y in range(5):
 #     out = ""
 #     for x in range(5):
-#         out = out + testArray[y][x] + ' '
+#         if not testArray[y][x] == None:
+#             out = out + "y "
+#         else:
+#             out = out + "n "
 #     print(out)
 
+curFloor = newFloor()
+for y in range(constants.gridLength):
+    for x in range(constants.gridLength):
+        if not curFloor[y][x] == None:
+            curRoom = curFloor[y][x]
 main()
