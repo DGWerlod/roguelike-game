@@ -30,11 +30,11 @@ def startFloor():
                 [None,None,None,None,None]]
     numRooms = 8 + random.randint(0,4)
     for i in range(numRooms):
-        nextRooms.append(deepcopy(rooms[random.randint(0,0)])) # first n rooms are normal
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # shop
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # dishwasher
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # risk
-    nextRooms.append(deepcopy(rooms[0 + random.randint(0,0)])) # boss
+        nextRooms.append(deepcopy(rooms[random.randint(0,3)])) # first n rooms are normal
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # shop
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # dishwasher
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # risk
+    nextRooms.append(deepcopy(rooms[0 + random.randint(0,3)])) # boss
 
     for i in range(len(nextRooms)):
         while True:

@@ -1,15 +1,18 @@
 import pygame, constants
 pygame.init()
 
-bg = pygame.image.load("img/background.png")
-
+peach = pygame.image.load("img/peach.png")
+halfPeach = pygame.image.load("img/halfpeach.png")
 player1 = pygame.transform.scale(pygame.image.load("img/chefspud_default.png"),(60,120))
 player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(60,120))
+
 apple = pygame.transform.scale(pygame.image.load("img/badappple.png"),(60,60))
-peep = pygame.image.load("img/peepboss.png")
-bunny = pygame.image.load("img/evilbunny.png")
+peep = pygame.transform.scale(pygame.image.load("img/peepboss.png"),(120,120))
+bunny = pygame.transform.scale(pygame.image.load("img/evilbunny.png"),(60,60))
+
 marshmallow = pygame.image.load("img/marshmallow.png")
 frenchFry = pygame.image.load("img/frenchfry.png")
+
 # chrissyC = pygame.image.load("img/chrissyc.png")
 # simplePlayer = pygame.image.load("img/simplePlayer.png")
 
@@ -123,6 +126,10 @@ def getImage(name):
         return peep
     if name == "bunny":
         return bunny
+    if name == "peach":
+        return half
+    if name == "halfpeach":
+        return halfPeach
 
 def getDoor(type, name, state): # 0 = closed, 1 = open
     return doors[type][name][state]

@@ -1,4 +1,5 @@
 import pygame, math
+from logic import collisions
 from objects.rect import Rect
 pygame.init()
 
@@ -16,6 +17,15 @@ class Bullet(Rect):
         if not self.canMove(room):
             self.removeFlag = True
 
-    def go(self, ctx, room):
+    def go(self, ctx, room, player):
         self.pos(room)
         self.draw(ctx)
+        if self.name == "good":
+            for e in room["enemies"]:
+                if collisions.rectangles(self,e) and e.hp > 0:
+                    self.removeFlag = True
+                    e.hp -= self.dmg
+        elif self.name == "bad":
+            if collisions.rectangles(self,player):
+                self.removeFlag = True
+                player.hp -= self.dmg

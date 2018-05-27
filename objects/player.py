@@ -52,7 +52,7 @@ class Player(Actor):
         super().go(ctx, room)
         if self.attackCD > 0:
             self.attackCD -= 1
-        elif mouse.mouse['click'] == True:
+        elif mouse.mouse['held'] == True:
             self.attackCD = self.atkSpd
             return self.attack()
         return None

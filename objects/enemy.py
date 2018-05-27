@@ -15,7 +15,7 @@ class Enemy(Actor):
         ctx.blit(images.getImage(self.name),(self.x,self.y))
 
     def go(self, ctx, room, target):
-        if self.hp >= 0:
+        if self.hp > 0:
             super().go(ctx,room)
             if self.attackCD > 0:
                 self.attackCD -= 1

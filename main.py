@@ -16,7 +16,7 @@ curRoom = {}
 curPos = []
 
 player = Player(170,240,constants.playerW,constants.playerH,
-                    constants.black,[images.player1,images.player2],50,[5,5],60)
+                    constants.black,[images.player1,images.player2],10,[5,5],15)
 
 def close():
     pygame.quit()
@@ -62,12 +62,22 @@ def main(curFloor, curRoom, curPos):
         for i in curRoom["items"]:
             i.go(ctx)
         for b in bullets:
-            b.go(ctx, curRoom)
+            b.go(ctx, curRoom, player)
+            if b.removeFlag:
+                bullets.remove(b)
         for e in curRoom["enemies"]:
             projectile = e.go(ctx, curRoom, player)
             projectile = getProjectile(projectile, bullets)
         projectile = player.go(ctx, curRoom)
         projectile = getProjectile(projectile, bullets)
+
+        location = 50
+        for i in range(math.floor(player.hp/2)):
+            ctx.blit(images.peach,(location,15))
+            location += 20
+        if player.hp%2 == 1:
+            ctx.blit(images.halfPeach,(location,15))
+
 
         if enemiesCleared:
             for c in curRoom["doors"]:
