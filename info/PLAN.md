@@ -17,3 +17,5 @@ GUI
   BG - Stage
   HUD (Heads Up Display)
 Main
+
+mouse = {'pos':pygame.mouse.get_pos(),'click':0,'held':0}

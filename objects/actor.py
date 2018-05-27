@@ -29,11 +29,5 @@ class Actor(Rect):
             self.x += self.spd[0]
             self.y += self.spd[1]
 
-        # Revert if outside game boundary
-        if self.x < 0 or self.x + self.w > constants.gameW:
-            self.x -= self.spd[0]
-        if self.y < 0 or self.y + self.h > constants.gameH:
-            self.y -= self.spd[1]
-
     def draw(self, ctx):
         ctx.blit(self.img, (self.x,self.y))
