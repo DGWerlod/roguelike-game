@@ -45,7 +45,7 @@ def getProjectile(projectile,bullets):
 
 def trySpawn(enemy, room):
     if enemy.hp > 0 and enemy.name == "peep":
-        if random.randint(0,500) == 0:
+        if random.randint(0,450) == 0:
             bunnySpawn = Enemy("bunny")
             bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
             bunnySpawn.x += random.randint(0,300)-150

@@ -9,6 +9,7 @@ player2 = pygame.transform.scale(pygame.image.load("img/chefspud_reverse.png"),(
 
 apple = pygame.transform.scale(pygame.image.load("img/badappple.png"),(60,60))
 cherry = pygame.transform.scale(pygame.image.load("img/cherryvil.png"),(60,60))
+banana = pygame.transform.scale(pygame.image.load("img/banana.png"),(60,60))
 peep = pygame.transform.scale(pygame.image.load("img/peepboss.png"),(120,120))
 bunny = pygame.transform.scale(pygame.image.load("img/evilbunny.png"),(60,60))
 
@@ -161,6 +162,8 @@ def getImage(name):
         return halfPeach
     if name == "cherry":
         return cherry
+    if name == "banana":
+        return banana
 
 def getDoor(type, name, state): # 0 = closed, 1 = open
     return doors[type][name][state]
