@@ -14,8 +14,7 @@ Obstruction(0,490,constants.gameW,110)]
 # normal, shop, dishwasher, risk, boss
 # Item(0,300,300,20,20)
 
-rooms = [
-# Room 1
+standard = [
 {
 "type": "standard",
 "obstructions": stdObstructions,
@@ -23,60 +22,8 @@ rooms = [
 [
     Enemy("apple")
 ],
-"items":
-[
-    # Item(0,300,300,20,20,constants.black)
-],
-"doors": []
-},
+"items":[
 
-# Room 2
-{
-"type": "dish",
-"obstructions": stdObstructions,
-"enemies": [],
-"items":
-[
-    Item(0,(constants.gameW-20)/2-5,(constants.gameH-20)/2-10,20,20)
-],
-"doors": []
-},
-
-# Room 3
-{
-"type": "risk",
-"obstructions": stdObstructions,
-"enemies":
-[
-    Enemy("peep")
-],
-"items": [],
-"doors": []
-},
-
-# Room 4
-{
-"type": "risk",
-"obstructions": stdObstructions,
-"enemies": [],
-"items":
-[
-    Item(1,(constants.gameW-50)/2,(constants.gameH-50)/2,50,50)
-],
-"doors": []
-},
-
-# Room 5
-{
-"type": "boss",
-"obstructions": stdObstructions,
-"enemies":
-[
-    Enemy("peep")
-],
-"items":
-[
-    Item(5,(constants.gameW-60)/2,(constants.gameH-60)/2,60,60)
 ],
 "doors": []
 },
@@ -96,6 +43,7 @@ rooms = [
 "doors": []
 },
 
+# Room 2
 {
 "type": "standard",
 "obstructions": stdObstructions,
@@ -107,7 +55,74 @@ rooms = [
 ],
 "items":
 [
+    Item(0,(constants.gameW-20)/2-5,(constants.gameH-20)/2-10,20,20),
+    Item(0,(constants.gameW-20)/2-5,(constants.gameH-20)/2-10,20,20),
+    Item(0,(constants.gameW-20)/2-5,(constants.gameH-20)/2-10,20,20)
+],
+"doors": []
+}
+]
 
+shop = [
+{
+"type": "shop",
+"obstructions": stdObstructions,
+"enemies": [],
+"items":
+[
+    Item(0,(constants.gameW-20)/2-5,(constants.gameH-20)/2-10,20,20)
+],
+"doors": []
+}
+]
+
+dish = [
+{
+"type": "dish",
+"obstructions": stdObstructions,
+"enemies": [],
+"items":
+[
+    Item(0,(constants.gameW-20)/2-5,(constants.gameH-20)/2-10,20,20)
+],
+"doors": []
+}
+]
+
+risk = [
+{
+"type": "risk",
+"obstructions": stdObstructions,
+"enemies":
+[
+    Enemy("peep")
+],
+"items": [],
+"doors": []
+},
+{
+"type": "risk",
+"obstructions": stdObstructions,
+"enemies": [],
+"items":
+[
+    Item(1,(constants.gameW-50)/2,(constants.gameH-50)/2,50,50)
+],
+"doors": []
+}
+]
+
+boss = [
+{
+"type": "boss",
+"obstructions": stdObstructions,
+"enemies":
+[
+    Enemy("peep")
+],
+"items":
+[
+    Item(5,(constants.gameW-60)/2,(constants.gameH-60)/2,60,60)
 ],
 "doors": []
 }

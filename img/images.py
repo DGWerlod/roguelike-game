@@ -92,24 +92,24 @@ doors = {
         pygame.image.load("img/doors/dish/dish_D_closed.png"),
         pygame.image.load("img/doors/dish/dish_D_open.png")
     ]
-# },
-# "shop": {
-#     "w": [
-#         pygame.image.load("img/doors/shop/shop_W_closed.png"),
-#         pygame.image.load("img/doors/shop/shop_W_open.png")
-#     ],
-#     "a": [
-#         pygame.image.load("img/doors/shop/shop_A_closed.png"),
-#         pygame.image.load("img/doors/shop/shop_A_open.png")
-#     ],
-#     "s": [
-#         pygame.image.load("img/doors/shop/shop_S_closed.png"),
-#         pygame.image.load("img/doors/shop/shop_S_open.png")
-#     ],
-#     "d": [
-#         pygame.image.load("img/doors/shop/shop_D_closed.png"),
-#         pygame.image.load("img/doors/shop/shop_D_open.png")
-#     ]
+},
+"shop": {
+    "w": [
+        pygame.image.load("img/doors/shop/shop_W_closed.png"),
+        pygame.image.load("img/doors/shop/shop_W_open.png")
+    ],
+    "a": [
+        pygame.image.load("img/doors/shop/shop_A_closed.png"),
+        pygame.image.load("img/doors/shop/shop_A_open.png")
+    ],
+    "s": [
+        pygame.image.load("img/doors/shop/shop_S_closed.png"),
+        pygame.image.load("img/doors/shop/shop_S_open.png")
+    ],
+    "d": [
+        pygame.image.load("img/doors/shop/shop_D_closed.png"),
+        pygame.image.load("img/doors/shop/shop_D_open.png")
+    ]
 }
 }
 
@@ -159,6 +159,8 @@ def getImage(name):
         return half
     if name == "halfpeach":
         return halfPeach
+    if name == "cherry":
+        return cherry
 
 def getDoor(type, name, state): # 0 = closed, 1 = open
     return doors[type][name][state]

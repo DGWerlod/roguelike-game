@@ -4,7 +4,7 @@ from copy import deepcopy
 from objects.enemy import Enemy
 from objects.door import Door
 from logic import matrices
-from rooms import rooms
+from rooms import standard, shop, dish, risk, boss
 
 def validatePos(nextFloor,yPos,xPos):
     validPos = False
@@ -39,11 +39,11 @@ def startFloor():
                 [None,None,None,None,None]]
     numRooms = 8 + random.randint(0,4)
     for i in range(numRooms):
-        nextRooms.append(randomizeSpawn(deepcopy(rooms[random.randint(0,4)]))) # first n rooms are normal
-    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # shop
-    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # dishwasher
-    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # risk
-    nextRooms.append(randomizeSpawn(deepcopy(rooms[0 + random.randint(0,4)]))) # boss
+        nextRooms.append(randomizeSpawn(deepcopy(standard[random.randint(0,len(standard)-1)])))
+    nextRooms.append(randomizeSpawn(deepcopy(shop[random.randint(0,len(shop)-1)])))
+    nextRooms.append(randomizeSpawn(deepcopy(dish[random.randint(0,len(dish)-1)])))
+    nextRooms.append(randomizeSpawn(deepcopy(risk[random.randint(0,len(risk)-1)])))
+    nextRooms.append(randomizeSpawn(deepcopy(boss[random.randint(0,len(boss)-1)])))
 
     for i in range(len(nextRooms)):
         while True:

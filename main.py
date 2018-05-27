@@ -4,7 +4,6 @@ from objects.rect import Rect
 from objects.enemy import Enemy
 from objects.player import Player
 from img import images
-from rooms import rooms
 from logic import collisions
 pygame.init()
 
