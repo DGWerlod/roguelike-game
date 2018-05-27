@@ -8,4 +8,4 @@ class Rect(Entity):
         self.w = w
         self.h = h
     def draw(self, ctx):
-        pygame.draw.rect(ctx,color,(x,y,w,h))
+        pygame.draw.rect(ctx,self.color,(self.x,self.y,self.w,self.h))

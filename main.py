@@ -1,31 +1,15 @@
 import pygame, math, random, constants
-from objects.item import Item
-from objects.obstruction import Obstruction
-from objects.character import Character
-from objects.enemy import Enemy
-from objects.player import Player
 from controls import keyboard, mouse
+from objects.player import Player
 from img import images
+from rooms import rooms
 pygame.init()
 
 ctx = pygame.display.set_mode((constants.gameW,constants.gameH))
 pygame.display.set_caption("CircleGame")
 clock = pygame.time.Clock()
 
-curRoom = {
-"obstructions":
-[
-    Obstruction(800,500,100,100)
-],
-"enemies":
-[
-    Enemy(700,0,30,30,constants.black,images.chrissyC,20)
-],
-"items":
-[
-    Item(0,300,300,20,20,constants.black)
-]
-}
+curRoom = rooms[0]
 
 player = Player(0,0,constants.playerW,constants.playerH,constants.black,images.player,50,[5,5])
 
@@ -43,9 +27,21 @@ def listen():
 
 def main():
     while True:
-        ctx.fill(constants.black)
         listen()
+
+        # Reset BG
+        ctx.fill(constants.black)
+
+        # Update All Entities
+        for o in curRoom["obstructions"]:
+            o.go(ctx)
+        for i in curRoom["items"]:
+            i.go(ctx)
+        for e in curRoom["enemies"]:
+            e.go(ctx, curRoom)
         player.go(ctx, curRoom)
+
+        # Update Window
         pygame.display.update()
         clock.tick(60)
 
