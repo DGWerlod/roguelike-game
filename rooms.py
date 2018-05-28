@@ -11,7 +11,6 @@ Obstruction(790,0,110,constants.gameH),
 Obstruction(0,0,constants.gameW,10),
 Obstruction(0,490,constants.gameW,110)]
 
-# normal, shop, dishwasher, risk, boss
 # Item(0,300,300,20,20)
 
 standard = [
@@ -43,7 +42,6 @@ standard = [
 "doors": []
 },
 
-# Room 2
 {
 "type": "standard",
 "obstructions": stdObstructions,
@@ -60,7 +58,6 @@ standard = [
 "doors": []
 },
 
-# Room 3
 {
 "type": "standard",
 "obstructions": stdObstructions,

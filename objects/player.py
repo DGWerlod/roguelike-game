@@ -19,20 +19,20 @@ class Player(Actor):
     def pos(self, room):
         if keyboard.controls['keyW'] == True:
             self.y -= self.spd[1]
-            if not super().canMove(room):
-                self.y += self.spd[1]
+            while not super().canMove(room):
+                self.y += 1
         if keyboard.controls['keyA'] == True:
             self.x -= self.spd[0]
-            if not super().canMove(room):
-                self.x += self.spd[0]
+            while not super().canMove(room):
+                self.x += 1
         if keyboard.controls['keyS'] == True:
             self.y += self.spd[1]
-            if not super().canMove(room):
-                self.y -= self.spd[1]
+            while not super().canMove(room):
+                self.y -= 1
         if keyboard.controls['keyD'] == True:
             self.x += self.spd[0]
-            if not super().canMove(room):
-                self.x -= self.spd[0]
+            while not super().canMove(room):
+                self.x -= 1
 
     def animate(self):
         self.phase += 1
