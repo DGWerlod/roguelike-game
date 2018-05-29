@@ -18,17 +18,14 @@ curPos = []
 player = Player(170,240,constants.playerW,constants.playerH,
                     constants.black,[images.player1,images.player2],10,[5,5],15)
 
-def close():
-    pygame.quit()
-    quit()
-
-def listen():
+def listen(running):
     for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                close()
-            else:
-                keyboard.listen(event)
-                mouse.listen()
+        if event.type == pygame.QUIT:
+            running = False
+        else:
+            keyboard.listen(event)
+            mouse.listen()
+    return running
 
 def enemyCheck(room):
     allEnemiesDead = 1
@@ -56,9 +53,10 @@ def main(curFloor, curRoom, curPos):
 
     enemiesCleared = 0
     bullets = []
+    running = True
 
-    while True:
-        listen()
+    while running:
+        running = listen(running)
 
         # Reset BG
         ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
@@ -123,6 +121,7 @@ def main(curFloor, curRoom, curPos):
         # Update Window
         pygame.display.update()
         clock.tick(60)
+    pygame.quit()
 
 curFloor = generator.newFloor()
 for y in range(constants.gridLength):
