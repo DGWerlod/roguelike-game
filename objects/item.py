@@ -44,6 +44,7 @@ class Item(Rect):
         if not self.consumedFlag:
             ctx.blit(images.items[self.id],(self.x,self.y))
     def go(self, ctx, player):
-        super().go(ctx)
-        if collisions.rectangles(self, player) and not self.consumedFlag:
-            self.activate(player)
+        if not self.consumedFlag:
+            super().go(ctx)
+            if collisions.rectangles(self, player):
+                self.activate(player)

@@ -5,9 +5,14 @@ from objects.enemy import Enemy
 from objects.player import Player
 from img import images
 from logic import collisions
+
+from pygame.locals import *
+flags = DOUBLEBUF
+
 pygame.init()
 
-ctx = pygame.display.set_mode((constants.gameW,constants.gameH))
+ctx = pygame.display.set_mode((constants.gameW,constants.gameH), flags)
+ctx.set_alpha(None)
 pygame.display.set_caption("Roguelike")
 clock = pygame.time.Clock()
 
@@ -89,12 +94,17 @@ def main(curFloor, curRoom, curPos):
 
         location = 85
         ctx.blit(images.foodStamp,(location,35))
+
         muli = pygame.font.Font("fonts/muli.ttf",15)
+
         stamps = muli.render(str(player.stamps),True,constants.black)
         stampsRECT = stamps.get_rect()
         stampsRECT.right = location + 20
         stampsRECT.top = 35
         ctx.blit(stamps,stampsRECT)
+
+        fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
+        ctx.blit(fps,(840,575))
 
         if enemiesCleared:
             for c in curRoom["doors"]:
