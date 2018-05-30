@@ -15,9 +15,7 @@ class Actor(Rect):
     def attack(self, target):
         selfCenterX = self.x + self.w/2
         selfCenterY = self.y + self.h/2
-        rise = (target.y + target.h/2 - selfCenterY)
-        run = (target.x + target.w/2 - selfCenterX)
-        theta = math.atan2(rise,run)
+        theta = math.atan2((target.y + target.h/2 - selfCenterY), (target.x + target.w/2 - selfCenterX))
         return Bullet(selfCenterX-5,selfCenterY-5,10,10,images.marshmallow,theta,self.dmg,"bad")
 
     def pos(self, room):
@@ -25,9 +23,8 @@ class Actor(Rect):
             self.x += self.spd[0]
             self.y += self.spd[1]
 
-    def draw(self, ctx):
-        ctx.blit(self.img, (self.x,self.y))
-
     def go(self, ctx, room):
         self.pos(room)
         self.draw(ctx)
+
+pygame.quit()

@@ -1,14 +1,15 @@
-import pygame
+import pygame, constants
 from logic import collisions
 from img import images
 from objects.rect import Rect
 pygame.init()
 
 class Item(Rect):
-    def __init__(self,id,x,y,w,h,spd=[0,0],name="item"):
-        super().__init__(x,y,w,h,None,None,spd,name)
+    def __init__(self,id,w,xShift=0,yShift=0,name="item"):
+        super().__init__((constants.gameW-w)/2+xShift,(constants.gameH-w)/2+yShift,w,w,None,None,[0,0],name)
         self.id = id
         self.consumedFlag = False
+
     def activate(self, target):
         if self.id == 0: # peach
             if target.hp + 2 > target.maxHP:
@@ -40,11 +41,14 @@ class Item(Rect):
         elif self.id == 9: #
             pass
         self.consumedFlag = True
-    def draw(self, ctx):
-        if not self.consumedFlag:
-            ctx.blit(images.items[self.id],(self.x,self.y))
+
+    def setup(self):
+        self.img = images.items[self.id]
+
     def go(self, ctx, player):
         if not self.consumedFlag:
             super().go(ctx)
             if collisions.rectangles(self, player):
                 self.activate(player)
+
+pygame.quit()

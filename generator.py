@@ -124,7 +124,8 @@ def prepareFloor(nextFloor):
                 j["doors"] = []
                 for key in j:
                     for k in j[key]:
-                        if key == "enemies": pass
+                        if key == "enemies" or key == "items":
+                            k.setup()
                         elif key == "items":
                             k.consumedFlag = False
 

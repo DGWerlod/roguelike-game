@@ -8,3 +8,5 @@ class Circle(Entity):
         self.r = r
     def draw(self, ctx):
         pygame.draw.circle(ctx,self.color,(self.x,self.y),self.r)
+
+pygame.quit()

@@ -13,3 +13,5 @@ class Entity(object):
     def go(self, ctx):
         self.pos()
         self.draw(ctx)
+
+pygame.quit()

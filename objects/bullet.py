@@ -5,9 +5,7 @@ pygame.init()
 
 class Bullet(Rect):
     def __init__(self,x,y,w,h,img,angle,dmg,name="bullet"):
-        spdX = 8*math.cos(angle)
-        spdY = 8*math.sin(angle)
-        super().__init__(x,y,w,h,None,img,[spdX,spdY],name)
+        super().__init__(x,y,w,h,None,img,[8*math.cos(angle),8*math.sin(angle)],name)
         self.removeFlag = False
         self.dmg = dmg
 
@@ -29,3 +27,5 @@ class Bullet(Rect):
             if collisions.rectangles(self,player):
                 self.removeFlag = True
                 player.hp -= self.dmg
+
+pygame.quit()

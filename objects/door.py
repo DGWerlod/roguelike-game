@@ -5,10 +5,13 @@ pygame.init()
 
 class Door(Rect):
     def __init__(self,x,y,w,h,type="rect",name="rect"):
-        super().__init__(x,y,w,h,None,None,[0,0],name)
+        super().__init__(x,y,w,h,None,images.doors[type][name][0],[0,0],name)
         self.type = type
-    def draw(self, ctx, state):
-        ctx.blit(images.getDoor(self.type,self.name,state),(self.x,self.y))
+        self.open = False
     def go(self, ctx, state):
-        self.pos()
-        self.draw(ctx, state)
+        if (state and not self.open):
+            self.open = True
+            self.img = images.doors[self.type][self.name][1]
+        self.draw(ctx)
+
+pygame.quit()

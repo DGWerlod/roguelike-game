@@ -7,12 +7,6 @@ foodStamp = pygame.image.load("img/items/foodstamp.png")
 player1 = pygame.transform.scale(pygame.image.load("img/characters/chefspud_default.png"),(60,120))
 player2 = pygame.transform.scale(pygame.image.load("img/characters/chefspud_reverse.png"),(60,120))
 
-apple = pygame.transform.scale(pygame.image.load("img/characters/badappple.png"),(60,60))
-cherry = pygame.transform.scale(pygame.image.load("img/characters/cherryvil.png"),(60,60))
-banana = pygame.transform.scale(pygame.image.load("img/characters/banana.png"),(60,60))
-peep = pygame.transform.scale(pygame.image.load("img/characters/peepboss.png"),(120,120))
-bunny = pygame.transform.scale(pygame.image.load("img/characters/evilbunny.png"),(60,60))
-
 marshmallow = pygame.image.load("img/bullets/marshmallow.png")
 frenchFry = pygame.image.load("img/bullets/frenchfry.png")
 
@@ -149,21 +143,12 @@ items = [
     pygame.transform.scale(pygame.image.load("img/items/knife.png"),(30,30))
 ]
 
-def getImage(name):
-    if name == "apple":
-        return apple
-    if name == "peep":
-        return peep
-    if name == "bunny":
-        return bunny
-    if name == "peach":
-        return half
-    if name == "halfpeach":
-        return halfPeach
-    if name == "cherry":
-        return cherry
-    if name == "banana":
-        return banana
+enemies = {
+    "apple": pygame.transform.scale(pygame.image.load("img/characters/badappple.png"),(60,60)),
+    "cherry": pygame.transform.scale(pygame.image.load("img/characters/cherryvil.png"),(60,60)),
+    "banana": pygame.transform.scale(pygame.image.load("img/characters/banana.png"),(60,60)),
+    "peep": pygame.transform.scale(pygame.image.load("img/characters/peepboss.png"),(120,120)),
+    "bunny": pygame.transform.scale(pygame.image.load("img/characters/evilbunny.png"),(60,60))
+}
 
-def getDoor(type, name, state): # 0 = closed, 1 = open
-    return doors[type][name][state]
+pygame.quit()

@@ -20,8 +20,7 @@ curFloor = []
 curRoom = {}
 curPos = []
 
-player = Player(170,240,constants.playerW,constants.playerH,
-                    constants.black,[images.player1,images.player2],10,[5,5],15)
+player = Player(170,240,10,[5,5],15)
 
 def listen(running):
     for event in pygame.event.get():
@@ -33,10 +32,10 @@ def listen(running):
     return running
 
 def enemyCheck(room):
-    allEnemiesDead = 1
+    allEnemiesDead = True
     for e in room["enemies"]:
         if e.hp > 0:
-            allEnemiesDead = 0
+            allEnemiesDead = False
             break
     return allEnemiesDead
 
@@ -56,7 +55,7 @@ def trySpawn(enemy, room):
 
 def main(curFloor, curRoom, curPos):
 
-    enemiesCleared = 0
+    enemiesCleared = False
     bullets = []
     running = True
 
@@ -124,7 +123,7 @@ def main(curFloor, curRoom, curPos):
                         player.x = 110 + 20
                     curRoom = curFloor[curPos[0]][curPos[1]]
                     bullets = []
-                    enemiesCleared = 0
+                    enemiesCleared = False
         else:
             enemiesCleared = enemyCheck(curRoom)
 

@@ -12,8 +12,8 @@ class Enemy(Actor):
         self.attackCD = data[name][3]
         self.dmg = data[name][4]
 
-    def draw(self, ctx):
-        ctx.blit(images.getImage(self.name),(self.x,self.y))
+    def setup(self):
+        self.img = images.enemies[self.name]
 
     def go(self, ctx, room, target):
         if self.hp > 0:
@@ -24,3 +24,5 @@ class Enemy(Actor):
             else:
                 self.attackCD = self.atkSpd
                 return self.attack(target)
+
+pygame.quit()

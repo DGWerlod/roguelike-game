@@ -7,8 +7,9 @@ import constants
 pygame.init()
 
 class Player(Actor):
-    def __init__(self,x,y,w,h,color,img,maxHP,spd,atkSpd,name="player"):
-        super().__init__(x,y,w,h,color,img,maxHP,spd,name)
+    def __init__(self,x,y,maxHP,spd,atkSpd,name="player"):
+        super().__init__(x,y,constants.playerW,constants.playerH,
+                        None,[images.player1,images.player2],maxHP,spd,name)
         self.dmg = 1
         self.stamps = 0
         self.items = []
@@ -57,3 +58,5 @@ class Player(Actor):
             self.attackCD = self.atkSpd
             return self.attack()
         return None
+
+pygame.quit()
