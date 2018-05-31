@@ -14,6 +14,7 @@ frenchFry = pygame.image.load("img/bullets/frenchfry.png")
 # simplePlayer = pygame.image.load("img/simplePlayer.png")
 
 lemon = pygame.image.load("img/characters/lemonafraid.png")
+teleporter = pygame.transform.scale(pygame.image.load("img/teleporter.png"),(80,80))
 
 doors = {
 "standard": {

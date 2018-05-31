@@ -48,6 +48,7 @@ def getProjectile(projectile,bullets):
 def trySpawn(enemy, room):
     if random.randint(0,450) == 0:
         bunnySpawn = Enemy("bunny")
+        bunnySpawn.setup()
         bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
         bunnySpawn.x += random.randint(0,300)-150
         bunnySpawn.y += random.randint(0,300)-150
@@ -59,6 +60,15 @@ def renderStamps():
     stampsRECT.right = 85 + 20
     stampsRECT.top = 35
     return stamps, stampsRECT
+
+def nextFloor(curFloor, curRoom, curPos):
+    curFloor = generator.newFloor()
+    for y in range(constants.gridLength):
+        for x in range(constants.gridLength):
+            if not curFloor[y][x] == None:
+                curRoom = curFloor[y][x]
+                curPos = [y,x]
+    return curFloor, curRoom, curPos
 
 def main(curFloor, curRoom, curPos):
 
@@ -74,46 +84,6 @@ def main(curFloor, curRoom, curPos):
 
         # Reset BG
         ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
-
-        # Update All Entities
-        for d in curRoom["doors"]:
-            d.go(ctx, enemiesCleared)
-        for i in curRoom["items"]:
-            if not i.consumedFlag:
-                i.go(ctx, player)
-        for b in bullets:
-            b.go(ctx, curRoom, player)
-            if b.removeFlag:
-                bullets.remove(b)
-        for e in curRoom["enemies"]:
-            projectile = e.go(ctx, curRoom, player)
-            projectile = getProjectile(projectile, bullets)
-            if e.hp <= 0:
-                curRoom["enemies"].remove(e)
-            elif e.name == "peep":
-                trySpawn(e,curRoom)
-
-
-        projectile = player.go(ctx, curRoom)
-        projectile = getProjectile(projectile, bullets)
-
-        # location = 50
-        # for i in range(math.floor(player.hp/2)):
-        #     ctx.blit(images.peach,(location,15))
-        #     location += 20
-        # if player.hp % 2 == 1:
-        #     ctx.blit(images.halfPeach,(location,15))
-        #
-        # ctx.blit(images.foodStamp,(85,35))
-        #
-        # if player.stamps != stampsLastFrame:
-        #     stamps, stampsRECT = renderStamps()
-        # ctx.blit(stamps,stampsRECT)
-        # stampsLastFrame = player.stamps
-
-        # Debug
-        fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
-        ctx.blit(fps,(840,575))
 
         if enemiesCleared:
             for c in curRoom["doors"]:
@@ -134,18 +104,59 @@ def main(curFloor, curRoom, curPos):
                     curRoom = curFloor[curPos[0]][curPos[1]]
                     bullets = []
                     enemiesCleared = False
+            if curRoom["type"] == "boss":
+                x = (constants.gameW-80)/2
+                y = (constants.gameH-80)/2
+                ctx.blit(images.teleporter,(x,y))
+                if pygame.Rect(x,y,80,80).contains(pygame.Rect(player.x,player.y + player.h/2,player.w,player.h/2)):
+                    curFloor, curRoom, curPos = nextFloor(curFloor, curRoom, curPos)
         else:
             enemiesCleared = enemyCheck(curRoom)
+
+        # Update All Entities
+        for d in curRoom["doors"]:
+            d.go(ctx, enemiesCleared)
+        for i in curRoom["items"]:
+            if not i.consumedFlag:
+                i.go(ctx, player, enemiesCleared)
+        for b in bullets:
+            b.go(ctx, curRoom, player)
+            if b.removeFlag:
+                bullets.remove(b)
+        for e in curRoom["enemies"]:
+            projectile = e.go(ctx, curRoom, player)
+            projectile = getProjectile(projectile, bullets)
+            if e.hp <= 0:
+                curRoom["enemies"].remove(e)
+            elif e.name == "peep":
+                trySpawn(e,curRoom)
+
+
+        projectile = player.go(ctx, curRoom)
+        projectile = getProjectile(projectile, bullets)
+
+        location = 50
+        for i in range(math.floor(player.hp/2)):
+            ctx.blit(images.peach,(location,15))
+            location += 20
+        if player.hp % 2 == 1 and player.hp > 0:
+            ctx.blit(images.halfPeach,(location,15))
+
+        ctx.blit(images.foodStamp,(85,35))
+
+        if player.stamps != stampsLastFrame:
+            stamps, stampsRECT = renderStamps()
+        ctx.blit(stamps,stampsRECT)
+        stampsLastFrame = player.stamps
+
+        # Debug
+        fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
+        ctx.blit(fps,(840,575))
 
         # Update Window
         pygame.display.update()
         clock.tick(30)
     pygame.quit()
 
-curFloor = generator.newFloor()
-for y in range(constants.gridLength):
-    for x in range(constants.gridLength):
-        if not curFloor[y][x] == None:
-            curRoom = curFloor[y][x]
-            curPos = [y,x]
+curFloor, curRoom, curPos = nextFloor(curFloor, curRoom, curPos)
 main(curFloor, curRoom, curPos)

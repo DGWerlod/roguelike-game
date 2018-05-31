@@ -20,9 +20,6 @@ class Rect(Entity):
         return True
 
     def draw(self, ctx):
-        if self.img != None:
-            return ctx.blit(self.img,(self.x,self.y))
-        else:
-            return pygame.draw.rect(ctx,self.color,(self.x,self.y,self.w,self.h))
+        ctx.blit(self.img,(self.x,self.y))
 
 pygame.quit()

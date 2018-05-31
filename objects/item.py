@@ -45,9 +45,10 @@ class Item(Rect):
     def setup(self):
         self.img = images.items[self.id]
 
-    def go(self, ctx, player):
-        super().go(ctx)
-        if collisions.rectangles(self, player):
-            self.activate(player)
+    def go(self, ctx, player, roomCleared):
+        if roomCleared:
+            super().go(ctx)
+            if collisions.rectangles(self, player):
+                self.activate(player)
 
 pygame.quit()
