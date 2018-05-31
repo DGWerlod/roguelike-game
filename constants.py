@@ -14,6 +14,8 @@ W, A, S, D = 0, 1, 2, 3
 
 # DOOR
 doorSlim, doorWide = 100, 150
+LRDoor = (gameH - doorWide) / 2
+TBDoor = (gameW - doorWide) / 2
 
 # CLEAR ZONES
 clearZones = {

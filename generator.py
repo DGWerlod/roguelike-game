@@ -6,6 +6,13 @@ from objects.door import Door
 from logic import matrices
 from rooms import standard, shop, dish, risk, boss
 
+floorPlan = []
+
+for x in range(constants.gridLength):
+    floorPlan.append([])
+    for y in range(constants.gridLength):
+        floorPlan[x].append(None)
+
 def validatePos(nextFloor,yPos,xPos):
     validPos = False
     if not yPos == 0:
@@ -32,11 +39,7 @@ def randomizeSpawn(room):
 
 def startFloor():
     nextRooms = []
-    nextFloor = [[None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None]]
+    nextFloor = deepcopy(floorPlan)
     numRooms = 8 + random.randint(0,4)
     for i in range(numRooms):
         nextRooms.append(randomizeSpawn(deepcopy(standard[random.randint(0,len(standard)-1)])))
@@ -85,11 +88,7 @@ def startFloor():
                     else: # Pos is valid finally
                         break
 
-    testFloor = [[None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None],
-                [None,None,None,None,None]]
+    testFloor = deepcopy(floorPlan)
     validX, validY = 0, 0
     for y in range(constants.gridLength):
         for x in range(constants.gridLength):
@@ -135,13 +134,13 @@ def linkFloor(nextFloor):
         for j in range(len(nextFloor[i])):
             if not nextFloor[i][j] == None:
                 if j > 0 and not nextFloor[i][j-1] == None:
-                    nextFloor[i][j]["doors"].append(Door(0,(constants.gameH-constants.doorWide)/2,constants.doorSlim,constants.doorWide,nextFloor[i][j-1]["type"],"a"))
+                    nextFloor[i][j]["doors"].append(Door(nextFloor[i][j-1]["type"],"a"))
                 if j < constants.gridLength-1 and not nextFloor[i][j+1] == None:
-                    nextFloor[i][j]["doors"].append(Door(constants.gameW-constants.doorSlim,(constants.gameH-constants.doorWide)/2,constants.doorSlim,constants.doorWide,nextFloor[i][j+1]["type"],"d"))
+                    nextFloor[i][j]["doors"].append(Door(nextFloor[i][j+1]["type"],"d"))
                 if i > 0 and not nextFloor[i-1][j] == None:
-                    nextFloor[i][j]["doors"].append(Door((constants.gameW-constants.doorWide)/2,0,constants.doorWide,constants.doorSlim,nextFloor[i-1][j]["type"],"w"))
+                    nextFloor[i][j]["doors"].append(Door(nextFloor[i-1][j]["type"],"w"))
                 if i < constants.gridLength-1 and not nextFloor[i+1][j] == None:
-                    nextFloor[i][j]["doors"].append(Door((constants.gameW-constants.doorWide)/2,constants.gameH-constants.doorSlim,constants.doorWide,constants.doorSlim,nextFloor[i+1][j]["type"],"s"))
+                    nextFloor[i][j]["doors"].append(Door(nextFloor[i+1][j]["type"],"s"))
 
 # Literally does everything
 def newFloor():

@@ -20,6 +20,7 @@ curFloor = []
 curRoom = {}
 curPos = []
 
+muli = pygame.font.Font("fonts/muli.ttf",15)
 player = Player(170,240,10,[5,5],15)
 
 def listen(running):
@@ -45,19 +46,28 @@ def getProjectile(projectile,bullets):
     return None
 
 def trySpawn(enemy, room):
-    if enemy.hp > 0 and enemy.name == "peep":
-        if random.randint(0,450) == 0:
-            bunnySpawn = Enemy("bunny")
-            bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
-            bunnySpawn.x += random.randint(0,300)-150
-            bunnySpawn.y += random.randint(0,300)-150
-            room["enemies"].append(bunnySpawn)
+    if random.randint(0,450) == 0:
+        bunnySpawn = Enemy("bunny")
+        bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
+        bunnySpawn.x += random.randint(0,300)-150
+        bunnySpawn.y += random.randint(0,300)-150
+        room["enemies"].append(bunnySpawn)
+
+def renderStamps():
+    stamps = muli.render(str(player.stamps),True,constants.black)
+    stampsRECT = stamps.get_rect()
+    stampsRECT.right = 85 + 20
+    stampsRECT.top = 35
+    return stamps, stampsRECT
 
 def main(curFloor, curRoom, curPos):
 
     enemiesCleared = False
     bullets = []
     running = True
+    projectile = None
+    stamps, stampsRECT = renderStamps()
+    stampsLastFrame = player.stamps
 
     while running:
         running = listen(running)
@@ -66,12 +76,11 @@ def main(curFloor, curRoom, curPos):
         ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
 
         # Update All Entities
-        projectile = None
-
         for d in curRoom["doors"]:
             d.go(ctx, enemiesCleared)
         for i in curRoom["items"]:
-            i.go(ctx, player)
+            if not i.consumedFlag:
+                i.go(ctx, player)
         for b in bullets:
             b.go(ctx, curRoom, player)
             if b.removeFlag:
@@ -79,29 +88,30 @@ def main(curFloor, curRoom, curPos):
         for e in curRoom["enemies"]:
             projectile = e.go(ctx, curRoom, player)
             projectile = getProjectile(projectile, bullets)
-            trySpawn(e,curRoom)
+            if e.hp <= 0:
+                curRoom["enemies"].remove(e)
+            elif e.name == "peep":
+                trySpawn(e,curRoom)
+
 
         projectile = player.go(ctx, curRoom)
         projectile = getProjectile(projectile, bullets)
 
-        location = 50
-        for i in range(math.floor(player.hp/2)):
-            ctx.blit(images.peach,(location,15))
-            location += 20
-        if player.hp%2 == 1:
-            ctx.blit(images.halfPeach,(location,15))
+        # location = 50
+        # for i in range(math.floor(player.hp/2)):
+        #     ctx.blit(images.peach,(location,15))
+        #     location += 20
+        # if player.hp % 2 == 1:
+        #     ctx.blit(images.halfPeach,(location,15))
+        #
+        # ctx.blit(images.foodStamp,(85,35))
+        #
+        # if player.stamps != stampsLastFrame:
+        #     stamps, stampsRECT = renderStamps()
+        # ctx.blit(stamps,stampsRECT)
+        # stampsLastFrame = player.stamps
 
-        location = 85
-        ctx.blit(images.foodStamp,(location,35))
-
-        muli = pygame.font.Font("fonts/muli.ttf",15)
-
-        stamps = muli.render(str(player.stamps),True,constants.black)
-        stampsRECT = stamps.get_rect()
-        stampsRECT.right = location + 20
-        stampsRECT.top = 35
-        ctx.blit(stamps,stampsRECT)
-
+        # Debug
         fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
         ctx.blit(fps,(840,575))
 
@@ -129,7 +139,7 @@ def main(curFloor, curRoom, curPos):
 
         # Update Window
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(30)
     pygame.quit()
 
 curFloor = generator.newFloor()

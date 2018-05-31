@@ -46,9 +46,8 @@ class Item(Rect):
         self.img = images.items[self.id]
 
     def go(self, ctx, player):
-        if not self.consumedFlag:
-            super().go(ctx)
-            if collisions.rectangles(self, player):
-                self.activate(player)
+        super().go(ctx)
+        if collisions.rectangles(self, player):
+            self.activate(player)
 
 pygame.quit()

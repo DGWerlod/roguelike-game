@@ -16,13 +16,12 @@ class Enemy(Actor):
         self.img = images.enemies[self.name]
 
     def go(self, ctx, room, target):
-        if self.hp > 0:
-            super().go(ctx,room)
-            if self.attackCD > 0:
-                self.attackCD -= 1
-                return None
-            else:
-                self.attackCD = self.atkSpd
-                return self.attack(target)
+        super().go(ctx,room)
+        if self.attackCD > 0:
+            self.attackCD -= 1
+            return None
+        else:
+            self.attackCD = self.atkSpd
+            return self.attack(target)
 
 pygame.quit()
