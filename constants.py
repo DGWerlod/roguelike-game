@@ -1,4 +1,6 @@
+import pygame
 from objects.rect import Rect
+pygame.font.init()
 
 # GENERAL VARIABLES
 gameW, gameH = 900, 600
@@ -8,6 +10,15 @@ gridLength = 5
 # COLORS
 black = (0,0,0)
 grey = (128,128,128)
+minigrey = (178,178,178)
+yellow = (255,255,0)
+white = (255,255,255)
+red = (255,0,0)
+blue = (0,0,255)
+green = (0,255,0)
+
+# FONTS
+muli = pygame.font.Font("fonts/muli.ttf",15)
 
 # WASD
 W, A, S, D = 0, 1, 2, 3

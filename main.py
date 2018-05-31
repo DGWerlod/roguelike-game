@@ -1,6 +1,8 @@
 import pygame, math, random, constants, generator
 from controls import keyboard, mouse
 from objects.rect import Rect
+from objects.hud import HUD
+from objects.minimap import Minimap
 from objects.enemy import Enemy
 from objects.player import Player
 from img import images
@@ -19,9 +21,8 @@ clock = pygame.time.Clock()
 curFloor = []
 curRoom = {}
 curPos = []
-
+map = None
 muli = pygame.font.Font("fonts/muli.ttf",15)
-player = Player(170,240,10,[5,5],15)
 
 def listen(running):
     for event in pygame.event.get():
@@ -54,30 +55,27 @@ def trySpawn(enemy, room):
         bunnySpawn.y += random.randint(0,300)-150
         room["enemies"].append(bunnySpawn)
 
-def renderStamps():
-    stamps = muli.render(str(player.stamps),True,constants.black)
-    stampsRECT = stamps.get_rect()
-    stampsRECT.right = 85 + 20
-    stampsRECT.top = 35
-    return stamps, stampsRECT
-
-def nextFloor(curFloor, curRoom, curPos):
+def nextFloor(curFloor, curRoom, curPos, map):
     curFloor = generator.newFloor()
+    map = Minimap(curFloor)
     for y in range(constants.gridLength):
         for x in range(constants.gridLength):
             if not curFloor[y][x] == None:
                 curRoom = curFloor[y][x]
                 curPos = [y,x]
-    return curFloor, curRoom, curPos
+    return curFloor, curRoom, curPos, map
 
-def main(curFloor, curRoom, curPos):
+def main(curFloor, curRoom, curPos, map):
 
     enemiesCleared = False
     bullets = []
     running = True
     projectile = None
-    stamps, stampsRECT = renderStamps()
-    stampsLastFrame = player.stamps
+
+    player = Player(170,240,10,[5,5],15)
+    hud = HUD(player)
+
+    print("got tot one")
 
     while running:
         running = listen(running)
@@ -109,11 +107,15 @@ def main(curFloor, curRoom, curPos):
                 y = (constants.gameH-80)/2
                 ctx.blit(images.teleporter,(x,y))
                 if pygame.Rect(x,y,80,80).contains(pygame.Rect(player.x,player.y + player.h/2,player.w,player.h/2)):
-                    curFloor, curRoom, curPos = nextFloor(curFloor, curRoom, curPos)
+                    print(" ") # divides this floor map and the previous floor map
+                    curFloor, curRoom, curPos, map = nextFloor(curFloor, curRoom, curPos, map)
         else:
             enemiesCleared = enemyCheck(curRoom)
 
         # Update All Entities
+        hud.go(ctx, player)
+        map.go(ctx, curPos)
+
         for d in curRoom["doors"]:
             d.go(ctx, enemiesCleared)
         for i in curRoom["items"]:
@@ -131,23 +133,10 @@ def main(curFloor, curRoom, curPos):
             elif e.name == "peep":
                 trySpawn(e,curRoom)
 
-
         projectile = player.go(ctx, curRoom)
         projectile = getProjectile(projectile, bullets)
 
-        location = 50
-        for i in range(math.floor(player.hp/2)):
-            ctx.blit(images.peach,(location,15))
-            location += 20
-        if player.hp % 2 == 1 and player.hp > 0:
-            ctx.blit(images.halfPeach,(location,15))
 
-        ctx.blit(images.foodStamp,(85,35))
-
-        if player.stamps != stampsLastFrame:
-            stamps, stampsRECT = renderStamps()
-        ctx.blit(stamps,stampsRECT)
-        stampsLastFrame = player.stamps
 
         # Debug
         fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
@@ -158,5 +147,5 @@ def main(curFloor, curRoom, curPos):
         clock.tick(30)
     pygame.quit()
 
-curFloor, curRoom, curPos = nextFloor(curFloor, curRoom, curPos)
-main(curFloor, curRoom, curPos)
+curFloor, curRoom, curPos, map = nextFloor(curFloor, curRoom, curPos, map)
+main(curFloor, curRoom, curPos, map)
