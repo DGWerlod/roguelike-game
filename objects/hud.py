@@ -33,7 +33,7 @@ class HUD(Rect):
         ctx.blit(images.foodStamp,(120,40))
 
         if player.stamps != self.stampsLastFrame:
-            self.stamps, self.stampsRECT = renderStamps(player.stamps)
+            self.stamps, self.stampsRECT = self.renderStamps(player)
         ctx.blit(self.stamps,self.stampsRECT)
         self.stampsLastFrame = player.stamps
 
