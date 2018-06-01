@@ -57,7 +57,10 @@ def trySpawn(enemy, room):
 
 def nextFloor(curFloor, curRoom, curPos, map):
     curFloor = generator.newFloor()
-    map = Minimap(curFloor)
+    level = 1
+    if not map == None:
+        level = map.level+1
+    map = Minimap(curFloor,level)
     for y in range(constants.gridLength):
         for x in range(constants.gridLength):
             if not curFloor[y][x] == None:

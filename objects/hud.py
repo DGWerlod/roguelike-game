@@ -21,10 +21,24 @@ class HUD(Rect):
         return stamps, stampsRECT
 
     def draw(self, ctx, player):
-        graphics.round_rect(ctx,(self.x,self.y,20 + math.ceil(player.hp/2)*15 + (math.ceil(player.hp/2)-1)*5,self.h),self.color,10)
+        if player.hp > 20:
+            peachWidth = math.ceil((player.hp-math.floor(player.hp/20)*20)/2)+2
+        else:
+            peachWidth = math.ceil(player.hp/2)
+        graphics.round_rect(ctx,(self.x,self.y,20 + peachWidth*15 + (peachWidth-1)*5,self.h),self.color,10)
 
         location = self.x + 10
-        for i in range(math.floor(player.hp/2)):
+        tenPeachCount = 0
+        if player.hp > 20:
+            ctx.blit(images.peach,(location,20))
+            tenPeachCount = math.floor(player.hp/20)*10
+            tenPeachText = self.font.render('x'+str(tenPeachCount),True,constants.black)
+            tenPeachRECT = tenPeachText.get_rect()
+            tenPeachRECT.right = 157
+            tenPeachRECT.top = 20
+            ctx.blit(tenPeachText,tenPeachRECT)
+            location += 40
+        for i in range(math.floor(player.hp/2) - tenPeachCount):
             ctx.blit(images.peach,(location,20))
             location += 20
         if player.hp % 2 == 1 and player.hp > 0:
