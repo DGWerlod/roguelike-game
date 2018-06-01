@@ -78,8 +78,6 @@ def main(curFloor, curRoom, curPos, map):
     player = Player(170,240,10,[5,5],15)
     hud = HUD(player)
 
-    print("got tot one")
-
     while running:
         running = listen(running)
 
@@ -138,8 +136,6 @@ def main(curFloor, curRoom, curPos, map):
 
         projectile = player.go(ctx, curRoom)
         projectile = getProjectile(projectile, bullets)
-
-
 
         # Debug
         fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)

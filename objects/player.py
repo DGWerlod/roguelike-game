@@ -4,7 +4,6 @@ from objects.actor import Actor
 from img import images
 from controls import keyboard, mouse
 import constants
-pygame.init()
 
 class Player(Actor):
     def __init__(self,x,y,maxHP,spd,atkSpd,name="player"):
@@ -58,5 +57,3 @@ class Player(Actor):
             self.attackCD = self.atkSpd
             return self.attack()
         return None
-
-pygame.quit()

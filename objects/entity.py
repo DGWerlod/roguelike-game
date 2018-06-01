@@ -1,5 +1,4 @@
 import pygame
-pygame.init()
 
 class Entity(object):
     def __init__(self,x,y,color,spd,name="none"):
@@ -13,5 +12,3 @@ class Entity(object):
     def go(self, ctx):
         self.pos()
         self.draw(ctx)
-
-pygame.quit()

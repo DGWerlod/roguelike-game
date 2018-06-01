@@ -2,7 +2,6 @@ import pygame, constants
 from logic import collisions
 from img import images
 from objects.rect import Rect
-pygame.init()
 
 class Item(Rect):
     def __init__(self,id,w,xShift=0,yShift=0,name="item"):
@@ -42,8 +41,8 @@ class Item(Rect):
             pass
         self.consumedFlag = True
 
-        # There's definitely a better way to do this
-        if not self.id == 0 and not self.id == 1 and not self.id == 7:
+        # Here's a better way to do this
+        if self.id not in [0,1,7]:
             target.items.append(self)
 
     def setup(self):
@@ -54,5 +53,3 @@ class Item(Rect):
             super().go(ctx)
             if collisions.rectangles(self, player):
                 self.activate(player)
-
-pygame.quit()

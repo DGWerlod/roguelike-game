@@ -1,6 +1,5 @@
 import pygame
 from objects.entity import Entity
-pygame.init()
 
 class Circle(Entity):
     def __init__(self,x,y,r,color,spd,name="circle"):
@@ -8,5 +7,3 @@ class Circle(Entity):
         self.r = r
     def draw(self, ctx):
         pygame.draw.circle(ctx,self.color,(self.x,self.y),self.r)
-
-pygame.quit()

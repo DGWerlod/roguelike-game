@@ -2,7 +2,6 @@ import pygame
 import constants
 from logic import collisions
 from objects.entity import Entity
-pygame.init()
 
 class Rect(Entity):
     def __init__(self,x,y,w,h,color,img=None,spd=[0,0],name="rect"):
@@ -24,5 +23,3 @@ class Rect(Entity):
             ctx.blit(self.img,(self.x,self.y))
         else:
             pygame.draw.rect(ctx,self.color,(self.x,self.y,self.w,self.h))
-
-pygame.quit()

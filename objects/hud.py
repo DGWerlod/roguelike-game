@@ -3,8 +3,6 @@ from img import images
 from logic import graphics
 from objects.rect import Rect
 
-pygame.init()
-
 class HUD(Rect):
     def __init__(self, player):
         self.font = pygame.font.Font("fonts/muli.ttf",15)
@@ -13,7 +11,6 @@ class HUD(Rect):
         self.stampsLastFrame = player.stamps
 
     def renderStamps(self, player):
-        print(str(player.stamps))
         stamps = self.font.render(str(player.stamps),True,constants.black)
         stampsRECT = stamps.get_rect()
         stampsRECT.right = 120 + 20
@@ -56,11 +53,9 @@ class HUD(Rect):
 
         location = self.x + 10
         for item in player.items:
-            ctx.blit(pygame.transform.scale(item.img,(15,15)),(location,60))
+            ctx.blit(pygame.transform.scale(images.icons[item.id]),(location,60))
             location += 20
 
 
     def go(self, ctx, player):
         self.draw(ctx, player)
-
-pygame.quit()

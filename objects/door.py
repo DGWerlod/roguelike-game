@@ -1,7 +1,6 @@
 import pygame, constants
 from img import images
 from objects.rect import Rect
-pygame.init()
 
 class Door(Rect):
     def __init__(self,type,name):
@@ -29,5 +28,3 @@ class Door(Rect):
             self.open = True
             self.img = images.doors[self.type][self.name][1]
         self.draw(ctx)
-
-pygame.quit()

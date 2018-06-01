@@ -2,7 +2,6 @@ import pygame, constants
 from objects.actor import Actor
 from objects.bullet import Bullet
 from img import images
-pygame.init()
 
 class Enemy(Actor):
     def __init__(self,name="enemy",spd=[0,0]):
@@ -23,5 +22,3 @@ class Enemy(Actor):
         else:
             self.attackCD = self.atkSpd
             return self.attack(target)
-
-pygame.quit()

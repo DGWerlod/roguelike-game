@@ -1,7 +1,6 @@
 import pygame, math
 from logic import collisions
 from objects.rect import Rect
-pygame.init()
 
 class Bullet(Rect):
     def __init__(self,x,y,w,h,img,angle,dmg,name="bullet"):
@@ -27,5 +26,3 @@ class Bullet(Rect):
             if collisions.rectangles(self,player):
                 self.removeFlag = True
                 player.hp -= self.dmg
-
-pygame.quit()

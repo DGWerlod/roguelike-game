@@ -2,8 +2,6 @@ import pygame, constants
 from logic import graphics
 from objects.rect import Rect
 
-pygame.init()
-
 class Minimap(Rect):
     def __init__(self,floor,level):
         self.font = pygame.font.Font("fonts/muli.ttf",20)
@@ -55,5 +53,3 @@ class Minimap(Rect):
 
     def go(self, ctx, curPos):
         self.draw(ctx, curPos)
-
-    pygame.quit()

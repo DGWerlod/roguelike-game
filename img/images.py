@@ -1,19 +1,17 @@
 import pygame, constants
-pygame.init()
 
 peach = pygame.image.load("img/items/peach.png")
 halfPeach = pygame.image.load("img/items/halfpeach.png")
 foodStamp = pygame.image.load("img/items/foodstamp.png")
 player1 = pygame.transform.scale(pygame.image.load("img/characters/chefspud_default.png"),(60,120))
 player2 = pygame.transform.scale(pygame.image.load("img/characters/chefspud_reverse.png"),(60,120))
-
 marshmallow = pygame.image.load("img/bullets/marshmallow.png")
 frenchFry = pygame.image.load("img/bullets/frenchfry.png")
 
 # chrissyC = pygame.image.load("img/chrissyc.png")
 # simplePlayer = pygame.image.load("img/simplePlayer.png")
+# lemon = pygame.image.load("img/characters/lemonafraid.png")
 
-lemon = pygame.image.load("img/characters/lemonafraid.png")
 teleporter = pygame.transform.scale(pygame.image.load("img/teleporter.png"),(80,80))
 
 doors = {
@@ -117,21 +115,6 @@ backgrounds = {
     "shop": pygame.image.load("img/bg/cookbook_background.png")
 }
 
-if id == 0: # peach
-    target.maxHP += 2
-elif id == 1: # knife
-    target.dmg += 1
-elif id == 2: # basil
-    pass
-elif id == 3: # paprika
-    target.atkSpd -= 2
-elif id == 4: # pepper
-    target.spd += 1
-elif id == 5: # salt
-    pass
-elif id == 6: # tumeric
-    pass
-
 items = [
     pygame.transform.scale(pygame.image.load("img/items/peach.png"),(30,30)),
     pygame.transform.scale(pygame.image.load("img/items/foodstamp.png"),(30,30)),
@@ -144,6 +127,18 @@ items = [
     pygame.transform.scale(pygame.image.load("img/items/knife.png"),(30,30))
 ]
 
+icons = [
+    None,
+    None,
+    pygame.transform.scale(pygame.image.load("img/items/spices/basil.png"),(15,15)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/paprika.png"),(15,15)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/pepper.png"),(15,15)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/salt.png"),(15,15)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/turmeric.png"),(15,15)),
+    None,
+    pygame.transform.scale(pygame.image.load("img/items/knife.png"),(15,15))
+]
+
 enemies = {
     "apple": pygame.transform.scale(pygame.image.load("img/characters/badappple.png"),(60,60)),
     "cherry": pygame.transform.scale(pygame.image.load("img/characters/cherryvil.png"),(60,60)),
@@ -151,5 +146,3 @@ enemies = {
     "peep": pygame.transform.scale(pygame.image.load("img/characters/peepboss.png"),(120,120)),
     "bunny": pygame.transform.scale(pygame.image.load("img/characters/evilbunny.png"),(60,60))
 }
-
-pygame.quit()
