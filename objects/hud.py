@@ -21,11 +21,14 @@ class HUD(Rect):
         return stamps, stampsRECT
 
     def draw(self, ctx, player):
+        peachCount = 0
         if player.hp > 20:
-            peachWidth = math.ceil((player.hp-math.floor(player.hp/20)*20)/2)+2
+            peachCount = math.ceil((player.hp-math.floor(player.hp/20)*20)/2)+2
         else:
-            peachWidth = math.ceil(player.hp/2)
-        graphics.round_rect(ctx,(self.x,self.y,20 + peachWidth*15 + (peachWidth-1)*5,self.h),self.color,10)
+            peachCount = math.ceil(player.hp/2)
+        if peachCount < len(player.items):
+            peachCount = len(player.items)
+        graphics.round_rect(ctx,(self.x,self.y,20 + peachCount*15 + (peachCount-1)*5,self.h),self.color,10)
 
         location = self.x + 10
         tenPeachCount = 0
@@ -50,6 +53,12 @@ class HUD(Rect):
             self.stamps, self.stampsRECT = self.renderStamps(player)
         ctx.blit(self.stamps,self.stampsRECT)
         self.stampsLastFrame = player.stamps
+
+        location = self.x + 10
+        for item in player.items:
+            ctx.blit(pygame.transform.scale(item.img,(15,15)),(location,60))
+            location += 20
+
 
     def go(self, ctx, player):
         self.draw(ctx, player)

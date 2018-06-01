@@ -42,6 +42,10 @@ class Item(Rect):
             pass
         self.consumedFlag = True
 
+        # There's definitely a better way to do this
+        if not self.id == 0 and not self.id == 1 and not self.id == 7:
+            target.items.append(self)
+
     def setup(self):
         self.img = images.items[self.id]
 
