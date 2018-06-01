@@ -22,7 +22,7 @@ class HUD(Rect):
 
     def draw(self, ctx, player):
         peachCount = 0
-        if player.hp > 20:
+        if player.hp >= 20:
             peachCount = math.ceil((player.hp-math.floor(player.hp/20)*20)/2)+2
         else:
             peachCount = math.ceil(player.hp/2)
@@ -32,7 +32,7 @@ class HUD(Rect):
 
         location = self.x + 10
         tenPeachCount = 0
-        if player.hp > 20:
+        if player.hp >= 20:
             ctx.blit(images.peach,(location,20))
             tenPeachCount = math.floor(player.hp/20)*10
             tenPeachText = self.font.render('x'+str(tenPeachCount),True,constants.black)

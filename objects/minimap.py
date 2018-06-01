@@ -29,7 +29,7 @@ class Minimap(Rect):
         for row in range(len(self.contents)):
             x = self.x + self.edgeGap
             for col in range(len(self.contents)):
-                nowColor = constants.black
+                nowColor = self.color
                 if curPos[0] == row and curPos[1] == col:
                     nowColor = constants.yellow
                 elif self.contents[row][col] == "standard":
