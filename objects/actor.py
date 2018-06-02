@@ -14,7 +14,8 @@ class Actor(Rect):
         selfCenterX = self.x + self.w/2
         selfCenterY = self.y + self.h/2
         theta = math.atan2((target.y + target.h/2 - selfCenterY), (target.x + target.w/2 - selfCenterX))
-        return Bullet(selfCenterX-5,selfCenterY-5,10,10,images.marshmallow,theta,self.dmg,"bad")
+        bW = 10*self.dmg
+        return Bullet(selfCenterX-bW/2,selfCenterY-bW/2,bW,bW,pygame.transform.scale(images.marshmallow,(bW,bW)),theta,self.dmg,"bad")
 
     def pos(self, room):
         if self.canMove(room):

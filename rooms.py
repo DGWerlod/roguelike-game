@@ -5,6 +5,8 @@ from objects.item import Item
 from objects.obstruction import Obstruction
 from objects.character import Character
 from objects.enemy import Enemy
+from objects.boss import Boss
+from objects.spawner import Spawner
 
 stdObstructions = [Obstruction(0,0,110,constants.gameH),
 Obstruction(790,0,110,constants.gameH),
@@ -41,7 +43,7 @@ standard = [
 {
 "type": "standard",
 "obstructions": stdObstructions,
-"enemies": [Enemy("banana")],
+"enemies": [Spawner("banana")],
 "items":[],
 "doors": []
 }
@@ -85,7 +87,7 @@ risk = [
 {
 "type": "risk",
 "obstructions": stdObstructions,
-"enemies": [Enemy("peep")],
+"enemies": [Boss("peep")],
 "items": [],
 "doors": []
 },
@@ -105,7 +107,7 @@ boss = [
 {
 "type": "boss",
 "obstructions": stdObstructions,
-"enemies": [Enemy("peep")],
+"enemies": [Boss("peep")],
 "items": [Item(7,60)],
 "doors": []
 }
