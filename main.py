@@ -25,6 +25,7 @@ curRoom = {}
 curPos = []
 map = None
 muli = pygame.font.Font("fonts/muli.ttf",15)
+muliBig = pygame.font.Font("fonts/muli.ttf",30)
 
 def listen(running):
     for event in pygame.event.get():
@@ -88,6 +89,7 @@ def nextFloor(curFloor, curRoom, curPos, map):
 
 def main(curFloor, curRoom, curPos, map):
 
+    state = 0
     enemiesCleared = False
     bullets = []
     running = True
@@ -99,65 +101,77 @@ def main(curFloor, curRoom, curPos, map):
     while running:
         running = listen(running)
 
-        # Reset BG
-        ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
+        if state == 0:
+            ctx.blit(images.splash,(0,0))
+            beginText = muliBig.render("Press Enter",True,constants.lightpurple)
+            beginTextRECT = beginText.get_rect()
+            beginTextRECT.right = constants.gameW - 20
+            beginTextRECT.bottom = constants.gameH - 15
+            ctx.blit(beginText,beginTextRECT)
 
-        if enemiesCleared:
-            for c in curRoom["doors"]:
-                key = c.name
-                if collisions.rectangles(player,constants.clearZones[key]):
-                    if key == "w":
-                        curPos[0] -= 1
-                        player.y = constants.gameH - 110 - constants.playerH - 20
-                    elif key == "a":
-                        curPos[1] -= 1
-                        player.x = constants.gameW - 110 - constants.playerW - 20
-                    elif key == "s":
-                        curPos[0] += 1
-                        player.y = 10 + 20
-                    elif key == "d":
-                        curPos[1] += 1
-                        player.x = 110 + 20
-                    curRoom = curFloor[curPos[0]][curPos[1]]
-                    bullets = []
-                    enemiesCleared = False
-            if curRoom["type"] == "boss":
-                x = (constants.gameW-80)/2
-                y = (constants.gameH-80)/2
-                ctx.blit(images.teleporter,(x,y))
-                if pygame.Rect(x,y,80,80).contains(pygame.Rect(player.x,player.y + player.h/2,player.w,player.h/2)):
-                    print(" ") # divides this floor map and the previous floor map
-                    curFloor, curRoom, curPos, map = nextFloor(curFloor, curRoom, curPos, map)
-        else:
-            enemiesCleared = enemyCheck(curRoom)
+            if keyboard.controls["keyEnter"]:
+                state = 1
 
-        # Update All Entities
-        hud.go(ctx, player)
-        map.go(ctx, curPos)
+        elif state == 1:
+            # Reset BG
+            ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
 
-        for d in curRoom["doors"]:
-            d.go(ctx, enemiesCleared)
-        for i in curRoom["items"]:
-            if not i.consumedFlag:
-                i.go(ctx, player, enemiesCleared)
-        for b in bullets:
-            b.go(ctx, curRoom, player)
-            if b.removeFlag:
-                bullets.remove(b)
-        for e in curRoom["enemies"]:
-            projectile = e.go(ctx, curRoom, player)
+            if enemiesCleared:
+                for c in curRoom["doors"]:
+                    key = c.name
+                    if collisions.rectangles(player,constants.clearZones[key]):
+                        if key == "w":
+                            curPos[0] -= 1
+                            player.y = constants.gameH - 110 - constants.playerH - 20
+                        elif key == "a":
+                            curPos[1] -= 1
+                            player.x = constants.gameW - 110 - constants.playerW - 20
+                        elif key == "s":
+                            curPos[0] += 1
+                            player.y = 10 + 20
+                        elif key == "d":
+                            curPos[1] += 1
+                            player.x = 110 + 20
+                        curRoom = curFloor[curPos[0]][curPos[1]]
+                        bullets = []
+                        enemiesCleared = False
+                if curRoom["type"] == "boss":
+                    x = (constants.gameW-80)/2
+                    y = (constants.gameH-80)/2
+                    ctx.blit(images.teleporter,(x,y))
+                    if pygame.Rect(x,y,80,80).contains(pygame.Rect(player.x,player.y + player.h/2,player.w,player.h/2)):
+                        print(" ") # divides this floor map and the previous floor map
+                        curFloor, curRoom, curPos, map = nextFloor(curFloor, curRoom, curPos, map)
+            else:
+                enemiesCleared = enemyCheck(curRoom)
+
+            # Update All Entities
+            hud.go(ctx, player)
+            map.go(ctx, curPos)
+
+            for d in curRoom["doors"]:
+                d.go(ctx, enemiesCleared)
+            for i in curRoom["items"]:
+                if not i.consumedFlag:
+                    i.go(ctx, player, enemiesCleared)
+            for b in bullets:
+                b.go(ctx, curRoom, player)
+                if b.removeFlag:
+                    bullets.remove(b)
+            for e in curRoom["enemies"]:
+                projectile = e.go(ctx, curRoom, player)
+                projectile = getProjectile(projectile, bullets)
+                if e.hp <= 0:
+                    curRoom["enemies"].remove(e)
+                elif isinstance(e,Boss) or isinstance(e,Spawner):
+                    trySpawn(e,curRoom,map)
+
+            projectile = player.go(ctx, curRoom)
             projectile = getProjectile(projectile, bullets)
-            if e.hp <= 0:
-                curRoom["enemies"].remove(e)
-            elif isinstance(e,Boss) or isinstance(e,Spawner):
-                trySpawn(e,curRoom,map)
 
-        projectile = player.go(ctx, curRoom)
-        projectile = getProjectile(projectile, bullets)
-
-        # Debug
-        fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
-        ctx.blit(fps,(840,575))
+            # Debug
+            fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
+            ctx.blit(fps,(840,575))
 
         # Update Window
         pygame.display.update()

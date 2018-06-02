@@ -13,6 +13,7 @@ frenchFry = pygame.image.load("img/bullets/frenchfry.png")
 # lemon = pygame.image.load("img/characters/lemonafraid.png")
 
 teleporter = pygame.transform.scale(pygame.image.load("img/teleporter.png"),(80,80))
+splash = pygame.image.load("img/splash.png")
 
 doors = {
 "standard": {

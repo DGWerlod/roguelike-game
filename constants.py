@@ -16,6 +16,7 @@ white = (255,255,255)
 red = (255,0,0)
 blue = (0,0,255)
 green = (0,255,0)
+lightpurple = (86,95,120)
 
 # FONTS
 muli = pygame.font.Font("fonts/muli.ttf",15)
