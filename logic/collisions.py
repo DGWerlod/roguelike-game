@@ -1,5 +1,13 @@
 from math import hypot
 
+def rectPoint(rect,point):
+    if rect.x < point[0]:
+        if rect.x + rect.w > point[0]:
+            if rect.y < point[1]:
+                if rect.h + rect.y > point[1]:
+                    return True
+    return False
+
 def rectangles(a,b): # exception is for player's rBall addition
     if a.x < b.x + b.w:
         if a.x + a.w > b.x:
