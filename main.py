@@ -5,6 +5,8 @@ from objects.hud import HUD
 from objects.minimap import Minimap
 from objects.enemy import Enemy
 from objects.player import Player
+from objects.spawner import Spawner
+from objects.boss import Boss
 from img import images
 from logic import collisions
 
@@ -56,12 +58,20 @@ def trySpawn(enemy, room, map):
             bunnySpawn.y += random.randint(0,300)-150
             room["enemies"].append(bunnySpawn)
         if random.randint(0,math.ceil(100000/map.level)) == 0:
-            peepSpawn = Enemy("peep")
+            peepSpawn = Boss("peep")
             peepSpawn.setup()
             peepSpawn.x, peepSpawn.y = (constants.gameW-peepSpawn.w)/2, (constants.gameH-peepSpawn.h)/2
             peepSpawn.x += random.randint(0,300)-150
             peepSpawn.y += random.randint(0,300)-150
             room["enemies"].append(peepSpawn)
+    elif isinstance(enemy, Spawner):
+        if enemy.spawnCD == 0:
+            spawn = Spawner(enemy.name,math.ceil(enemy.spawnSpd*(map.level+1)/map.level))
+            spawn.setup()
+            spawn.x, spawn.y = (constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2
+            spawn.x += random.randint(0,300)-150
+            spawn.y += random.randint(0,300)-150
+            room["enemies"].append(spawn)
 
 def nextFloor(curFloor, curRoom, curPos, map):
     curFloor = generator.newFloor()
@@ -139,7 +149,7 @@ def main(curFloor, curRoom, curPos, map):
             projectile = getProjectile(projectile, bullets)
             if e.hp <= 0:
                 curRoom["enemies"].remove(e)
-            elif e.name == "peep":
+            elif isinstance(e,Boss) or isinstance(e,Spawner):
                 trySpawn(e,curRoom,map)
 
         projectile = player.go(ctx, curRoom)
