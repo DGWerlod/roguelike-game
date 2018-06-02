@@ -9,6 +9,8 @@ class HUD(Rect):
         super().__init__(110,10,100,80,constants.minigrey,None,[0,0],"hud")
         self.stamps, self.stampsRECT = self.renderStamps(player)
         self.stampsLastFrame = player.stamps
+        self.itemsLastFrame = len(player.items)
+        self.itemDisplayCountdown = 0
 
     def renderStamps(self, player):
         stamps = self.font.render(str(player.stamps),True,constants.black)
@@ -53,9 +55,40 @@ class HUD(Rect):
 
         location = self.x + 10
         for item in player.items:
-            ctx.blit(pygame.transform.scale(images.icons[item.id]),(location,60))
+            ctx.blit(pygame.transform.scale(images.icons[item.id],(15,15)),(location,60))
             location += 20
 
+        if len(player.items) > self.itemsLastFrame:
+            self.itemsLastFrame = len(player.items)
+            self.itemDisplayCountdown = 120
+        if self.itemDisplayCountdown > 0:
+            displayText = ""
+            itemToDisplay = player.items[-1]
+            if itemToDisplay.id == 0: # peach
+                displayText = "HP boost"
+            elif itemToDisplay.id == 2: # basil
+                pass
+            elif itemToDisplay.id == 3: # paprika
+                displayText = "Faster fire"
+            elif itemToDisplay.id == 4: # pepper
+                displayText = "Speed boost"
+            elif itemToDisplay.id == 5: # salt
+                pass
+            elif itemToDisplay.id == 6: # tumeric
+                pass
+            elif itemToDisplay.id == 7: # giant-peach
+                displayText = "Full HP"
+            elif itemToDisplay.id == 8: # knife
+                displayText = "Attack boost"
+            elif itemToDisplay.id == 9: #
+                pass
+            displayTextTEXT = self.font.render(displayText,True,constants.black)
+            displayTextRECT = displayTextTEXT.get_rect()
+            displayTextRECT.left = self.x + 5
+            displayTextRECT.top = self.y + self.h + 10
+            graphics.round_rect(ctx,(displayTextRECT.left-5,displayTextRECT.top-5,displayTextRECT.width+10,displayTextRECT.height+10),self.color,10)
+            ctx.blit(displayTextTEXT,displayTextRECT)
+            self.itemDisplayCountdown -= 1
 
     def go(self, ctx, player):
         self.draw(ctx, player)
