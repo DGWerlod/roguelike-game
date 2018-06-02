@@ -46,14 +46,22 @@ def getProjectile(projectile,bullets):
         bullets.append(projectile)
     return None
 
-def trySpawn(enemy, room):
-    if random.randint(0,450) == 0:
-        bunnySpawn = Enemy("bunny")
-        bunnySpawn.setup()
-        bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
-        bunnySpawn.x += random.randint(0,300)-150
-        bunnySpawn.y += random.randint(0,300)-150
-        room["enemies"].append(bunnySpawn)
+def trySpawn(enemy, room, map):
+    if enemy.name == "peep":
+        if random.randint(0,math.ceil(1000/map.level)) == 0:
+            bunnySpawn = Enemy("bunny")
+            bunnySpawn.setup()
+            bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
+            bunnySpawn.x += random.randint(0,300)-150
+            bunnySpawn.y += random.randint(0,300)-150
+            room["enemies"].append(bunnySpawn)
+        if random.randint(0,math.ceil(100000/map.level)) == 0:
+            peepSpawn = Enemy("peep")
+            peepSpawn.setup()
+            peepSpawn.x, peepSpawn.y = (constants.gameW-peepSpawn.w)/2, (constants.gameH-peepSpawn.h)/2
+            peepSpawn.x += random.randint(0,300)-150
+            peepSpawn.y += random.randint(0,300)-150
+            room["enemies"].append(peepSpawn)
 
 def nextFloor(curFloor, curRoom, curPos, map):
     curFloor = generator.newFloor()
@@ -132,7 +140,7 @@ def main(curFloor, curRoom, curPos, map):
             if e.hp <= 0:
                 curRoom["enemies"].remove(e)
             elif e.name == "peep":
-                trySpawn(e,curRoom)
+                trySpawn(e,curRoom,map)
 
         projectile = player.go(ctx, curRoom)
         projectile = getProjectile(projectile, bullets)
