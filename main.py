@@ -20,12 +20,9 @@ ctx.set_alpha(None)
 pygame.display.set_caption("Roguelike")
 clock = pygame.time.Clock()
 
-curFloor = []
-curRoom = {}
-curPos = []
-map = None
 muli = pygame.font.Font("fonts/muli.ttf",15)
 muliBig = pygame.font.Font("fonts/muli.ttf",30)
+muliBiggest = pygame.font.Font("fonts/muli.ttf",70)
 
 def listen(running):
     for event in pygame.event.get():
@@ -74,7 +71,7 @@ def trySpawn(enemy, room, map):
             spawn.y += random.randint(0,300)-150
             room["enemies"].append(spawn)
 
-def nextFloor(curFloor, curRoom, curPos, map):
+def nextFloor(map):
     curFloor = generator.newFloor()
     level = 1
     if not map == None:
@@ -87,7 +84,7 @@ def nextFloor(curFloor, curRoom, curPos, map):
                 curPos = [y,x]
     return curFloor, curRoom, curPos, map
 
-def main(curFloor, curRoom, curPos, map):
+def main():
 
     state = 0
     enemiesCleared = False
@@ -111,6 +108,7 @@ def main(curFloor, curRoom, curPos, map):
 
             if keyboard.controls["keyEnter"]:
                 state = 1
+                curFloor, curRoom, curPos, map = nextFloor(None)
 
         elif state == 1:
             # Reset BG
@@ -141,7 +139,7 @@ def main(curFloor, curRoom, curPos, map):
                     ctx.blit(images.teleporter,(x,y))
                     if pygame.Rect(x,y,80,80).contains(pygame.Rect(player.x,player.y + player.h/2,player.w,player.h/2)):
                         print(" ") # divides this floor map and the previous floor map
-                        curFloor, curRoom, curPos, map = nextFloor(curFloor, curRoom, curPos, map)
+                        curFloor, curRoom, curPos, map = nextFloor(map)
             else:
                 enemiesCleared = enemyCheck(curRoom)
 
@@ -169,14 +167,36 @@ def main(curFloor, curRoom, curPos, map):
             projectile = player.go(ctx, curRoom)
             projectile = getProjectile(projectile, bullets)
 
+            if player.hp <= 0:
+                state = 2
+                gameOverText = muliBiggest.render("Game Over",True,constants.black)
+                gameOverTextRECT = gameOverText.get_rect()
+                gameOverTextRECT.center = (constants.gameW/2,constants.gameH/2 - 30)
+                ctx.blit(gameOverText,gameOverTextRECT)
+                retryText = muliBig.render("Press Enter to Restart",True,constants.black)
+                retryTextRECT = retryText.get_rect()
+                retryTextRECT.center = (constants.gameW/2,constants.gameH/2 + 30)
+                ctx.blit(retryText,retryTextRECT)
+
             # Debug
             fps = muli.render(str(round(clock.get_fps(),1)),True,constants.black)
             ctx.blit(fps,(840,575))
+
+        elif state == 2:
+            if keyboard.controls["keyEnter"]:
+                state = 1
+                enemiesCleared = False
+                bullets = []
+
+                player = Player(170,240,10,[5,5],15)
+                hud = HUD(player)
+                
+                curFloor, curRoom, curPos, map = nextFloor(None)
+            continue
 
         # Update Window
         pygame.display.update()
         clock.tick(30)
     pygame.quit()
 
-curFloor, curRoom, curPos, map = nextFloor(curFloor, curRoom, curPos, map)
-main(curFloor, curRoom, curPos, map)
+main()

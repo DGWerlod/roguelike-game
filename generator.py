@@ -104,14 +104,14 @@ def startFloor():
             if testFloor[y][x] == 'y':
                 return startFloor()
 
-    for y in range(constants.gridLength):
-        out = ""
-        for x in range(constants.gridLength):
-            if testFloor[y][x] == 'f':
-                out = out + "1 "
-            else:
-                out = out + "0 "
-        print(out)
+    # for y in range(constants.gridLength):
+    #     out = ""
+    #     for x in range(constants.gridLength):
+    #         if testFloor[y][x] == 'f':
+    #             out = out + "1 "
+    #         else:
+    #             out = out + "0 "
+    #     print(out)
 
     return nextFloor
 
