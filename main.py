@@ -47,29 +47,21 @@ def getProjectile(projectile,bullets):
     return None
 
 def trySpawn(enemy, room, map):
+    spawn = None
     if enemy.name == "peep":
         if random.randint(0,math.ceil(1000/map.level)) == 0:
-            bunnySpawn = Enemy("bunny")
-            bunnySpawn.setup()
-            bunnySpawn.x, bunnySpawn.y = (constants.gameW-bunnySpawn.w)/2, (constants.gameH-bunnySpawn.h)/2
-            bunnySpawn.x += random.randint(0,300)-150
-            bunnySpawn.y += random.randint(0,300)-150
-            room["enemies"].append(bunnySpawn)
-        if random.randint(0,math.ceil(100000/map.level)) == 0:
-            peepSpawn = Boss("peep")
-            peepSpawn.setup()
-            peepSpawn.x, peepSpawn.y = (constants.gameW-peepSpawn.w)/2, (constants.gameH-peepSpawn.h)/2
-            peepSpawn.x += random.randint(0,300)-150
-            peepSpawn.y += random.randint(0,300)-150
-            room["enemies"].append(peepSpawn)
+            spawn = Enemy("bunny")
+            if random.randint(0,matn.ceil(100/map.level)) == 0: # i.e. 1 in 100,000 chance per frame
+                spawn = Boss("peep")
     elif isinstance(enemy, Spawner):
         if enemy.spawnCD == 0:
             spawn = Spawner(enemy.name,math.ceil(enemy.spawnSpd*(map.level+1)/map.level))
-            spawn.setup()
-            spawn.x, spawn.y = (constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2
-            spawn.x += random.randint(0,300)-150
-            spawn.y += random.randint(0,300)-150
-            room["enemies"].append(spawn)
+    if spawn != None:
+        spawn.setup()
+        spawn.x, spawn.y = (constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2
+        spawn.x += random.randint(0,300)-150
+        spawn.y += random.randint(0,300)-150
+        room["enemies"].append(spawn)
 
 def nextFloor(map):
     curFloor = generator.newFloor()
@@ -190,7 +182,7 @@ def main():
 
                 player = Player(170,240,10,[5,5],15)
                 hud = HUD(player)
-                
+
                 curFloor, curRoom, curPos, map = nextFloor(None)
             continue
 
