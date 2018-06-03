@@ -5,15 +5,17 @@ from img import images
 from controls import keyboard, mouse
 import constants
 
+startValues = [170,240,10,[5,5],1,15]
+
 class Player(Actor):
-    def __init__(self,x,y,maxHP,spd,atkSpd,name="player"):
-        super().__init__(x,y,constants.playerW,constants.playerH,
-                        None,[images.player1,images.player2],maxHP,spd,name)
-        self.dmg = 1
+    def __init__(self):
+        super().__init__(startValues[0],startValues[1],constants.playerW,constants.playerH,
+                        None,[images.player1,images.player2],startValues[2],startValues[3],"player")
+        self.dmg = startValues[4]
         self.stamps = 0
         self.items = []
         self.phase = 0
-        self.atkSpd = atkSpd
+        self.atkSpd = startValues[5]
         self.attackCD = 0
 
     def pos(self, room):

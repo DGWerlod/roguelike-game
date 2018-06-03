@@ -31,10 +31,10 @@ TBDoor = (gameW - doorWide) / 2
 
 # CLEAR ZONES
 clearZones = {
-    "w": Rect(gameW/2 - doorWide/2,10,doorWide,5,grey),
-    "a": Rect(110,gameH/2 - doorWide/2,5,doorWide,grey),
-    "s": Rect(gameW/2 - doorWide/2,485,doorWide,5,grey),
-    "d": Rect(785,gameH/2 - doorWide/2,5,doorWide,grey)
+    "w": Rect(gameW/2 - doorWide/2 + 50,10,doorWide - 100,5,grey),
+    "a": Rect(110,gameH/2 - doorWide/2 + 50,5,doorWide - 100,grey),
+    "s": Rect(gameW/2 - doorWide/2 + 50,485,doorWide - 100,5,grey),
+    "d": Rect(785,gameH/2 - doorWide/2 + 50,5,doorWide - 100,grey)
 }
 
 # ENEMY DATA   HP,FIRE RATE IN TICKS (1/60),DMG

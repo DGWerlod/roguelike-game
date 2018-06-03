@@ -55,28 +55,17 @@ def startFloor():
                 nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] = nextRooms[i]
                 break
 
-    # for y in range(5):
-    #     out = ""
-    #     for x in range(5):
-    #         if not nextFloor[y][x] == None:
-    #             out = out + "y "
-    #         else:
-    #             out = out + "n "
-    #     print(out)
-
     for i in range(constants.gridLength**2):
         yPos = math.floor(i/constants.gridLength)
         xPos = i%constants.gridLength
         if not nextFloor[yPos][xPos] == None: # Only do if there is a room here
                 while True:
-                    # print("LOOP VALIDATE")
                     if not validatePos(nextFloor,yPos,xPos):
                      # Move the room so it will have an adjacent room
                         temp = nextFloor[yPos][xPos]
                         nextFloor[yPos][xPos] = None
                         nextPos = yPos*constants.gridLength + xPos + 1
                         while True:
-                            # print("LOOP REASSIGN")
                             nextPos = nextPos % (constants.gridLength**2)
                             yPos, xPos = math.floor(nextPos/constants.gridLength), nextPos%constants.gridLength
                             if nextFloor[yPos][xPos] == None:
@@ -84,7 +73,6 @@ def startFloor():
                                 break
                             else:
                                 nextPos += 1
-                                # print("NextPos: ", nextPos)
                     else: # Pos is valid finally
                         break
 
@@ -104,6 +92,7 @@ def startFloor():
             if testFloor[y][x] == 'y':
                 return startFloor()
 
+    # Print this floor to the console (deprecated: see minimap.py)
     # for y in range(constants.gridLength):
     #     out = ""
     #     for x in range(constants.gridLength):

@@ -51,7 +51,7 @@ def trySpawn(enemy, room, map):
     if enemy.name == "peep":
         if random.randint(0,math.ceil(1000/map.level)) == 0:
             spawn = Enemy("bunny")
-            if random.randint(0,matn.ceil(100/map.level)) == 0: # i.e. 1 in 100,000 chance per frame
+            if random.randint(0,math.ceil(100/map.level)) == 0: # i.e. 1 in 100,000 chance per frame
                 spawn = Boss("peep")
     elif isinstance(enemy, Spawner):
         if enemy.spawnCD == 0:
@@ -84,7 +84,7 @@ def main():
     running = True
     projectile = None
 
-    player = Player(170,240,10,[5,5],15)
+    player = Player()
     hud = HUD(player)
 
     while running:
@@ -110,27 +110,33 @@ def main():
                 for c in curRoom["doors"]:
                     key = c.name
                     if collisions.rectangles(player,constants.clearZones[key]):
-                        if key == "w":
+                        transitionFlag = False
+                        if key == "w" and keyboard.controls["keyW"]:
                             curPos[0] -= 1
                             player.y = constants.gameH - 110 - constants.playerH - 20
-                        elif key == "a":
+                            transitionFlag = True
+                        elif key == "a" and keyboard.controls["keyA"]:
                             curPos[1] -= 1
                             player.x = constants.gameW - 110 - constants.playerW - 20
-                        elif key == "s":
+                            transitionFlag = True
+                        elif key == "s" and keyboard.controls["keyS"]:
                             curPos[0] += 1
                             player.y = 10 + 20
-                        elif key == "d":
+                            transitionFlag = True
+                        elif key == "d" and keyboard.controls["keyD"]:
                             curPos[1] += 1
                             player.x = 110 + 20
-                        curRoom = curFloor[curPos[0]][curPos[1]]
-                        bullets = []
-                        enemiesCleared = False
+                            transitionFlag = True
+                        if transitionFlag:
+                            curRoom = curFloor[curPos[0]][curPos[1]]
+                            bullets = []
+                            enemiesCleared = False
                 if curRoom["type"] == "boss":
                     x = (constants.gameW-80)/2
                     y = (constants.gameH-80)/2
                     ctx.blit(images.teleporter,(x,y))
                     if pygame.Rect(x,y,80,80).contains(pygame.Rect(player.x,player.y + player.h/2,player.w,player.h/2)):
-                        print(" ") # divides this floor map and the previous floor map
+                        # print(" ") # divides this floor map and the previous floor map
                         curFloor, curRoom, curPos, map = nextFloor(map)
             else:
                 enemiesCleared = enemyCheck(curRoom)
@@ -175,15 +181,15 @@ def main():
             ctx.blit(fps,(840,575))
 
         elif state == 2:
+
             if keyboard.controls["keyEnter"]:
                 state = 1
                 enemiesCleared = False
                 bullets = []
-
-                player = Player(170,240,10,[5,5],15)
-                hud = HUD(player)
-
+                player.__init__()
+                hud.__init__(player)
                 curFloor, curRoom, curPos, map = nextFloor(None)
+
             continue
 
         # Update Window
