@@ -3,9 +3,17 @@ from logic import graphics, collisions
 from controls.mouse import mouse
 from objects.rect import Rect
 
+colors = {
+    "standard": constants.grey,
+    "shop": constants.green,
+    "dish": constants.blue,
+    "risk": constants.white,
+    "boss": constants.red,
+    "player": constants.yellow
+}
+
 class Minimap(Rect):
     def __init__(self,floor,level):
-        self.font = pygame.font.Font("fonts/muli.ttf",20)
         super().__init__(constants.gameW-210,10,100,80,constants.minigrey,None,[0,0],"map")
         self.contents = []
         self.xw = 12
@@ -18,9 +26,9 @@ class Minimap(Rect):
             for x in range(constants.gridLength):
                 now = floor[y][x]
                 if now != None:
-                    self.contents[y].append(now["type"])
+                    self.contents[y].append(colors[now["type"]])
                 else:
-                    self.contents[y].append("none")
+                    self.contents[y].append(None)
 
     def draw(self, ctx, curPos):
         graphics.round_rect(ctx,(self.x,self.y,self.w,self.h),self.color,10)
@@ -28,25 +36,15 @@ class Minimap(Rect):
         for row in range(len(self.contents)):
             x = self.x + self.edgeGap
             for col in range(len(self.contents)):
-                nowColor = self.color
                 if curPos[0] == row and curPos[1] == col:
-                    nowColor = constants.yellow
-                elif self.contents[row][col] == "standard":
-                    nowColor = constants.grey
-                elif self.contents[row][col] == "shop":
-                    nowColor = constants.green
-                elif self.contents[row][col] == "dish":
-                    nowColor = constants.blue
-                elif self.contents[row][col] == "risk":
-                    nowColor = constants.white
-                elif self.contents[row][col] == "boss":
-                    nowColor = constants.red
-                graphics.round_rect(ctx,(x,y,self.xw,self.yw),nowColor,5)
+                    graphics.round_rect(ctx,(x,y,self.xw,self.yw),colors["player"],5)
+                elif self.contents[row][col] != None:
+                    graphics.round_rect(ctx,(x,y,self.xw,self.yw),self.contents[row][col],5)
                 x += self.xw + self.gap
             y += self.yw + self.gap
 
         if collisions.rectPoint(self, mouse["pos"]):
-            levelText = self.font.render("Floor " + str(self.level),True,constants.black)
+            levelText = constants.muli["20"].render("Floor " + str(self.level),True,constants.black)
             levelRECT = levelText.get_rect()
             levelRECT.centerx = mouse["pos"][0]
             levelRECT.top = 97

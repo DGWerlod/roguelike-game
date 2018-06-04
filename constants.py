@@ -19,7 +19,12 @@ green = (0,255,0)
 lightpurple = (86,95,120)
 
 # FONTS
-muli = pygame.font.Font("fonts/muli.ttf",15)
+muli = {
+    "15": pygame.font.Font("fonts/muli.ttf",15),
+    "20": pygame.font.Font("fonts/muli.ttf",20),
+    "30": pygame.font.Font("fonts/muli.ttf",30),
+    "70": pygame.font.Font("fonts/muli.ttf",70)
+}
 
 # WASD
 W, A, S, D = 0, 1, 2, 3

@@ -5,7 +5,6 @@ from objects.rect import Rect
 
 class HUD(Rect):
     def __init__(self, player):
-        self.font = pygame.font.Font("fonts/muli.ttf",15)
         super().__init__(110,10,100,80,constants.minigrey,None,[0,0],"hud")
         self.stamps, self.stampsRECT = self.renderStamps(player)
         self.stampsLastFrame = player.stamps
@@ -13,7 +12,7 @@ class HUD(Rect):
         self.itemDisplayCountdown = 0
 
     def renderStamps(self, player):
-        stamps = self.font.render(str(player.stamps),True,constants.black)
+        stamps = constants.muli["15"].render(str(player.stamps),True,constants.black)
         stampsRECT = stamps.get_rect()
         stampsRECT.right = 120 + 20
         stampsRECT.top = 40
@@ -34,7 +33,7 @@ class HUD(Rect):
         if player.hp >= 20:
             ctx.blit(images.peach,(location,20))
             tenPeachCount = math.floor(player.hp/20)*10
-            tenPeachText = self.font.render('x'+str(tenPeachCount),True,constants.black)
+            tenPeachText = constants.muli["15"].render('x'+str(tenPeachCount),True,constants.black)
             tenPeachRECT = tenPeachText.get_rect()
             tenPeachRECT.right = 157
             tenPeachRECT.top = 20
@@ -82,7 +81,7 @@ class HUD(Rect):
                 displayText = "Attack boost"
             elif itemToDisplay.id == 9: #
                 pass
-            displayTextTEXT = self.font.render(displayText,True,constants.black)
+            displayTextTEXT = constants.muli["15"].render(displayText,True,constants.black)
             displayTextRECT = displayTextTEXT.get_rect()
             displayTextRECT.left = self.x + 5
             displayTextRECT.top = self.y + self.h + 10

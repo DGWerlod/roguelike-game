@@ -1,9 +1,8 @@
-import pygame, math
-from objects.bullet import Bullet
-from objects.actor import Actor
+import pygame, math, constants
 from img import images
 from controls import keyboard, mouse
-import constants
+from objects.bullet import Bullet
+from objects.actor import Actor
 
 startValues = [170,240,10,[5,5],1,15]
 
@@ -17,6 +16,9 @@ class Player(Actor):
         self.phase = 0
         self.atkSpd = startValues[5]
         self.attackCD = 0
+
+    def getFeet(self):
+        return pygame.Rect(self.x,self.y + self.h/2,self.w,self.h/2)
 
     def pos(self, room):
         if keyboard.controls['keyW'] == True:
