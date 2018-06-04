@@ -1,17 +1,43 @@
 import math, random, constants
 from img import images
 from copy import deepcopy
-from objects.enemy import Enemy
-from objects.door import Door
 from logic import matrices
 from rooms import standard, shop, dish, risk, boss
+from objects.door import Door
+from objects.minimap import Minimap
+from objects.enemy import Enemy
+from objects.spawner import Spawner
+from objects.boss import Boss
 
 floorPlan = []
-
 for x in range(constants.gridLength):
     floorPlan.append([])
     for y in range(constants.gridLength):
         floorPlan[x].append(None)
+
+specialLists = [shop,dish,risk,boss]
+
+def randomPos(x,y):
+    return x+random.randint(0,300)-150, y+random.randint(0,300)-150
+
+def trySpawn(enemy, room, map):
+    if not (isinstance(enemy,Boss) or isinstance(enemy,Spawner)):
+        return None
+    else:
+        spawn = None
+        if enemy.name == "peep":
+            if random.randint(0,math.ceil(1000/map.level)) == 0:
+                spawn = Enemy("bunny")
+                if random.randint(0,math.ceil(100/map.level)) == 0: # i.e. 1 in 100,000 chance per frame
+                    spawn = Boss("peep")
+        elif isinstance(enemy, Spawner):
+            if enemy.spawnCD == 0:
+                spawn = Spawner(enemy.name,math.ceil(enemy.spawnSpd*(map.level+1)/map.level))
+        if spawn != None:
+            spawn.setup()
+            spawn.x, spawn.y = (constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2
+            spawn.x, spawn.y = randomPos(spawn.x, spawn.y)
+            room["enemies"].append(spawn)
 
 def validatePos(nextFloor,yPos,xPos):
     validPos = False
@@ -33,8 +59,7 @@ def randomizeSpawn(room):
     for e in room["enemies"]:
         e.x, e.y = (constants.gameW-e.w)/2, (constants.gameH-e.h)/2
         if not e.name == "peep":
-            e.x += random.randint(0,300)-150
-            e.y += random.randint(0,300)-150
+            e.x, e.y = randomPos(e.x, e.y)
     return room
 
 def startFloor():
@@ -43,10 +68,8 @@ def startFloor():
     numRooms = 8 + random.randint(0,4)
     for i in range(numRooms):
         nextRooms.append(randomizeSpawn(deepcopy(standard[random.randint(0,len(standard)-1)])))
-    nextRooms.append(randomizeSpawn(deepcopy(shop[random.randint(0,len(shop)-1)])))
-    nextRooms.append(randomizeSpawn(deepcopy(dish[random.randint(0,len(dish)-1)])))
-    nextRooms.append(randomizeSpawn(deepcopy(risk[random.randint(0,len(risk)-1)])))
-    nextRooms.append(randomizeSpawn(deepcopy(boss[random.randint(0,len(boss)-1)])))
+    for s in specialLists:
+        nextRooms.append(randomizeSpawn(deepcopy(s[random.randint(0,len(s)-1)])))
 
     for i in range(len(nextRooms)):
         while True:
@@ -132,8 +155,20 @@ def linkFloor(nextFloor):
                     nextFloor[i][j]["doors"].append(Door(nextFloor[i+1][j]["type"],"s"))
 
 # Literally does everything
-def newFloor():
+def newFloor(level):
     floor = startFloor()
     prepareFloor(floor)
     linkFloor(floor)
     return floor
+
+def nextFloor(map):
+    if map == None: level = 1
+    else: level = map.level+1
+    floor = newFloor(level)
+    map = Minimap(floor, level)
+    for y in range(constants.gridLength):
+        for x in range(constants.gridLength):
+            if not floor[y][x] == None:
+                startRoom = floor[y][x]
+                startPos = [y,x]
+                return floor, startRoom, startPos, map

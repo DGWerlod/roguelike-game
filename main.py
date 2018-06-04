@@ -2,14 +2,9 @@ import pygame, math, random, constants, generator
 from img import images
 from logic import collisions
 from controls import keyboard, mouse
-from objects.rect import Rect
 from objects.hud import HUD
-from objects.minimap import Minimap
 from objects.teleporter import Teleporter
-from objects.enemy import Enemy
 from objects.player import Player
-from objects.spawner import Spawner
-from objects.boss import Boss
 
 from pygame.locals import *
 flags = DOUBLEBUF
@@ -42,36 +37,6 @@ def getProjectile(projectile,bullets):
     if projectile != None:
         bullets.append(projectile)
     return None
-
-def trySpawn(enemy, room, map):
-    spawn = None
-    if enemy.name == "peep":
-        if random.randint(0,math.ceil(1000/map.level)) == 0:
-            spawn = Enemy("bunny")
-            if random.randint(0,math.ceil(100/map.level)) == 0: # i.e. 1 in 100,000 chance per frame
-                spawn = Boss("peep")
-    elif isinstance(enemy, Spawner):
-        if enemy.spawnCD == 0:
-            spawn = Spawner(enemy.name,math.ceil(enemy.spawnSpd*(map.level+1)/map.level))
-    if spawn != None:
-        spawn.setup()
-        spawn.x, spawn.y = (constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2
-        spawn.x += random.randint(0,300)-150
-        spawn.y += random.randint(0,300)-150
-        room["enemies"].append(spawn)
-
-def nextFloor(map):
-    curFloor = generator.newFloor()
-    level = 1
-    if not map == None:
-        level = map.level+1
-    map = Minimap(curFloor,level)
-    for y in range(constants.gridLength):
-        for x in range(constants.gridLength):
-            if not curFloor[y][x] == None:
-                curRoom = curFloor[y][x]
-                curPos = [y,x]
-    return curFloor, curRoom, curPos, map
 
 def gameOver(ctx):
     gameOverText = constants.muli["70"].render("Game Over",True,constants.black)
@@ -108,7 +73,7 @@ def main():
 
             if keyboard.controls["keyEnter"]:
                 state = 1
-                curFloor, curRoom, curPos, map = nextFloor(None)
+                curFloor, curRoom, curPos, map = generator.nextFloor(None)
 
         elif state == 1:
             # Reset BG
@@ -136,7 +101,7 @@ def main():
                             enemiesCleared = False
                 if curRoom["type"] == "boss":
                     if teleporter.go(ctx, player):
-                        curFloor, curRoom, curPos, map = nextFloor(map)
+                        curFloor, curRoom, curPos, map = generator.nextFloor(map)
             else:
                 enemiesCleared = enemyCheck(curRoom)
 
@@ -158,8 +123,7 @@ def main():
                 projectile = getProjectile(projectile, bullets)
                 if e.hp <= 0:
                     curRoom["enemies"].remove(e)
-                elif isinstance(e,Boss) or isinstance(e,Spawner):
-                    trySpawn(e,curRoom,map)
+                generator.trySpawn(e,curRoom,map)
 
             projectile = player.go(ctx, curRoom)
             projectile = getProjectile(projectile, bullets)
@@ -180,7 +144,7 @@ def main():
                 bullets = []
                 player.__init__()
                 hud.__init__(player)
-                curFloor, curRoom, curPos, map = nextFloor(None)
+                curFloor, curRoom, curPos, map = generator.nextFloor(None)
 
             continue
 
