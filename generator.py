@@ -2,7 +2,7 @@ import math, random, constants
 from img import images
 from copy import deepcopy
 from logic import matrices
-from rooms import standard, shop, dish, risk, boss
+from rooms import start, standard, shop, dish, risk, boss
 from objects.door import Door
 from objects.minimap import Minimap
 from objects.enemy import Enemy
@@ -63,7 +63,7 @@ def randomizeSpawn(room):
     return room
 
 def startFloor():
-    nextRooms = []
+    nextRooms = [start]
     nextFloor = deepcopy(floorPlan)
     numRooms = 8 + random.randint(0,4)
     for i in range(numRooms):
@@ -166,9 +166,11 @@ def nextFloor(map):
     else: level = map.level+1
     floor = newFloor(level)
     map = Minimap(floor, level)
+
+    # Find the start room
     for y in range(constants.gridLength):
         for x in range(constants.gridLength):
-            if not floor[y][x] == None:
+            if floor[y][x] != None and floor[y][x]["enemies"] == [] and floor[y][x]["items"] == []:
                 startRoom = floor[y][x]
                 startPos = [y,x]
                 return floor, startRoom, startPos, map

@@ -13,6 +13,16 @@ Obstruction(790,0,110,constants.gameH),
 Obstruction(0,0,constants.gameW,10),
 Obstruction(0,490,constants.gameW,110)]
 
+# START
+
+start = {
+    "type": "standard",
+    "obstructions": stdObstructions,
+    "enemies": [],
+    "items": [],
+    "doors": [],
+}
+
 # STANDARD
 
 standard = [
