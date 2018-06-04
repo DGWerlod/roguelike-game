@@ -18,7 +18,18 @@ class HUD(Rect):
         stampsRECT.top = 40
         return stamps, stampsRECT
 
+    def renderToolTip(self, item):
+        displayText = constants.itemDescriptions[item.id]
+        if displayText != None:
+            displayTextTEXT = constants.muli["15"].render(displayText,True,constants.black)
+            displayTextRECT = displayTextTEXT.get_rect()
+            displayTextRECT.left = self.x + 5
+            displayTextRECT.top = self.y + self.h + 10
+            graphics.round_rect(ctx,(displayTextRECT.left-5,displayTextRECT.top-5,displayTextRECT.width+10,displayTextRECT.height+10),self.color,10)
+            ctx.blit(displayTextTEXT,displayTextRECT)
+
     def draw(self, ctx, player):
+        # Peaches % 20
         peachCount = 0
         if player.hp >= 20:
             peachCount = math.ceil((player.hp-math.floor(player.hp/20)*20)/2)+2
@@ -28,6 +39,7 @@ class HUD(Rect):
             peachCount = len(player.items)
         graphics.round_rect(ctx,(self.x,self.y,20 + peachCount*15 + (peachCount-1)*5,self.h),self.color,10)
 
+        # Peaches / 20
         location = self.x + 10
         tenPeachCount = 0
         if player.hp >= 20:
@@ -61,32 +73,7 @@ class HUD(Rect):
             self.itemsLastFrame = len(player.items)
             self.itemDisplayCountdown = 120
         if self.itemDisplayCountdown > 0:
-            displayText = ""
-            itemToDisplay = player.items[-1]
-            if itemToDisplay.id == 0: # peach
-                displayText = "HP boost"
-            elif itemToDisplay.id == 2: # basil
-                pass
-            elif itemToDisplay.id == 3: # paprika
-                displayText = "Faster fire"
-            elif itemToDisplay.id == 4: # pepper
-                displayText = "Speed boost"
-            elif itemToDisplay.id == 5: # salt
-                pass
-            elif itemToDisplay.id == 6: # tumeric
-                pass
-            elif itemToDisplay.id == 7: # giant-peach
-                displayText = "Full HP"
-            elif itemToDisplay.id == 8: # knife
-                displayText = "Attack boost"
-            elif itemToDisplay.id == 9: #
-                pass
-            displayTextTEXT = constants.muli["15"].render(displayText,True,constants.black)
-            displayTextRECT = displayTextTEXT.get_rect()
-            displayTextRECT.left = self.x + 5
-            displayTextRECT.top = self.y + self.h + 10
-            graphics.round_rect(ctx,(displayTextRECT.left-5,displayTextRECT.top-5,displayTextRECT.width+10,displayTextRECT.height+10),self.color,10)
-            ctx.blit(displayTextTEXT,displayTextRECT)
+            self.renderToolTip(player.items[-1])
             self.itemDisplayCountdown -= 1
 
     def go(self, ctx, player):

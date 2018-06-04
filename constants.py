@@ -50,3 +50,17 @@ enemyData = {
     "peep": [120,120,15,60,2],
     "bunny": [60,60,1,60,1]
 }
+
+# ITEM DESCRIPTIONS
+itemDescriptions = [
+    None,
+    None,
+    None,
+    "Faster fire",
+    "Speed boost",
+    None,
+    None,
+    "Full HP + 1",
+    "Attack boost",
+    None
+]
