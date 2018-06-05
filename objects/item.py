@@ -12,6 +12,7 @@ class Item(Rect):
 
     def activate(self, target):
         if self.id == 0: # peach
+            sounds.play("chomp")
             if target.hp + 2 > target.maxHP:
                 target.hp = target.maxHP
             else:
