@@ -18,7 +18,7 @@ class HUD(Rect):
         stampsRECT.top = 40
         return stamps, stampsRECT
 
-    def renderToolTip(self, item):
+    def renderToolTip(self, ctx, item):
         displayText = constants.itemDescriptions[item.id]
         if displayText != None:
             displayTextTEXT = constants.muli["15"].render(displayText,True,constants.black)
@@ -73,7 +73,7 @@ class HUD(Rect):
             self.itemsLastFrame = len(player.items)
             self.itemDisplayCountdown = 120
         if self.itemDisplayCountdown > 0:
-            self.renderToolTip(player.items[-1])
+            self.renderToolTip(ctx, player.items[-1])
             self.itemDisplayCountdown -= 1
 
     def go(self, ctx, player):

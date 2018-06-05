@@ -1,7 +1,7 @@
 import pygame, constants
+from img import images
 from objects.actor import Actor
 from objects.bullet import Bullet
-from img import images
 
 class Enemy(Actor):
     def __init__(self,name="enemy",spd=[0,0]):

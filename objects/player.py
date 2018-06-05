@@ -1,5 +1,6 @@
 import pygame, math, constants
 from img import images
+from sound import sounds
 from controls import keyboard, mouse
 from objects.bullet import Bullet
 from objects.actor import Actor
@@ -44,6 +45,7 @@ class Player(Actor):
             self.phase = 0
 
     def attack(self):
+        sounds.play("chop")
         selfCenterX = self.x + self.w/2
         selfCenterY = self.y + self.h/2
         theta = math.atan2(mouse.mouse['pos'][1]-selfCenterY, mouse.mouse['pos'][0]-selfCenterX)

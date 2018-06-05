@@ -1,6 +1,7 @@
 import pygame, constants
 from logic import collisions
 from img import images
+from sound import sounds
 from objects.rect import Rect
 
 class Item(Rect):
@@ -16,6 +17,7 @@ class Item(Rect):
             else:
                 target.hp += 2
         elif self.id == 1: # foodstamp
+            sounds.play("paper")
             target.stamps += 1
         elif self.id == 2: # basil
             pass
