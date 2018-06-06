@@ -38,19 +38,18 @@ def getProjectile(projectile,bullets):
         bullets.append(projectile)
     return None
 
+def pause(ctx):
+    pygame.draw.rect(ctx,constants.grey,(200,200,constants.gameW-400,constants.gameH-400))
+    ctx.blit(constants.pauseText,constants.pauseTextRECT)
+    ctx.blit(constants.resumeText,constants.resumeTextRECT)
+
 def gameOver(ctx):
-    gameOverText = constants.muli["70"].render("Game Over",True,constants.black)
-    gameOverTextRECT = gameOverText.get_rect()
-    gameOverTextRECT.center = (constants.gameW/2,constants.gameH/2 - 30)
-    ctx.blit(gameOverText,gameOverTextRECT)
-    retryText = constants.muli["30"].render("Press Enter to Restart",True,constants.black)
-    retryTextRECT = retryText.get_rect()
-    retryTextRECT.center = (constants.gameW/2,constants.gameH/2 + 30)
-    ctx.blit(retryText,retryTextRECT)
+    ctx.blit(constants.gameOverText,constants.gameOverTextRECT)
+    ctx.blit(constants.retryText,constants.retryTextRECT)
 
 def main():
 
-    state = 0
+    state = constants.START
     enemiesCleared = False
     bullets = []
     running = True
@@ -60,26 +59,34 @@ def main():
     hud = HUD(player)
     teleporter = Teleporter()
 
+    pauseLock = constants.pauseNone
+
     while running:
         running = listen(running)
 
-        if state == 0:
+        if state == constants.START:
             ctx.blit(images.splash,(0,0))
-            beginText = constants.muli["30"].render("Press Enter",True,constants.lightpurple)
-            beginTextRECT = beginText.get_rect()
-            beginTextRECT.right = constants.gameW - 20
-            beginTextRECT.bottom = constants.gameH - 15
-            ctx.blit(beginText,beginTextRECT)
+            ctx.blit(constants.beginText,constants.beginTextRECT)
 
             if keyboard.controls["keyEnter"]:
-                state = 1
+                state = constants.GAME
                 curFloor, curRoom, curPos, map = generator.nextFloor(None)
 
-        elif state == 1:
+        elif state == constants.GAME:
+            # Check pause
+
+            if keyboard.controls["keyEscape"]:
+                if pauseLock == constants.pauseNone:
+                    state = constants.PAUSE
+                    pauseLock = constants.pauseEnter
+            else:
+                pauseLock = constants.pauseNone
+
             # Reset BG
             ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
 
             if enemiesCleared:
+                # Test for room changes
                 for c in curRoom["doors"]:
                     key = c.name
                     if collisions.rectangles(player,constants.clearZones[key]):
@@ -129,28 +136,38 @@ def main():
             projectile = getProjectile(projectile, bullets)
 
             if player.hp <= 0:
-                state = 2
+                state = constants.GAMEOVER
                 gameOver(ctx)
 
             # Debug
             fps = constants.muli["15"].render(str(round(clock.get_fps(),1)),True,constants.black)
             ctx.blit(fps,(840,575))
 
-        elif state == 2:
+        elif state == constants.PAUSE:
+            pause(ctx)
+            if keyboard.controls["keyEscape"]:
+                if pauseLock == constants.pauseNone:
+                    state = constants.GAME
+                    pauseLock = constants.pauseExit
+            else:
+                pauseLock = constants.pauseNone
+
+        elif state == constants.GAMEOVER:
 
             if keyboard.controls["keyEnter"]:
-                state = 1
+                state = constants.GAME
                 enemiesCleared = False
                 bullets = []
                 player.__init__()
                 hud.__init__(player)
                 curFloor, curRoom, curPos, map = generator.nextFloor(None)
 
-            continue
+            continue # Skips updating window
 
         # Update Window
         pygame.display.update()
         clock.tick(30)
+
     pygame.quit()
 
 main()

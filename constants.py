@@ -26,8 +26,40 @@ muli = {
     "70": pygame.font.Font("fonts/muli.ttf",70)
 }
 
+beginText = muli["30"].render("Press Enter",True,lightpurple)
+beginTextRECT = beginText.get_rect()
+beginTextRECT.right = gameW - 20
+beginTextRECT.bottom = gameH - 15
+
+pauseText = muli["70"].render("Paused",True,black)
+pauseTextRECT = pauseText.get_rect()
+pauseTextRECT.centerx = gameW/2
+pauseTextRECT.bottom = gameH/2 + 15
+resumeText = muli["30"].render("Press ESC to resume.",True,black)
+resumeTextRECT = resumeText.get_rect()
+resumeTextRECT.centerx = gameW/2
+resumeTextRECT.top = gameH/2 + 15
+
+gameOverText = muli["70"].render("Game Over",True,black)
+gameOverTextRECT = gameOverText.get_rect()
+gameOverTextRECT.center = (gameW/2,gameH/2 - 30)
+retryText = muli["30"].render("Press Enter to Restart",True,black)
+retryTextRECT = retryText.get_rect()
+retryTextRECT.center = (gameW/2,gameH/2 + 30)
+
 # WASD
 W, A, S, D = 0, 1, 2, 3
+
+# STATES
+START = 0
+GAME = 1
+PAUSE = 2
+GAMEOVER = 3
+
+# PAUSELOCK STATES
+pauseNone = 0
+pauseEnter = 1
+pauseExit = 2
 
 # DOOR
 doorSlim, doorWide = 100, 150
