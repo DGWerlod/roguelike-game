@@ -7,6 +7,9 @@ sounds = {
     "loud_thump": pygame.mixer.Sound("sound/loud_thump.ogg"),
     "squish": pygame.mixer.Sound("sound/squish.ogg"),
     "paper": pygame.mixer.Sound("sound/paper.ogg"),
+    "slam1": pygame.mixer.Sound("sound/slam1.ogg"),
+    "slam2": pygame.mixer.Sound("sound/slam2.ogg"),
+    "unlock": pygame.mixer.Sound("sound/unlock.ogg"),
 }
 
 sounds["chop"].set_volume(0.9)
@@ -19,7 +22,7 @@ sounds["paper"].set_volume(0.5)
 def play(name):
     sounds[name].play()
 
-overtureGoTime = 12.712 # seconds
+overtureGoTime = 12.730 # seconds
 overtureLoopTime = 25.424 # seconds
 END_FLAG = pygame.USEREVENT + 1 # ensures that this flag != any preset one
 

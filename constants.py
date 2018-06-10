@@ -26,6 +26,23 @@ muli = {
     "70": pygame.font.Font("fonts/muli.ttf",70)
 }
 
+authorText = muli["70"].render("Created by",True,white)
+authorTextRECT = authorText.get_rect()
+authorTextRECT.centerx = gameW/2
+authorTextRECT.top = gameH/2 - 160
+authorsText = muli["30"].render("Daniel DeAnda and Desmond Kamas",True,white)
+authorsTextRECT = authorsText.get_rect()
+authorsTextRECT.centerx = gameW/2
+authorsTextRECT.top = gameH/2 - 70
+toolText = muli["70"].render("Created with",True,white)
+toolTextRECT = toolText.get_rect()
+toolTextRECT.centerx = gameW/2
+toolTextRECT.top = gameH/2 - 10
+toolsText = muli["30"].render("Python | Pygame | Atom | GitHub | Love",True,white)
+toolsTextRECT = toolsText.get_rect()
+toolsTextRECT.centerx = gameW/2
+toolsTextRECT.top = gameH/2 + 80
+
 beginText = muli["30"].render("Press Enter",True,lightpurple)
 beginTextRECT = beginText.get_rect()
 beginTextRECT.right = gameW - 20
@@ -51,10 +68,11 @@ retryTextRECT.center = (gameW/2,gameH/2 + 30)
 W, A, S, D = 0, 1, 2, 3
 
 # STATES
-START = 0
-GAME = 1
-PAUSE = 2
-GAMEOVER = 3
+AUTHORS = 0
+START = 1
+GAME = 2
+PAUSE = 3
+GAMEOVER = 4
 
 # PAUSELOCK STATES
 pauseNone = 0

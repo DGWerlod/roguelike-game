@@ -54,7 +54,7 @@ def main():
 
     pygame.mixer.music.play()
 
-    state = constants.START
+    state = constants.AUTHORS
     enemiesCleared = False
     bullets = []
     running = True
@@ -65,21 +65,33 @@ def main():
     teleporter = Teleporter()
 
     pauseLock = constants.pauseNone
+    enterLock = False
 
     while running:
         running = listen(running)
 
-        if state == constants.START:
-            if pygame.mixer.music.get_pos() < sounds.overtureGoTime*1000:
-                ctx.blit(images.splash,(0,0))
-                # ctx.blit(constants.beginText,constants.beginTextRECT)
-            else:
-                ctx.blit(images.splash,(0,0))
-                ctx.blit(constants.beginText,constants.beginTextRECT)
+        if state == constants.AUTHORS:
+            ctx.blit(constants.authorText,constants.authorTextRECT)
+            ctx.blit(constants.authorsText,constants.authorsTextRECT)
+            ctx.blit(constants.toolText,constants.toolTextRECT)
+            ctx.blit(constants.toolsText,constants.toolsTextRECT)
+            ctx.blit(constants.beginText,constants.beginTextRECT)
 
             if keyboard.controls["keyEnter"]:
-                state = constants.GAME
-                curFloor, curRoom, curPos, map = generator.nextFloor(None)
+                sounds.changeMusic(sounds.overtureGoTime)
+            if keyboard.controls["keyEnter"] or pygame.mixer.music.get_pos() > sounds.overtureGoTime*1000:
+                state = constants.START
+                enterLock = True
+
+        if state == constants.START:
+            ctx.blit(images.splash,(0,0))
+            ctx.blit(constants.beginText,constants.beginTextRECT)
+            if keyboard.controls["keyEnter"]:
+                if not enterLock:
+                    state = constants.GAME
+                    curFloor, curRoom, curPos, map = generator.nextFloor(None)
+            elif enterLock:
+                enterLock = False
 
         elif state == constants.GAME:
             # Check pause
