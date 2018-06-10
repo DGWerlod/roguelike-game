@@ -19,8 +19,16 @@ sounds["paper"].set_volume(0.5)
 def play(name):
     sounds[name].play()
 
+overtureGoTime = 12.712 # seconds
 overtureLoopTime = 25.424 # seconds
 END_FLAG = pygame.USEREVENT + 1 # ensures that this flag != any preset one
 
-pygame.mixer.music.load("sound/overture.mp3")
+pygame.mixer.music.load("sound/overture.ogg")
 pygame.mixer.music.set_endevent(END_FLAG)
+
+def changeMusic(time, song=None):
+    if song == None:
+        pygame.mixer.music.pause()
+        pygame.mixer.music.rewind()
+        pygame.mixer.music.play()
+        pygame.mixer.music.set_pos(time)

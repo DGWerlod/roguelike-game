@@ -22,10 +22,7 @@ def listen(running):
         if event.type == pygame.QUIT:
             running = False
         elif event.type == sounds.END_FLAG:
-            pygame.mixer.music.pause()
-            pygame.mixer.music.rewind()
-            pygame.mixer.music.play()
-            pygame.mixer.music.set_pos(sounds.overtureLoopTime)
+            sounds.changeMusic(sounds.overtureLoopTime)
         else:
             keyboard.listen(event)
             mouse.listen()
@@ -56,7 +53,6 @@ def gameOver(ctx):
 def main():
 
     pygame.mixer.music.play()
-    pygame.mixer.music.set_pos(70.0)
 
     state = constants.START
     enemiesCleared = False
@@ -74,8 +70,12 @@ def main():
         running = listen(running)
 
         if state == constants.START:
-            ctx.blit(images.splash,(0,0))
-            ctx.blit(constants.beginText,constants.beginTextRECT)
+            if pygame.mixer.music.get_pos() < sounds.overtureGoTime*1000:
+                ctx.blit(images.splash,(0,0))
+                # ctx.blit(constants.beginText,constants.beginTextRECT)
+            else:
+                ctx.blit(images.splash,(0,0))
+                ctx.blit(constants.beginText,constants.beginTextRECT)
 
             if keyboard.controls["keyEnter"]:
                 state = constants.GAME
