@@ -1,5 +1,6 @@
 import pygame, math, random, constants, generator
 from img import images
+from sound import sounds
 from logic import collisions
 from controls import keyboard, mouse
 from objects.hud import HUD
@@ -20,6 +21,11 @@ def listen(running):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == sounds.END_FLAG:
+            pygame.mixer.music.pause()
+            pygame.mixer.music.rewind()
+            pygame.mixer.music.play()
+            pygame.mixer.music.set_pos(sounds.overtureLoopTime)
         else:
             keyboard.listen(event)
             mouse.listen()
@@ -48,6 +54,9 @@ def gameOver(ctx):
     ctx.blit(constants.retryText,constants.retryTextRECT)
 
 def main():
+
+    pygame.mixer.music.play()
+    pygame.mixer.music.set_pos(70.0)
 
     state = constants.START
     enemiesCleared = False
