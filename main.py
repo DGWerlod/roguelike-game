@@ -36,6 +36,15 @@ def enemyCheck(room):
             break
     return allEnemiesDead
 
+def enterRoom(enemiesCleared, curRoom):
+    enemiesCleared = enemyCheck(curRoom)
+    if not enemiesCleared:
+        if curRoom["type"] != "boss":
+            sounds.play("slam1")
+        else:
+            sounds.play("slam2")
+    return enemiesCleared
+
 def getProjectile(projectile,bullets):
     if projectile != None:
         bullets.append(projectile)
@@ -126,12 +135,15 @@ def main():
                         if curRoom != curFloor[curPos[0]][curPos[1]]:
                             curRoom = curFloor[curPos[0]][curPos[1]]
                             bullets = []
-                            enemiesCleared = False
+                            enemiesCleared = enterRoom(enemiesCleared, curRoom)
                 if curRoom["type"] == "boss":
                     if teleporter.go(ctx, player):
                         curFloor, curRoom, curPos, map = generator.nextFloor(map)
+                        enemiesCleared = enterRoom(enemiesCleared, curRoom)
             else:
                 enemiesCleared = enemyCheck(curRoom)
+                if enemiesCleared:
+                    sounds.play("unlock")
 
             # Update All Entities
             hud.go(ctx, player)

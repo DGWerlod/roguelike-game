@@ -36,6 +36,7 @@ class Item(Rect):
         elif self.id == 6: # tumeric
             pass
         elif self.id == 7: # giant-peach
+            sounds.play("chomp")
             target.maxHP += 2
             target.hp = target.maxHP
         elif self.id == 8: # knife
@@ -44,7 +45,6 @@ class Item(Rect):
             pass
         self.consumedFlag = True
 
-        # Here's a better way to do this
         if self.id not in [0,1,7]:
             target.items.append(self)
 
