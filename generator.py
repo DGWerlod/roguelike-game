@@ -1,5 +1,4 @@
 import math, random, constants
-from img import images
 from copy import deepcopy
 from logic import matrices
 from rooms import start, standard, shop, dish, risk, boss
@@ -17,41 +16,43 @@ for x in range(constants.gridLength):
 
 specialLists = [shop,dish,risk,boss]
 
+# noinspection PyShadowingNames
 def randomPos(x,y):
     return x+random.randint(0,300)-150, y+random.randint(0,300)-150
 
-def trySpawn(enemy, room, map):
+def trySpawn(enemy, room, minimap):
     if not (isinstance(enemy,Boss) or isinstance(enemy,Spawner)):
         return None
     else:
         spawn = None
         if enemy.name == "peep":
-            if random.randint(0,math.ceil(1000/map.level)) == 0:
+            if random.randint(0, math.ceil(1000 / minimap.level)) == 0:
                 spawn = Enemy("bunny")
-                if random.randint(0,math.ceil(100/map.level)) == 0: # i.e. 1 in 100,000 chance per frame
+                if random.randint(0, math.ceil(100 / minimap.level)) == 0: # i.e. 1 in 100,000 chance per frame
                     spawn = Boss("peep")
         elif isinstance(enemy, Spawner):
             if enemy.spawnCD == 0:
-                spawn = Spawner(enemy.name,math.ceil(enemy.spawnSpd*(map.level+1)/map.level))
-        if spawn != None:
+                spawn = Spawner(enemy.name, math.ceil(enemy.spawnSpd * (minimap.level + 1) / minimap.level))
+        if spawn is not None:
             spawn.setup()
             spawn.x, spawn.y = (constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2
             spawn.x, spawn.y = randomPos(spawn.x, spawn.y)
             room["enemies"].append(spawn)
 
+# noinspection PyShadowingNames
 def validatePos(nextFloor,yPos,xPos):
     validPos = False
     if not yPos == 0:
-        if not nextFloor[yPos-1][xPos] == None:
+        if not nextFloor[yPos-1][xPos] is None:
             validPos = True
     if not xPos == 0:
-        if not nextFloor[yPos][xPos-1] == None:
+        if not nextFloor[yPos][xPos-1] is None:
             validPos = True
     if not yPos == constants.gridLength-1:
-        if not nextFloor[yPos+1][xPos] == None:
+        if not nextFloor[yPos+1][xPos] is None:
             validPos = True
     if not xPos == constants.gridLength-1:
-        if not nextFloor[yPos][xPos+1] == None:
+        if not nextFloor[yPos][xPos+1] is None:
             validPos = True
     return validPos
 
@@ -62,6 +63,7 @@ def randomizeSpawn(room):
             e.x, e.y = randomPos(e.x, e.y)
     return room
 
+# noinspection PyShadowingNames
 def startFloor():
     nextRooms = [start]
     nextFloor = deepcopy(floorPlan)
@@ -74,14 +76,14 @@ def startFloor():
     for i in range(len(nextRooms)):
         while True:
             pos = math.floor(random.randint(0,(constants.gridLength**2)-1))
-            if nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] == None:
+            if nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] is None:
                 nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] = nextRooms[i]
                 break
 
     for i in range(constants.gridLength**2):
         yPos = math.floor(i/constants.gridLength)
         xPos = i%constants.gridLength
-        if not nextFloor[yPos][xPos] == None: # Only do if there is a room here
+        if not nextFloor[yPos][xPos] is None: # Only do if there is a room here
                 while True:
                     if not validatePos(nextFloor,yPos,xPos):
                      # Move the room so it will have an adjacent room
@@ -91,7 +93,7 @@ def startFloor():
                         while True:
                             nextPos = nextPos % (constants.gridLength**2)
                             yPos, xPos = math.floor(nextPos/constants.gridLength), nextPos%constants.gridLength
-                            if nextFloor[yPos][xPos] == None:
+                            if nextFloor[yPos][xPos] is None:
                                 nextFloor[yPos][xPos] = temp
                                 break
                             else:
@@ -103,7 +105,7 @@ def startFloor():
     validX, validY = 0, 0
     for y in range(constants.gridLength):
         for x in range(constants.gridLength):
-            if not nextFloor[y][x] == None:
+            if not nextFloor[y][x] is None:
                 testFloor[y][x] = 'y'
                 validX, validY = x, y
             else:
@@ -128,10 +130,11 @@ def startFloor():
     return nextFloor
 
 # Resets all data specific to this instance of these rooms
+# noinspection PyShadowingNames
 def prepareFloor(nextFloor):
     for i in nextFloor:
         for j in i:
-            if not j == None:
+            if j is not None:
                 j["doors"] = []
                 for key in j:
                     for k in j[key]:
@@ -141,17 +144,18 @@ def prepareFloor(nextFloor):
                             k.consumedFlag = False
 
 # links adjacent rooms with doors
+# noinspection PyShadowingNames
 def linkFloor(nextFloor):
     for i in range(len(nextFloor)):
         for j in range(len(nextFloor[i])):
-            if not nextFloor[i][j] == None:
-                if j > 0 and not nextFloor[i][j-1] == None:
+            if not nextFloor[i][j] is None:
+                if j > 0 and not nextFloor[i][j-1] is None:
                     nextFloor[i][j]["doors"].append(Door(nextFloor[i][j-1]["type"],"a"))
-                if j < constants.gridLength-1 and not nextFloor[i][j+1] == None:
+                if j < constants.gridLength-1 and not nextFloor[i][j+1] is None:
                     nextFloor[i][j]["doors"].append(Door(nextFloor[i][j+1]["type"],"d"))
-                if i > 0 and not nextFloor[i-1][j] == None:
+                if i > 0 and not nextFloor[i-1][j] is None:
                     nextFloor[i][j]["doors"].append(Door(nextFloor[i-1][j]["type"],"w"))
-                if i < constants.gridLength-1 and not nextFloor[i+1][j] == None:
+                if i < constants.gridLength-1 and not nextFloor[i+1][j] is None:
                     nextFloor[i][j]["doors"].append(Door(nextFloor[i+1][j]["type"],"s"))
 
 # Literally does everything
@@ -161,16 +165,17 @@ def newFloor(level):
     linkFloor(floor)
     return floor
 
-def nextFloor(map):
-    if map == None: level = 1
-    else: level = map.level+1
+# noinspection PyShadowingNames,PyShadowingNames
+def nextFloor(minimap):
+    if minimap is None: level = 1
+    else: level = minimap.level + 1
     floor = newFloor(level)
-    map = Minimap(floor, level)
+    minimap = Minimap(floor, level)
 
     # Find the start room
     for y in range(constants.gridLength):
         for x in range(constants.gridLength):
-            if floor[y][x] != None and floor[y][x]["enemies"] == [] and floor[y][x]["items"] == []:
+            if floor[y][x] is not None and floor[y][x]["enemies"] == [] and floor[y][x]["items"] == []:
                 startRoom = floor[y][x]
                 startPos = [y,x]
-                return floor, startRoom, startPos, map
+                return floor, startRoom, startPos, minimap

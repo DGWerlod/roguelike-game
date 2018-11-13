@@ -1,4 +1,4 @@
-import pygame, constants
+import pygame
 
 peach = pygame.image.load("img/items/peach.png")
 halfPeach = pygame.image.load("img/items/halfpeach.png")

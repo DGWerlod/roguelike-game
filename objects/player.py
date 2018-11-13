@@ -22,19 +22,19 @@ class Player(Actor):
         return pygame.Rect(self.x,self.y + self.h/2,self.w,self.h/2)
 
     def pos(self, room):
-        if keyboard.controls['keyW'] == True:
+        if keyboard.controls['keyW'] is True:
             self.y -= self.spd[1]
             while not super().canMove(room):
                 self.y += 1
-        if keyboard.controls['keyA'] == True:
+        if keyboard.controls['keyA'] is True:
             self.x -= self.spd[0]
             while not super().canMove(room):
                 self.x += 1
-        if keyboard.controls['keyS'] == True:
+        if keyboard.controls['keyS'] is True:
             self.y += self.spd[1]
             while not super().canMove(room):
                 self.y -= 1
-        if keyboard.controls['keyD'] == True:
+        if keyboard.controls['keyD'] is True:
             self.x += self.spd[0]
             while not super().canMove(room):
                 self.x -= 1
@@ -59,7 +59,7 @@ class Player(Actor):
         super().go(ctx, room)
         if self.attackCD > 0:
             self.attackCD -= 1
-        elif mouse.mouse['held'] == True:
+        elif mouse.mouse['held'] is not 0:
             self.attackCD = self.atkSpd
             return self.attack()
         return None

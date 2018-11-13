@@ -5,9 +5,7 @@ presets = {'keyW':pygame.K_w,'keyA':pygame.K_a,'keyS':pygame.K_s,'keyD':pygame.K
 controls = {'keyW':False,'keyA':False,'keyS':False,'keyD':False,'keySpace':False,'keyEnter':False,'keyEscape':False}
 
 def listen(event):
-        if event.type == pygame.QUIT:
-            close()
-        elif event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             for p in presets:
                 if event.key == presets[p]:
                     controls[p] = True

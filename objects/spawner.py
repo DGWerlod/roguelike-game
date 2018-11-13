@@ -1,4 +1,3 @@
-import pygame, constants
 from objects.enemy import Enemy
 
 class Spawner(Enemy):

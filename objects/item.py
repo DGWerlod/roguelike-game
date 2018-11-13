@@ -1,13 +1,13 @@
-import pygame, constants
+import constants
 from logic import collisions
 from img import images
 from sound import sounds
 from objects.rect import Rect
 
 class Item(Rect):
-    def __init__(self,id,w,xShift=0,yShift=0,name="item"):
+    def __init__(self, itemID, w, xShift=0, yShift=0, name="item"):
         super().__init__((constants.gameW-w)/2+xShift,(constants.gameH-w)/2+yShift,w,w,None,None,[0,0],name)
-        self.id = id
+        self.id = itemID
         self.consumedFlag = False
 
     def activate(self, target):
@@ -17,7 +17,7 @@ class Item(Rect):
                 target.hp = target.maxHP
             else:
                 target.hp += 2
-        elif self.id == 1: # foodstamp
+        elif self.id == 1: # food stamp
             sounds.play("paper")
             target.stamps += 1
         elif self.id == 2: # basil

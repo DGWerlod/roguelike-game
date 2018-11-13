@@ -1,4 +1,4 @@
-import pygame, constants
+import constants
 from logic import graphics, collisions
 from controls.mouse import mouse
 from objects.rect import Rect
@@ -14,7 +14,7 @@ colors = {
 
 class Minimap(Rect):
     def __init__(self,floor,level):
-        super().__init__(constants.gameW-210,10,100,80,constants.minigrey,None,[0,0],"map")
+        super().__init__(constants.gameW - 210, 10, 100, 80, constants.miniGrey, None, [0, 0], "map")
         self.contents = []
         self.xw = 12
         self.yw = 8
@@ -25,7 +25,7 @@ class Minimap(Rect):
             self.contents.append([])
             for x in range(constants.gridLength):
                 now = floor[y][x]
-                if now != None:
+                if now is not None:
                     self.contents[y].append(colors[now["type"]])
                 else:
                     self.contents[y].append(None)
@@ -38,7 +38,7 @@ class Minimap(Rect):
             for col in range(len(self.contents)):
                 if curPos[0] == row and curPos[1] == col:
                     graphics.round_rect(ctx,(x,y,self.xw,self.yw),colors["player"],5)
-                elif self.contents[row][col] != None:
+                elif self.contents[row][col] is not None:
                     graphics.round_rect(ctx,(x,y,self.xw,self.yw),self.contents[row][col],5)
                 x += self.xw + self.gap
             y += self.yw + self.gap

@@ -5,7 +5,7 @@ from objects.rect import Rect
 
 class HUD(Rect):
     def __init__(self, player):
-        super().__init__(110,10,100,80,constants.minigrey,None,[0,0],"hud")
+        super().__init__(110, 10, 100, 80, constants.miniGrey, None, [0, 0], "hud")
         self.stamps, self.stampsRECT = self.renderStamps(player)
         self.stampsLastFrame = player.stamps
         self.itemsLastFrame = len(player.items)
@@ -20,7 +20,7 @@ class HUD(Rect):
 
     def renderToolTip(self, ctx, item):
         displayText = constants.itemDescriptions[item.id]
-        if displayText != None:
+        if displayText is not None:
             displayTextTEXT = constants.muli["15"].render(displayText,True,constants.black)
             displayTextRECT = displayTextTEXT.get_rect()
             displayTextRECT.left = self.x + 5
@@ -30,7 +30,6 @@ class HUD(Rect):
 
     def draw(self, ctx, player):
         # Peaches % 20
-        peachCount = 0
         if player.hp >= 20:
             peachCount = math.ceil((player.hp-math.floor(player.hp/20)*20)/2)+2
         else:

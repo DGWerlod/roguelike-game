@@ -1,5 +1,3 @@
-import pygame
-
 class Entity(object):
     def __init__(self,x,y,color,spd,name="none"):
         self.x = x

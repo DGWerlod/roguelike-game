@@ -1,4 +1,3 @@
-import pygame
 from objects.enemy import Enemy
 
 class Boss(Enemy):

@@ -10,13 +10,13 @@ gridLength = 5
 # COLORS
 black = (0,0,0)
 grey = (128,128,128)
-minigrey = (178,178,178)
+miniGrey = (178, 178, 178)
 yellow = (255,255,0)
 white = (255,255,255)
 red = (255,0,0)
 blue = (0,0,255)
 green = (0,255,0)
-lightpurple = (86,95,120)
+lightPurple = (86, 95, 120)
 
 # FONTS
 muli = {
@@ -43,7 +43,7 @@ toolsTextRECT = toolsText.get_rect()
 toolsTextRECT.centerx = gameW/2
 toolsTextRECT.top = gameH/2 + 80
 
-beginText = muli["30"].render("Press Enter",True,lightpurple)
+beginText = muli["30"].render("Press Enter", True, lightPurple)
 beginTextRECT = beginText.get_rect()
 beginTextRECT.right = gameW - 20
 beginTextRECT.bottom = gameH - 15

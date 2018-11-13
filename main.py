@@ -1,4 +1,4 @@
-import pygame, math, random, constants, generator
+import pygame, constants, generator
 from img import images
 from sound import sounds
 from logic import collisions
@@ -36,7 +36,7 @@ def enemyCheck(room):
             break
     return allEnemiesDead
 
-def enterRoom(enemiesCleared, curRoom):
+def enterRoom(curRoom):
     enemiesCleared = enemyCheck(curRoom)
     if not enemiesCleared:
         if curRoom["type"] != "boss":
@@ -46,18 +46,19 @@ def enterRoom(enemiesCleared, curRoom):
     return enemiesCleared
 
 def getProjectile(projectile,bullets):
-    if projectile != None:
+    if projectile is not None:
         bullets.append(projectile)
-    return None
 
+# noinspection PyShadowingNames
 def pause(ctx):
-    pygame.draw.rect(ctx,constants.grey,(200,200,constants.gameW-400,constants.gameH-400))
-    ctx.blit(constants.pauseText,constants.pauseTextRECT)
-    ctx.blit(constants.resumeText,constants.resumeTextRECT)
+    pygame.draw.rect(ctx, constants.grey, (200, 200, constants.gameW - 400, constants.gameH - 400))
+    ctx.blit(constants.pauseText, constants.pauseTextRECT)
+    ctx.blit(constants.resumeText, constants.resumeTextRECT)
 
+# noinspection PyShadowingNames
 def gameOver(ctx):
-    ctx.blit(constants.gameOverText,constants.gameOverTextRECT)
-    ctx.blit(constants.retryText,constants.retryTextRECT)
+    ctx.blit(constants.gameOverText, constants.gameOverTextRECT)
+    ctx.blit(constants.retryText, constants.retryTextRECT)
 
 def main():
 
@@ -67,7 +68,6 @@ def main():
     enemiesCleared = False
     bullets = []
     running = True
-    projectile = None
 
     player = Player()
     hud = HUD(player)
@@ -75,6 +75,8 @@ def main():
 
     pauseLock = constants.pauseNone
     enterLock = False
+
+    curFloor, curRoom, curPos, minimap = None, None, None, None
 
     while running:
         running = listen(running)
@@ -98,7 +100,7 @@ def main():
             if keyboard.controls["keyEnter"]:
                 if not enterLock:
                     state = constants.GAME
-                    curFloor, curRoom, curPos, map = generator.nextFloor(None)
+                    curFloor, curRoom, curPos, minimap = generator.nextFloor(None)
             elif enterLock:
                 enterLock = False
 
@@ -135,11 +137,11 @@ def main():
                         if curRoom != curFloor[curPos[0]][curPos[1]]:
                             curRoom = curFloor[curPos[0]][curPos[1]]
                             bullets = []
-                            enemiesCleared = enterRoom(enemiesCleared, curRoom)
+                            enemiesCleared = enterRoom(curRoom)
                 if curRoom["type"] == "boss":
                     if teleporter.go(ctx, player):
-                        curFloor, curRoom, curPos, map = generator.nextFloor(map)
-                        enemiesCleared = enterRoom(enemiesCleared, curRoom)
+                        curFloor, curRoom, curPos, minimap = generator.nextFloor(minimap)
+                        enemiesCleared = enterRoom(curRoom)
             else:
                 enemiesCleared = enemyCheck(curRoom)
                 if enemiesCleared:
@@ -147,7 +149,7 @@ def main():
 
             # Update All Entities
             hud.go(ctx, player)
-            map.go(ctx, curPos)
+            minimap.go(ctx, curPos)
 
             for d in curRoom["doors"]:
                 d.go(ctx, enemiesCleared)
@@ -160,13 +162,13 @@ def main():
                     bullets.remove(b)
             for e in curRoom["enemies"]:
                 projectile = e.go(ctx, curRoom, player)
-                projectile = getProjectile(projectile, bullets)
+                getProjectile(projectile, bullets)
                 if e.hp <= 0:
                     curRoom["enemies"].remove(e)
-                generator.trySpawn(e,curRoom,map)
+                generator.trySpawn(e, curRoom, minimap)
 
             projectile = player.go(ctx, curRoom)
-            projectile = getProjectile(projectile, bullets)
+            getProjectile(projectile, bullets)
 
             if player.hp <= 0:
                 state = constants.GAMEOVER
@@ -193,7 +195,7 @@ def main():
                 bullets = []
                 player.__init__()
                 hud.__init__(player)
-                curFloor, curRoom, curPos, map = generator.nextFloor(None)
+                curFloor, curRoom, curPos, minimap = generator.nextFloor(None)
 
             continue # Skips updating window
 

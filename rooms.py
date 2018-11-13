@@ -1,9 +1,6 @@
-import constants, random
-from img import images
-from objects.rect import Rect
+import constants
 from objects.item import Item
 from objects.obstruction import Obstruction
-from objects.character import Character
 from objects.enemy import Enemy
 from objects.boss import Boss
 from objects.spawner import Spawner

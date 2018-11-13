@@ -28,6 +28,7 @@ def circles(a,b):
         return True
     return False
 
+# noinspection SpellCheckingInspection
 def circleRect(circ,rect):
     # get x and y distance from their centers
     dx = abs(circ.x - rect.x - rect.w / 2)

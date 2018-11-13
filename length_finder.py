@@ -7,9 +7,10 @@ files = ["constants.py", "generator.py", "main.py", "rooms.py",
          "objects/obstruction.py", "objects/player.py", "objects/rect.py", "objects/spawner.py", "objects/teleporter.py",
          "sound/sounds.py"]
 
-def file_len(fname):
-    with open(fname) as f:
-        for i, l in enumerate(f):
+def file_len(fName):
+    with open(fName) as file:
+        i = 0
+        for i, l in enumerate(file):
             pass
     return i + 1
 

@@ -1,9 +1,9 @@
-import pygame, constants
+import constants
 from img import images
 from objects.rect import Rect
 
 class Door(Rect):
-    def __init__(self,type,name):
+    def __init__(self, doorType, name):
         if name == "a" or name == "d":
             y = constants.LRDoor
             w = constants.doorSlim
@@ -20,11 +20,11 @@ class Door(Rect):
                 y = 0
             else:
                 y = constants.gameH-constants.doorSlim
-        super().__init__(x,y,w,h,None,images.doors[type][name][0],[0,0],name)
-        self.type = type
+        super().__init__(x, y, w, h, None, images.doors[doorType][name][0], [0, 0], name)
+        self.type = doorType
         self.open = False
     def go(self, ctx, state):
-        if (state and not self.open):
+        if state and not self.open:
             self.open = True
             self.img = images.doors[self.type][self.name][1]
         self.draw(ctx)

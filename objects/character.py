@@ -1,4 +1,3 @@
-import pygame
 from objects.actor import Actor
 
 class Character(Actor):

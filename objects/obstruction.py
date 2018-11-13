@@ -1,4 +1,3 @@
-import pygame
 from objects.rect import Rect
 
 class Obstruction(Rect):

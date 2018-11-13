@@ -1,4 +1,4 @@
-import pygame, math
+import math
 from logic import collisions
 from sound import sounds
 from objects.rect import Rect
