@@ -46,15 +46,6 @@ def enterRoom(curRoom):
             sounds.play("slam2")
     return enemiesCleared
 
-def getProjectile(projectile,bullets):
-    if projectile is not None:
-        bullets.append(projectile)
-
-# noinspection PyShadowingNames
-def gameOver(ctx):
-    ctx.blit(text.gameOver, text.gameOverRECT)
-    ctx.blit(text.retry, text.retryRECT)
-
 def main():
 
     pygame.mixer.music.play()
@@ -68,46 +59,40 @@ def main():
     hud = HUD(player)
     teleporter = Teleporter()
 
-    pauseLock = constants.pauseNone
-    enterLock = False
-
     curFloor, curRoom, curPos, minimap = None, None, None, None
 
     while running:
         running = listen(running)
 
         if state == constants.AUTHORS:
-            ctx.blit(text.author,text.authorRECT)
-            ctx.blit(text.authors,text.authorsRECT)
-            ctx.blit(text.tool,text.toolRECT)
-            ctx.blit(text.tools,text.toolsRECT)
-            ctx.blit(text.begin,text.beginRECT)
+            for t in text.authorsList:
+                ctx.blit(t[0],t[1])
 
             if keyboard.controls["keyEnter"]:
                 sounds.changeMusic(sounds.overtureGoTime)
             if keyboard.controls["keyEnter"] or pygame.mixer.music.get_pos() > sounds.overtureGoTime*1000:
                 state = constants.START
-                enterLock = True
+                keyboard.enterLock = True
 
         if state == constants.START:
             ctx.blit(images.splash,(0,0))
             ctx.blit(text.begin,text.beginRECT)
             if keyboard.controls["keyEnter"]:
-                if not enterLock:
+                if not keyboard.enterLock:
                     state = constants.GAME
                     curFloor, curRoom, curPos, minimap = generator.nextFloor(None)
-            elif enterLock:
-                enterLock = False
+            elif keyboard.enterLock:
+                keyboard.enterLock = False
 
         elif state == constants.GAME:
-            # Check pause
 
+            # Check pause
             if keyboard.controls["keyEscape"]:
-                if pauseLock == constants.pauseNone:
+                if keyboard.pauseLock == constants.pauseNone:
                     state = constants.PAUSE
-                    pauseLock = constants.pauseEnter
+                    keyboard.pauseLock = constants.pauseEnter
             else:
-                pauseLock = constants.pauseNone
+                keyboard.pauseLock = constants.pauseNone
 
             # Reset BG
             ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
@@ -138,6 +123,7 @@ def main():
                         curFloor, curRoom, curPos, minimap = generator.nextFloor(minimap)
                         enemiesCleared = enterRoom(curRoom)
             else:
+                # Test for door unlock
                 enemiesCleared = enemyCheck(curRoom)
                 if enemiesCleared:
                     sounds.play("unlock")
@@ -157,17 +143,20 @@ def main():
                     bullets.remove(b)
             for e in curRoom["enemies"]:
                 projectile = e.go(ctx, curRoom, player)
-                getProjectile(projectile, bullets)
+                if projectile is not None:
+                    bullets.append(projectile)
                 if e.hp <= 0:
                     curRoom["enemies"].remove(e)
                 generator.trySpawn(e, curRoom, minimap)
 
             projectile = player.go(ctx, curRoom)
-            getProjectile(projectile, bullets)
+            if projectile is not None:
+                bullets.append(projectile)
 
             if player.hp <= 0:
                 state = constants.GAMEOVER
-                gameOver(ctx)
+                ctx.blit(text.gameOver, text.gameOverRECT)
+                ctx.blit(text.retry, text.retryRECT)
 
             # Debug
             fps = constants.muli["15"].render(str(round(clock.get_fps(),1)),True,constants.black)
@@ -184,11 +173,11 @@ def main():
             ctx.blit(text.pause, text.pauseRECT)
 
             if keyboard.controls["keyEscape"]:
-                if pauseLock == constants.pauseNone:
+                if keyboard.pauseLock == constants.pauseNone:
                     state = constants.GAME
-                    pauseLock = constants.pauseExit
+                    keyboard.pauseLock = constants.pauseExit
             else:
-                pauseLock = constants.pauseNone
+                keyboard.pauseLock = constants.pauseNone
 
         elif state == constants.GAMEOVER:
 

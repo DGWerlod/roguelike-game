@@ -35,8 +35,7 @@ def trySpawn(enemy, room, minimap):
                 spawn = Spawner(enemy.name, math.ceil(enemy.spawnSpd * (minimap.level + 1) / minimap.level))
         if spawn is not None:
             spawn.setup()
-            spawn.x, spawn.y = (constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2
-            spawn.x, spawn.y = randomPos(spawn.x, spawn.y)
+            spawn.x, spawn.y = randomPos((constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2)
             room["enemies"].append(spawn)
 
 # noinspection PyShadowingNames
@@ -76,8 +75,9 @@ def startFloor():
     for i in range(len(nextRooms)):
         while True:
             pos = math.floor(random.randint(0,(constants.gridLength**2)-1))
-            if nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] is None:
-                nextFloor[math.floor(pos/constants.gridLength)][pos%constants.gridLength] = nextRooms[i]
+            tryRow, tryCol = math.floor(pos/constants.gridLength), pos%constants.gridLength
+            if nextFloor[tryRow][tryCol] is None:
+                nextFloor[tryRow][tryCol] = nextRooms[i]
                 break
 
     for i in range(constants.gridLength**2):
@@ -148,15 +148,16 @@ def prepareFloor(nextFloor):
 def linkFloor(nextFloor):
     for i in range(len(nextFloor)):
         for j in range(len(nextFloor[i])):
-            if not nextFloor[i][j] is None:
-                if j > 0 and not nextFloor[i][j-1] is None:
-                    nextFloor[i][j]["doors"].append(Door(nextFloor[i][j-1]["type"],"a"))
-                if j < constants.gridLength-1 and not nextFloor[i][j+1] is None:
-                    nextFloor[i][j]["doors"].append(Door(nextFloor[i][j+1]["type"],"d"))
-                if i > 0 and not nextFloor[i-1][j] is None:
-                    nextFloor[i][j]["doors"].append(Door(nextFloor[i-1][j]["type"],"w"))
-                if i < constants.gridLength-1 and not nextFloor[i+1][j] is None:
-                    nextFloor[i][j]["doors"].append(Door(nextFloor[i+1][j]["type"],"s"))
+            nowRoom = nextFloor[i][j]
+            if nowRoom is not None:
+                if j > 0 and nextFloor[i][j-1] is not None:
+                    nowRoom["doors"].append(Door(nextFloor[i][j-1]["type"],"a"))
+                if j < constants.gridLength-1 and nextFloor[i][j+1] is not None:
+                    nowRoom["doors"].append(Door(nextFloor[i][j+1]["type"],"d"))
+                if i > 0 and nextFloor[i-1][j] is not None:
+                    nowRoom["doors"].append(Door(nextFloor[i-1][j]["type"],"w"))
+                if i < constants.gridLength-1 and nextFloor[i+1][j] is not None:
+                    nowRoom["doors"].append(Door(nextFloor[i+1][j]["type"],"s"))
 
 # Literally does everything
 def newFloor(level):

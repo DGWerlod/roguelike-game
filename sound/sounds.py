@@ -1,23 +1,21 @@
 import pygame
 pygame.mixer.init()
 
-sounds = {
-    "chomp": pygame.mixer.Sound("sound/chomp.ogg"),
-    "chop": pygame.mixer.Sound("sound/chop.ogg"),
-    "loud_thump": pygame.mixer.Sound("sound/loud_thump.ogg"),
-    "squish": pygame.mixer.Sound("sound/squish.ogg"),
-    "paper": pygame.mixer.Sound("sound/paper.ogg"),
-    "slam1": pygame.mixer.Sound("sound/slam1.ogg"),
-    "slam2": pygame.mixer.Sound("sound/slam2.ogg"),
-    "unlock": pygame.mixer.Sound("sound/unlock.ogg"),
-}
+soundData = [
+    ["chomp", 0.9],
+    ["chop", 0.1],
+    ["loud_thump", 0.4],
+    ["squish", 0.3],
+    ["paper", 0.5],
+    ["slam1", 1.0],
+    ["slam2", 1.0],
+    ["unlock", 1.0]
+]
 
-sounds["chop"].set_volume(0.9)
-sounds["chop"].set_volume(0.1)
-sounds["loud_thump"].set_volume(0.4)
-sounds["squish"].set_volume(0.3)
-sounds["paper"].set_volume(0.5)
-
+sounds = {}
+for d in soundData:
+    sounds[d[0]] = pygame.mixer.Sound("sound/" + d[0] + ".ogg")
+    sounds[d[0]].set_volume(d[1])
 
 def play(name):
     sounds[name].play()
