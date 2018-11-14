@@ -3,8 +3,11 @@ import pygame
 peach = pygame.image.load("img/items/peach.png")
 halfPeach = pygame.image.load("img/items/halfpeach.png")
 foodStamp = pygame.image.load("img/items/foodstamp.png")
+
 playerLeft = pygame.transform.scale(pygame.image.load("img/characters/chefspud_default.png"),(60,120))
 playerRight = pygame.transform.scale(pygame.image.load("img/characters/chefspud_reverse.png"),(60,120))
+playerPause = pygame.transform.scale(pygame.image.load("img/characters/chefspud_reverse.png"),(150,300))
+
 marshmallow = pygame.image.load("img/bullets/marshmallow.png")
 frenchFry = pygame.image.load("img/bullets/frenchfry.png")
 

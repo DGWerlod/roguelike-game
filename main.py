@@ -1,6 +1,7 @@
 import pygame, constants, generator
 from img import images
 from sound import sounds
+from fonts import text
 from logic import collisions
 from controls import keyboard, mouse
 from objects.hud import HUD
@@ -50,15 +51,9 @@ def getProjectile(projectile,bullets):
         bullets.append(projectile)
 
 # noinspection PyShadowingNames
-def pause(ctx):
-    pygame.draw.rect(ctx, constants.grey, (200, 200, constants.gameW - 400, constants.gameH - 400))
-    ctx.blit(constants.pauseText, constants.pauseTextRECT)
-    ctx.blit(constants.resumeText, constants.resumeTextRECT)
-
-# noinspection PyShadowingNames
 def gameOver(ctx):
-    ctx.blit(constants.gameOverText, constants.gameOverTextRECT)
-    ctx.blit(constants.retryText, constants.retryTextRECT)
+    ctx.blit(text.gameOver, text.gameOverRECT)
+    ctx.blit(text.retry, text.retryRECT)
 
 def main():
 
@@ -82,11 +77,11 @@ def main():
         running = listen(running)
 
         if state == constants.AUTHORS:
-            ctx.blit(constants.authorText,constants.authorTextRECT)
-            ctx.blit(constants.authorsText,constants.authorsTextRECT)
-            ctx.blit(constants.toolText,constants.toolTextRECT)
-            ctx.blit(constants.toolsText,constants.toolsTextRECT)
-            ctx.blit(constants.beginText,constants.beginTextRECT)
+            ctx.blit(text.author,text.authorRECT)
+            ctx.blit(text.authors,text.authorsRECT)
+            ctx.blit(text.tool,text.toolRECT)
+            ctx.blit(text.tools,text.toolsRECT)
+            ctx.blit(text.begin,text.beginRECT)
 
             if keyboard.controls["keyEnter"]:
                 sounds.changeMusic(sounds.overtureGoTime)
@@ -96,7 +91,7 @@ def main():
 
         if state == constants.START:
             ctx.blit(images.splash,(0,0))
-            ctx.blit(constants.beginText,constants.beginTextRECT)
+            ctx.blit(text.begin,text.beginRECT)
             if keyboard.controls["keyEnter"]:
                 if not enterLock:
                     state = constants.GAME
@@ -179,7 +174,15 @@ def main():
             ctx.blit(fps,(840,575))
 
         elif state == constants.PAUSE:
-            pause(ctx)
+            # pause(ctx)
+
+            ctx.blit(images.backgrounds[curRoom["type"]], (0, 0))
+            hud.go(ctx, player)
+            minimap.go(ctx, curPos)
+            ctx.blit(images.playerPause, (150, 150))
+            ctx.blit(text.spud, text.spudRECT)
+            ctx.blit(text.pause, text.pauseRECT)
+
             if keyboard.controls["keyEscape"]:
                 if pauseLock == constants.pauseNone:
                     state = constants.GAME

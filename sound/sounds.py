@@ -27,10 +27,11 @@ overtureLoopTime = 25.424 # seconds
 END_FLAG = pygame.USEREVENT + 1 # ensures that this flag != any preset one
 
 pygame.mixer.music.load("sound/overture.ogg")
+# noinspection PyArgumentList
 pygame.mixer.music.set_endevent(END_FLAG)
 
 def changeMusic(time, song=None):
-    if song == None:
+    if song is None:
         pygame.mixer.music.pause()
         pygame.mixer.music.rewind()
         pygame.mixer.music.play()
