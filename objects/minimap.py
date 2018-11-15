@@ -26,7 +26,7 @@ class Minimap(Rect):
             for x in range(constants.gridLength):
                 now = floor[y][x]
                 if now is not None:
-                    self.contents[y].append(colors[now["type"]])
+                    self.contents[y].append(colors[now.type])
                 else:
                     self.contents[y].append(None)
 

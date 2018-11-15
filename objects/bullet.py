@@ -20,7 +20,7 @@ class Bullet(Rect):
         self.pos(room)
         self.draw(ctx)
         if self.name == "good":
-            for e in room["enemies"]:
+            for e in room.enemies:
                 if collisions.rectangles(self,e) and e.hp > 0:
                     sounds.play("squish")
                     self.removeFlag = True

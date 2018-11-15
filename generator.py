@@ -36,7 +36,7 @@ def trySpawn(enemy, room, minimap):
         if spawn is not None:
             spawn.setup()
             spawn.x, spawn.y = randomPos((constants.gameW-spawn.w)/2, (constants.gameH-spawn.h)/2)
-            room["enemies"].append(spawn)
+            room.enemies.append(spawn)
 
 # noinspection PyShadowingNames
 def validatePos(nextFloor,yPos,xPos):
@@ -56,7 +56,7 @@ def validatePos(nextFloor,yPos,xPos):
     return validPos
 
 def randomizeSpawn(room):
-    for e in room["enemies"]:
+    for e in room.enemies:
         e.x, e.y = (constants.gameW-e.w)/2, (constants.gameH-e.h)/2
         if not e.name == "peep":
             e.x, e.y = randomPos(e.x, e.y)
@@ -134,14 +134,13 @@ def startFloor():
 def prepareFloor(nextFloor):
     for i in nextFloor:
         for j in i:
+            # For each cell in grid
             if j is not None:
-                j["doors"] = []
-                for key in j:
-                    for k in j[key]:
-                        if key == "enemies" or key == "items":
-                            k.setup()
-                        elif key == "items":
-                            k.consumedFlag = False
+                j.doors = []
+                for e in j.enemies:
+                    e.setup()
+                for ii in j.items:
+                    ii.setup()
 
 # links adjacent rooms with doors
 # noinspection PyShadowingNames
@@ -151,13 +150,13 @@ def linkFloor(nextFloor):
             nowRoom = nextFloor[i][j]
             if nowRoom is not None:
                 if j > 0 and nextFloor[i][j-1] is not None:
-                    nowRoom["doors"].append(Door(nextFloor[i][j-1]["type"],"a"))
+                    nowRoom.doors.append(Door(nextFloor[i][j-1].type,"a"))
                 if j < constants.gridLength-1 and nextFloor[i][j+1] is not None:
-                    nowRoom["doors"].append(Door(nextFloor[i][j+1]["type"],"d"))
+                    nowRoom.doors.append(Door(nextFloor[i][j+1].type,"d"))
                 if i > 0 and nextFloor[i-1][j] is not None:
-                    nowRoom["doors"].append(Door(nextFloor[i-1][j]["type"],"w"))
+                    nowRoom.doors.append(Door(nextFloor[i-1][j].type,"w"))
                 if i < constants.gridLength-1 and nextFloor[i+1][j] is not None:
-                    nowRoom["doors"].append(Door(nextFloor[i+1][j]["type"],"s"))
+                    nowRoom.doors.append(Door(nextFloor[i+1][j].type,"s"))
 
 # Literally does everything
 def newFloor(level):
@@ -176,7 +175,7 @@ def nextFloor(minimap):
     # Find the start room
     for y in range(constants.gridLength):
         for x in range(constants.gridLength):
-            if floor[y][x] is not None and floor[y][x]["enemies"] == [] and floor[y][x]["items"] == []:
+            if floor[y][x] is not None and floor[y][x].enemies == [] and floor[y][x].items == []:
                 startRoom = floor[y][x]
                 startPos = [y,x]
                 return floor, startRoom, startPos, minimap

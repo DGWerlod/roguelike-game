@@ -31,7 +31,7 @@ def listen(running):
 
 def enemyCheck(room):
     allEnemiesDead = True
-    for e in room["enemies"]:
+    for e in room.enemies:
         if e.hp > 0:
             allEnemiesDead = False
             break
@@ -40,7 +40,7 @@ def enemyCheck(room):
 def enterRoom(curRoom):
     enemiesCleared = enemyCheck(curRoom)
     if not enemiesCleared:
-        if curRoom["type"] != "boss":
+        if curRoom.type != "boss":
             sounds.play("slam1")
         else:
             sounds.play("slam2")
@@ -95,11 +95,11 @@ def main():
                 keyboard.pauseLock = constants.pauseNone
 
             # Reset BG
-            ctx.blit(images.backgrounds[curRoom["type"]],(0,0))
+            ctx.blit(images.backgrounds[curRoom.type],(0,0))
 
             if enemiesCleared:
                 # Test for room changes
-                for c in curRoom["doors"]:
+                for c in curRoom.doors:
                     key = c.name
                     if collisions.rectangles(player,constants.clearZones[key]):
                         if key == "w" and keyboard.controls["keyW"]:
@@ -118,7 +118,7 @@ def main():
                             curRoom = curFloor[curPos[0]][curPos[1]]
                             bullets = []
                             enemiesCleared = enterRoom(curRoom)
-                if curRoom["type"] == "boss":
+                if curRoom.type == "boss":
                     if teleporter.go(ctx, player):
                         curFloor, curRoom, curPos, minimap = generator.nextFloor(minimap)
                         enemiesCleared = enterRoom(curRoom)
@@ -132,21 +132,21 @@ def main():
             hud.go(ctx, player)
             minimap.go(ctx, curPos)
 
-            for d in curRoom["doors"]:
+            for d in curRoom.doors:
                 d.go(ctx, enemiesCleared)
-            for i in curRoom["items"]:
+            for i in curRoom.items:
                 if not i.consumedFlag:
                     i.go(ctx, player, enemiesCleared)
             for b in bullets:
                 b.go(ctx, curRoom, player)
                 if b.removeFlag:
                     bullets.remove(b)
-            for e in curRoom["enemies"]:
+            for e in curRoom.enemies:
                 projectile = e.go(ctx, curRoom, player)
                 if projectile is not None:
                     bullets.append(projectile)
                 if e.hp <= 0:
-                    curRoom["enemies"].remove(e)
+                    curRoom.enemies.remove(e)
                 generator.trySpawn(e, curRoom, minimap)
 
             projectile = player.go(ctx, curRoom)
@@ -165,7 +165,7 @@ def main():
         elif state == constants.PAUSE:
             # pause(ctx)
 
-            ctx.blit(images.backgrounds[curRoom["type"]], (0, 0))
+            ctx.blit(images.backgrounds[curRoom.type], (0, 0))
             hud.go(ctx, player)
             minimap.go(ctx, curPos)
             ctx.blit(images.playerPause, (150, 150))

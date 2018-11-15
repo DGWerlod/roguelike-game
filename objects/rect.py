@@ -11,7 +11,7 @@ class Rect(Entity):
         self.img = img
 
     def canMove(self, room):
-        for o in room["obstructions"]:
+        for o in room.obstructions:
             if collisions.rectangles(self,o):
                 return False
         if self.x < 0 or self.y < 0 or self.x + self.w > constants.gameW or self.y + self.h > constants.gameH:

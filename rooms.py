@@ -10,112 +10,43 @@ Obstruction(790,0,110,constants.gameH),
 Obstruction(0,0,constants.gameW,10),
 Obstruction(0,490,constants.gameW,110)]
 
-# START
+class Room(object):
+    def __init__(self, roomType, enemies, items, obstructions=stdObstructions):
+        self.type = roomType
+        self.enemies = enemies
+        self.items = items
+        self.obstructions = obstructions
+        self.doors = []
 
-start = {
-    "type": "standard",
-    "obstructions": stdObstructions,
-    "enemies": [],
-    "items": [],
-    "doors": [],
-}
+# START
+start = Room("standard",[],[],[])
 
 # STANDARD
-
 standard = [
-{
-"type": "standard",
-"obstructions": stdObstructions,
-"enemies": [Enemy("apple")],
-"items": [],
-"doors": []
-},
-
-{
-"type": "standard",
-"obstructions": stdObstructions,
-"enemies": [Enemy("apple"), Enemy("cherry")],
-"items": [Item(1,20)],
-"doors": []
-},
-
-{
-"type": "standard",
-"obstructions": stdObstructions,
-"enemies": [Enemy("cherry"), Enemy("cherry")],
-"items": [Item(1,20,25),Item(0,20,-25)],
-"doors": []
-},
-
-{
-"type": "standard",
-"obstructions": stdObstructions,
-"enemies": [Spawner("banana")],
-"items":[],
-"doors": []
-}
+    Room("standard", [Enemy("apple")], []),
+    Room("standard", [Enemy("apple"), Enemy("cherry")],[Item(1,20)]),
+    Room("standard", [Enemy("cherry"), Enemy("cherry")], [Item(1,20,25),Item(0,20,-25)]),
+    Room("standard", [Spawner("banana")], [])
 ]
 
 # SHOP
-
 shop = [
-{
-"type": "shop",
-"obstructions": stdObstructions,
-"enemies": [],
-"items": [Item(3,20)],
-"doors": []
-},
-
-{
-"type": "shop",
-"obstructions": stdObstructions,
-"enemies": [],
-"items": [Item(4,20)],
-"doors": []
-}
+    Room("shop", [], [Item(3,20)]),
+    Room("shop", [], [Item(4,20)])
 ]
 
 # DISH
-
 dish = [
-{
-"type": "dish",
-"obstructions": stdObstructions,
-"enemies": [],
-"items": [Item(0,20,-5,-10)],
-"doors": []
-}
+    Room("dish", [], [Item(0,20,-5,-10)])
 ]
 
 # RISK
-
 risk = [
-{
-"type": "risk",
-"obstructions": stdObstructions,
-"enemies": [Boss("peep")],
-"items": [],
-"doors": []
-},
-
-{
-"type": "risk",
-"obstructions": stdObstructions,
-"enemies": [],
-"items": [Item(8,50)],
-"doors": []
-}
+    Room("risk", [Boss("peep")], []),
+    Room("risk", [], [Item(8,50)])
 ]
 
 # BOSS
-
 boss = [
-{
-"type": "boss",
-"obstructions": stdObstructions,
-"enemies": [Boss("peep")],
-"items": [Item(7,60)],
-"doors": []
-}
+    Room("boss", [Boss("peep")], [Item(7,60)])
 ]

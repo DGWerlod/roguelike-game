@@ -50,6 +50,7 @@ class Item(Rect):
 
     def setup(self):
         self.img = images.items[self.id]
+        self.consumedFlag = False
 
     def go(self, ctx, player, roomCleared):
         if roomCleared:
