@@ -5,8 +5,9 @@ from sound import sounds
 from objects.rect import Rect
 
 class Item(Rect):
-    def __init__(self, itemID, w, xShift=0, yShift=0, name="item"):
-        super().__init__((constants.gameW-w)/2+xShift,(constants.gameH-w)/2+yShift,w,w,None,None,[0,0],name)
+    def __init__(self, itemID, xShift=0, yShift=0, name="item"):
+        s = images.items[itemID].get_width()
+        super().__init__((constants.gameW-s)/2+xShift,(constants.gameH-s)/2+yShift,s,s,None,None,[0,0],name)
         self.id = itemID
         self.consumedFlag = False
 

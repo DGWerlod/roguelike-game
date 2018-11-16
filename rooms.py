@@ -24,29 +24,29 @@ start = Room("standard",[],[],[])
 # STANDARD
 standard = [
     Room("standard", [Enemy("apple")], []),
-    Room("standard", [Enemy("apple"), Enemy("cherry")],[Item(1,20)]),
-    Room("standard", [Enemy("cherry"), Enemy("cherry")], [Item(1,20,25),Item(0,20,-25)]),
+    Room("standard", [Enemy("apple"), Enemy("cherry")],[Item(1)]),
+    Room("standard", [Enemy("cherry"), Enemy("cherry")], [Item(1,25),Item(0,-25)]),
     Room("standard", [Spawner("banana")], [])
 ]
 
 # SHOP
 shop = [
-    Room("shop", [], [Item(3,20)]),
-    Room("shop", [], [Item(4,20)])
+    Room("shop", [], [Item(3)]),
+    Room("shop", [], [Item(4)])
 ]
 
 # DISH
 dish = [
-    Room("dish", [], [Item(0,20,-5,-10)])
+    Room("dish", [], [Item(0,-5,-10)])
 ]
 
 # RISK
 risk = [
     Room("risk", [Boss("peep")], []),
-    Room("risk", [], [Item(8,50)])
+    Room("risk", [], [Item(8)])
 ]
 
 # BOSS
 boss = [
-    Room("boss", [Boss("peep")], [Item(7,60)])
+    Room("boss", [Boss("peep")], [Item(7)])
 ]

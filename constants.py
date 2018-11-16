@@ -4,6 +4,7 @@ pygame.font.init()
 
 # GENERAL VARIABLES
 gameW, gameH = 900, 600
+roomL, roomT, roomR, roomB = 100, 100, gameW-100, gameH-100
 playerW, playerH = 60, 120
 gridLength = 5
 
@@ -48,19 +49,10 @@ TBDoor = (gameW - doorWide) / 2
 
 # CLEAR ZONES
 clearZones = {
-    "w": Rect(gameW/2 - doorWide/2 + 50,10,doorWide - 100,5,grey),
-    "a": Rect(110,gameH/2 - doorWide/2 + 50,5,doorWide - 100,grey),
-    "s": Rect(gameW/2 - doorWide/2 + 50,485,doorWide - 100,5,grey),
-    "d": Rect(785,gameH/2 - doorWide/2 + 50,5,doorWide - 100,grey)
-}
-
-# ENEMY DATA   HP,FIRE RATE IN TICKS (1/60),DMG
-enemyData = {
-    "apple": [60,60,3,40,1],
-    "cherry": [60,60,1,20,1],
-    "banana": [60,60,5,60,1],
-    "peep": [120,120,15,60,2],
-    "bunny": [60,60,1,60,1]
+    "w": Rect(gameW/2 - doorWide/2 + doorWide/3, 10, doorWide/3, 5, grey),
+    "a": Rect(roomL + 10, gameH/2 - doorWide/2 + doorWide/3, 5, doorWide/3, grey),
+    "s": Rect(gameW/2 - doorWide/2 + doorWide/3, roomB - 15, doorWide/3, 5, grey),
+    "d": Rect(roomR - 15, gameH/2 - doorWide/2 + doorWide/3, 5, doorWide/3, grey)
 }
 
 # ITEM DESCRIPTIONS

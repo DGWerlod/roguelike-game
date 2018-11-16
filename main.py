@@ -102,22 +102,25 @@ def main():
                 for c in curRoom.doors:
                     key = c.name
                     if collisions.rectangles(player,constants.clearZones[key]):
+
+                        spaceBuffer = 20
                         if key == "w" and keyboard.controls["keyW"]:
                             curPos[0] -= 1
-                            player.y = constants.gameH - 110 - constants.playerH - 20
+                            player.y = constants.roomB - 10 - constants.playerH - spaceBuffer
                         elif key == "a" and keyboard.controls["keyA"]:
                             curPos[1] -= 1
-                            player.x = constants.gameW - 110 - constants.playerW - 20
+                            player.x = constants.roomR - 10 - constants.playerW - spaceBuffer
                         elif key == "s" and keyboard.controls["keyS"]:
                             curPos[0] += 1
-                            player.y = 10 + 20
+                            player.y = 10 + spaceBuffer
                         elif key == "d" and keyboard.controls["keyD"]:
                             curPos[1] += 1
-                            player.x = 110 + 20
+                            player.x = constants.roomL + 10 + spaceBuffer
                         if curRoom != curFloor[curPos[0]][curPos[1]]:
                             curRoom = curFloor[curPos[0]][curPos[1]]
                             bullets = []
                             enemiesCleared = enterRoom(curRoom)
+
                 if curRoom.type == "boss":
                     if teleporter.go(ctx, player):
                         curFloor, curRoom, curPos, minimap = generator.nextFloor(minimap)
@@ -168,7 +171,7 @@ def main():
             ctx.blit(images.backgrounds[curRoom.type], (0, 0))
             hud.go(ctx, player)
             minimap.go(ctx, curPos)
-            ctx.blit(images.playerPause, (150, 150))
+            ctx.blit(images.playerPause, (constants.roomL + 50, constants.roomR + 50))
             ctx.blit(text.spud, text.spudRECT)
             ctx.blit(text.pause, text.pauseRECT)
 
