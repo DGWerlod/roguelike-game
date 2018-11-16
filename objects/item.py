@@ -4,12 +4,29 @@ from img import images
 from sound import sounds
 from objects.rect import Rect
 
+descriptions = [
+    None,
+    None,
+    None,
+    "Faster fire",
+    "Speed boost",
+    None,
+    None,
+    "Full HP + 1",
+    "Attack boost",
+    None
+]
+
+
 class Item(Rect):
     def __init__(self, itemID, xShift=0, yShift=0, name="item"):
         s = images.items[itemID].get_width()
         super().__init__((constants.gameW-s)/2+xShift,(constants.gameH-s)/2+yShift,s,s,None,None,[0,0],name)
         self.id = itemID
         self.consumedFlag = False
+
+    def getDescription(self):
+        return descriptions[self.id]
 
     def activate(self, target):
         if self.id == 0: # peach

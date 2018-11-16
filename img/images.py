@@ -131,16 +131,18 @@ items = [
     pygame.transform.scale(pygame.image.load("img/items/knife.png"),(30,30))
 ]
 
+iconS = 15
+
 icons = [
     None,
     None,
-    pygame.transform.scale(pygame.image.load("img/items/spices/basil.png"),(15,15)),
-    pygame.transform.scale(pygame.image.load("img/items/spices/paprika.png"),(15,15)),
-    pygame.transform.scale(pygame.image.load("img/items/spices/pepper.png"),(15,15)),
-    pygame.transform.scale(pygame.image.load("img/items/spices/salt.png"),(15,15)),
-    pygame.transform.scale(pygame.image.load("img/items/spices/turmeric.png"),(15,15)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/basil.png"),(iconS,iconS)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/paprika.png"),(iconS,iconS)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/pepper.png"),(iconS,iconS)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/salt.png"),(iconS,iconS)),
+    pygame.transform.scale(pygame.image.load("img/items/spices/turmeric.png"),(iconS,iconS)),
     None,
-    pygame.transform.scale(pygame.image.load("img/items/knife.png"),(15,15))
+    pygame.transform.scale(pygame.image.load("img/items/knife.png"),(iconS,iconS))
 ]
 
 enemies = {

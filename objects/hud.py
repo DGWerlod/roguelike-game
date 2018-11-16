@@ -3,23 +3,23 @@ from img import images
 from logic import graphics
 from objects.rect import Rect
 
+def renderStamps(player):
+    stamps = constants.muli["15"].render(str(player.stamps), True, constants.black)
+    stampsRECT = stamps.get_rect()
+    stampsRECT.right = 120 + 20
+    stampsRECT.top = 40
+    return stamps, stampsRECT
+
 class HUD(Rect):
     def __init__(self, player):
         super().__init__(110, 10, 100, 80, constants.miniGrey, None, [0, 0], "hud")
-        self.stamps, self.stampsRECT = self.renderStamps(player)
+        self.stamps, self.stampsRECT = renderStamps(player)
         self.stampsLastFrame = player.stamps
         self.itemsLastFrame = len(player.items)
         self.itemDisplayCountdown = 0
 
-    def renderStamps(self, player):
-        stamps = constants.muli["15"].render(str(player.stamps),True,constants.black)
-        stampsRECT = stamps.get_rect()
-        stampsRECT.right = 120 + 20
-        stampsRECT.top = 40
-        return stamps, stampsRECT
-
     def renderToolTip(self, ctx, item):
-        displayText = constants.itemDescriptions[item.id]
+        displayText = item.getDescription()
         if displayText is not None:
             displayTextTEXT = constants.muli["15"].render(displayText,True,constants.black)
             displayTextRECT = displayTextTEXT.get_rect()
@@ -59,13 +59,13 @@ class HUD(Rect):
         ctx.blit(images.foodStamp,(120,40))
 
         if player.stamps != self.stampsLastFrame:
-            self.stamps, self.stampsRECT = self.renderStamps(player)
+            self.stamps, self.stampsRECT = renderStamps(player)
         ctx.blit(self.stamps,self.stampsRECT)
         self.stampsLastFrame = player.stamps
 
         location = self.x + 10
         for item in player.items:
-            ctx.blit(pygame.transform.scale(images.icons[item.id],(15,15)),(location,60))
+            ctx.blit(pygame.transform.scale(images.icons[item.id],(images.iconS,images.iconS)),(location,60))
             location += 20
 
         if len(player.items) > self.itemsLastFrame:

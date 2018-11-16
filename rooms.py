@@ -5,10 +5,12 @@ from objects.enemy import Enemy
 from objects.boss import Boss
 from objects.spawner import Spawner
 
-stdObstructions = [Obstruction(0,0,110,constants.gameH),
-Obstruction(790,0,110,constants.gameH),
-Obstruction(0,0,constants.gameW,10),
-Obstruction(0,490,constants.gameW,110)]
+stdObstructions = [
+    Obstruction(0, 0, constants.roomL + 10, constants.gameH), # left
+    Obstruction(constants.roomR - 10, 0, constants.roomL + 10, constants.gameH), # right
+    Obstruction(0, 0, constants.gameW, 10), # top
+    Obstruction(0, constants.roomB - 10, constants.gameW, constants.roomT + 10) # bottom
+]
 
 class Room(object):
     def __init__(self, roomType, enemies, items, obstructions=stdObstructions):
